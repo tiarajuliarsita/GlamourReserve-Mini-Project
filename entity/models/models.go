@@ -39,7 +39,7 @@ type Service struct {
 	ID          string `gorm:"not null;primary key"`
 	Name        string `gorm:"not null" valid:"required~your name is required"`
 	Description string `gorm:"not null;unique" valid:"required~your description is required"`
-	Image       string `gorm:"not null" valid:"required~your image url is required"`
+	// Image       string `gorm:"not null" valid:"required~your image url is required"`
 	Variants    []Variant
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
