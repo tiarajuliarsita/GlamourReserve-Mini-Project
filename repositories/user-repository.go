@@ -43,7 +43,7 @@ func (r *userRepository) Login(email string, password string) (entity.UserCore, 
 	var user models.User
 	var dataUser entity.UserCore
 
-	err := r.db.Where("email= ?", email).Find(&user).Error
+	err := r.db.Where("email= ?", email).First(&user).Error
 	if err != nil {
 		return dataUser, err
 	}
