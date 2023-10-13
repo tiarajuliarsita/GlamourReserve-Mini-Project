@@ -21,8 +21,7 @@ type User struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) { 
-
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	_, err = govalidator.ValidateStruct(u)
 	if err != nil {
 		return err
@@ -33,9 +32,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 		return errors.New("password must have a minimum length of 6 characters")
 	}
 	u.Password, _ = helpers.HassPass(u.Password)
-
 	return nil
-
 }
 
 type Service struct {
