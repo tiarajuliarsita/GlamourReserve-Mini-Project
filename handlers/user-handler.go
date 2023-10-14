@@ -18,7 +18,7 @@ func NewUserHandler(userService services.UserServiceInterface) *userHandler {
 }
 
 func (h *userHandler) RegisterHandler(e echo.Context) error {
-	userReq := request.UserRequset{}
+	userReq := request.UserRequest{}
 	err := e.Bind(&userReq)
 	if err != nil {
 		return e.JSON(404, echo.Map{"error": err.Error()})
@@ -51,7 +51,7 @@ func (h *userHandler) RegisterHandler(e echo.Context) error {
 }
 
 func (h *userHandler) LoginUser(e echo.Context) error {
-	userReq := request.UserRequset{}
+	userReq := request.UserRequest{}
 	err := e.Bind(&userReq)
 	if err != nil {
 		return e.JSON(404, echo.Map{"error": err.Error()})
@@ -64,7 +64,7 @@ func (h *userHandler) LoginUser(e echo.Context) error {
 	if err != nil {
 		return e.JSON(404, echo.Map{"error": err.Error()})
 	}
-	
+
 	userResp := response.UserRespon{
 		ID:        userData.ID,
 		UserName:  userData.UserName,
@@ -80,4 +80,27 @@ func (h *userHandler) LoginUser(e echo.Context) error {
 		"token":   token,
 	})
 
+}
+
+func (h *userHandler) GetAllUsers(e echo.Context) error {
+	users, err := h.userService.FindAll()
+	if err != nil {
+		return e.JSON(404, echo.Map{"error": err.Error()})
+
+	}
+	usersResp := []response.UserRespon{}
+	for _, v := range users {
+		user := response.UserRespon{
+			ID:        v.ID,
+			UserName:  v.UserName,
+			Email:     v.Email,
+			Phone:     v.Phone,
+			CreatedAt: v.CreatedAt,
+			UpdatedAt: v.UpdatedAt,
+		}
+		usersResp = append(usersResp, user)
+	}
+	return e.JSON(200, echo.Map{
+		"user":usersResp,
+	})
 }

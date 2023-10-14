@@ -13,13 +13,15 @@ type svcService struct {
 	svcRepo repositories.ServiceRepoInterface
 }
 
+
+
 func NewSvcService(svcRepo repositories.ServiceRepoInterface) *svcService {
 	return &svcService{svcRepo}
 }
 
-func (s *svcService) FindAllServices() ([]models.Service, error) {
+func (s *svcService) FindAll() ([]models.Service, error) {
 	services, err := s.svcRepo.FindAll()
-	if err!=nil{
+	if err != nil {
 		return nil, err
 	}
 	return services, nil

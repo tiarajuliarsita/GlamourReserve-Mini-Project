@@ -17,4 +17,5 @@ func UserRoutes(app *echo.Echo, db *gorm.DB) {
 
 	app.POST("/users/register", handlers.RegisterHandler)
 	app.POST("/users/login", handlers.LoginUser)
+	app.GET("/users", handlers.GetAllUsers)
 }
