@@ -9,6 +9,7 @@ import (
 type UserServiceInterface interface {
 	CreateUser(user entity.UserCore) (entity.UserCore, error)
 	Login(email string, password string) (entity.UserCore, string, error)
+	FindAll() ([]entity.UserCore, error)
 }
 
 type userService struct {
@@ -35,4 +36,12 @@ func (s *userService) Login(email string, password string) (entity.UserCore, str
 
 	token := helpers.GenerateToken(userData.ID, userData.UserName, userData.Email)
 	return userData, token, nil
+}
+
+func (s *userService) FindAll() ([]entity.UserCore, error) {
+	users, err := s.repo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }

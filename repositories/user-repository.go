@@ -11,6 +11,7 @@ import (
 type UserRepoInterface interface {
 	CreateUser(entity.UserCore) (entity.UserCore, error)
 	Login(email string, password string) (entity.UserCore, error)
+	FindAll() ([]entity.UserCore, error)
 }
 
 type userRepository struct {
@@ -19,6 +20,30 @@ type userRepository struct {
 
 func NewUserRepository(DB *gorm.DB) *userRepository {
 	return &userRepository{DB}
+}
+
+func (r *userRepository) FindAll() ([]entity.UserCore, error) {
+	var users []models.User
+	err := r.db.Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	usersCore := []entity.UserCore{}
+	for _, v := range users {
+		user := entity.UserCore{
+			ID:        v.ID,
+			UserName:  v.UserName,
+			Email:     v.Email,
+			Password:  v.Password,
+			Phone:     v.Phone,
+			CreatedAt: v.CreatedAt,
+			UpdatedAt: v.UpdatedAt,
+		}
+		usersCore = append(usersCore, user)
+	}
+
+	return usersCore, nil
+
 }
 
 func (r *userRepository) CreateUser(user entity.UserCore) (entity.UserCore, error) {
@@ -43,8 +68,9 @@ func (r *userRepository) Login(email string, password string) (entity.UserCore, 
 	var user models.User
 	var dataUser entity.UserCore
 
-	err := r.db.Where("email= ?", email).Find(&user).Error
+	err := r.db.Where("email= ?", email).First(&user).Error
 	if err != nil {
+
 		return dataUser, err
 	}
 
@@ -52,6 +78,7 @@ func (r *userRepository) Login(email string, password string) (entity.UserCore, 
 	if err != nil {
 		return dataUser, err
 	}
+
 	if !comparePass {
 		return dataUser, err
 	}

@@ -8,13 +8,18 @@ import (
 	"glamour_reserve/app/routes"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
-
 
 func main() {
 	appCfg, dbCfg := config.InitConfig()
 	database.InitDBMysql(dbCfg)
 	app := echo.New()
+	app.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	  }))
 	routes.UserRoutes(app, database.DB)
+	routes.ServicesRoutes(app, database.DB)
+
 	app.Logger.Fatal(app.Start(fmt.Sprintf(":%d", appCfg.APPPORT)))
 }
