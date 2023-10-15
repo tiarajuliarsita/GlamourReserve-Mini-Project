@@ -9,6 +9,7 @@ type SvcServiceInterface interface {
 	FindAll() ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
+	Delete(id string) (bool, error)
 }
 
 type svcService struct {
@@ -42,4 +43,12 @@ func (s *svcService) CreateService(service core.ServiceCore) (core.ServiceCore, 
 		return service, err
 	}
 	return serviceData, nil
+}
+
+func (s *svcService) Delete(id string) (bool, error) {
+	ok, err := s.svcRepo.Delete(id)
+	if err != nil {
+		return false, err
+	}
+	return ok, nil
 }

@@ -12,11 +12,12 @@ import (
 func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 
 	repo := repositories.NewServiceRepository(db)
-	svc:=services.NewSvcService(repo)
-	handler:=handlers.NewServiceHandler(svc)
-	
+	svc := services.NewSvcService(repo)
+	handler := handlers.NewServiceHandler(svc)
+
 	app.GET("/services", handler.GetAllServices)
 	app.POST("/services", handler.CreateService)
 	app.GET("/services/:id", handler.GetServiceByID)
+	app.DELETE("/services/:id", handler.DeletByID)
 
 }
