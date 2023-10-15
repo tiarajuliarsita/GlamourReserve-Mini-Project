@@ -57,3 +57,13 @@ func (h *serviceHandler) CreateService(e echo.Context) error {
 	servisResp := core.ServiceCoreToResponseService(data)
 	return response.RespondJSON(e, 201, "succes", servisResp)
 }
+
+func (h *serviceHandler) GetServiceByID(e echo.Context) error {
+	id := e.Param("id")
+	service, err := h.svcService.FindById(id)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	svcResp := core.ServiceCoreToResponseService(service)
+	return response.RespondJSON(e, 200, "succes", svcResp)
+}

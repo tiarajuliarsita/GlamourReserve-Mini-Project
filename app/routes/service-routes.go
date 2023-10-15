@@ -17,5 +17,6 @@ func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 	
 	app.GET("/services", handler.GetAllServices)
 	app.POST("/services", handler.CreateService)
+	app.GET("/services/:id", handler.GetServiceByID)
 
 }
