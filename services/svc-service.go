@@ -2,12 +2,11 @@ package services
 
 import (
 	"glamour_reserve/entity/core"
-	"glamour_reserve/entity/models"
 	"glamour_reserve/repositories"
 )
 
 type SvcServiceInterface interface {
-	FindAll() ([]models.Service, error)
+	FindAll() ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 }
@@ -29,7 +28,7 @@ func (s *svcService) FindById(id string) (core.ServiceCore, error) {
 	return dataService, nil
 }
 
-func (s *svcService) FindAll() ([]models.Service, error) {
+func (s *svcService) FindAll() ([]core.ServiceCore, error) {
 	services, err := s.svcRepo.FindAll()
 	if err != nil {
 		return nil, err
