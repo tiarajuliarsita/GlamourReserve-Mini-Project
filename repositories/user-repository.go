@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"glamour_reserve/entity"
+	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
 	"glamour_reserve/helpers"
 
@@ -9,9 +9,9 @@ import (
 )
 
 type UserRepoInterface interface {
-	CreateUser(entity.UserCore) (entity.UserCore, error)
-	Login(email string, password string) (entity.UserCore, error)
-	FindAll() ([]entity.UserCore, error)
+	CreateUser(core.UserCore) (core.UserCore, error)
+	Login(email string, password string) (core.UserCore, error)
+	FindAll() ([]core.UserCore, error)
 }
 
 type userRepository struct {
@@ -22,23 +22,16 @@ func NewUserRepository(DB *gorm.DB) *userRepository {
 	return &userRepository{DB}
 }
 
-func (r *userRepository) FindAll() ([]entity.UserCore, error) {
+func (r *userRepository) FindAll() ([]core.UserCore, error) {
 	var users []models.User
 	err := r.db.Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
-	usersCore := []entity.UserCore{}
+	
+	usersCore := []core.UserCore{}
 	for _, v := range users {
-		user := entity.UserCore{
-			ID:        v.ID,
-			UserName:  v.UserName,
-			Email:     v.Email,
-			Password:  v.Password,
-			Phone:     v.Phone,
-			CreatedAt: v.CreatedAt,
-			UpdatedAt: v.UpdatedAt,
-		}
+		user:=core.UserModelToUserCore(v)
 		usersCore = append(usersCore, user)
 	}
 
@@ -46,7 +39,8 @@ func (r *userRepository) FindAll() ([]entity.UserCore, error) {
 
 }
 
-func (r *userRepository) CreateUser(user entity.UserCore) (entity.UserCore, error) {
+func (r *userRepository) CreateUser(user core.UserCore) (core.UserCore, error) {
+
 	userInsert := models.User{
 		ID:        user.ID,
 		UserName:  user.UserName,
@@ -64,9 +58,9 @@ func (r *userRepository) CreateUser(user entity.UserCore) (entity.UserCore, erro
 	return user, nil
 }
 
-func (r *userRepository) Login(email string, password string) (entity.UserCore, error) {
+func (r *userRepository) Login(email string, password string) (core.UserCore, error) {
 	var user models.User
-	var dataUser entity.UserCore
+	var dataUser core.UserCore
 
 	err := r.db.Where("email= ?", email).First(&user).Error
 	if err != nil {

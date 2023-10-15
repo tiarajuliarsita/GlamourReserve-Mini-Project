@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"glamour_reserve/entity"
+	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/services"
@@ -24,14 +24,14 @@ func (h *userHandler) RegisterHandler(e echo.Context) error {
 		return e.JSON(404, echo.Map{"error": err.Error()})
 
 	}
-	userInsert := entity.UserCore{
+	userInsert := core.UserCore{
 		UserName: userReq.UserName,
 		Email:    userReq.Email,
 		Password: userReq.Email,
 		Phone:    userReq.Phone,
 	}
 
-	userInsert, err = h.userService.CreateUser(userInsert)
+	h.userService.CreateUser(userInsert)
 	if err != nil {
 		return e.JSON(404, echo.Map{"error": err.Error()})
 
@@ -86,21 +86,15 @@ func (h *userHandler) GetAllUsers(e echo.Context) error {
 	users, err := h.userService.FindAll()
 	if err != nil {
 		return e.JSON(404, echo.Map{"error": err.Error()})
-
 	}
+
 	usersResp := []response.UserRespon{}
 	for _, v := range users {
-		user := response.UserRespon{
-			ID:        v.ID,
-			UserName:  v.UserName,
-			Email:     v.Email,
-			Phone:     v.Phone,
-			CreatedAt: v.CreatedAt,
-			UpdatedAt: v.UpdatedAt,
-		}
+		user:=core.UserCoreToUserResponse(v)
 		usersResp = append(usersResp, user)
 	}
+	
 	return e.JSON(200, echo.Map{
-		"user":usersResp,
+		"user": usersResp,
 	})
 }

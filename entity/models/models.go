@@ -36,14 +36,26 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type Service struct {
-	ID          string `gorm:"not null;primary key"`
-	Name        string `gorm:"not null" valid:"required~your name is required"`
-	Description string `gorm:"not null;unique" valid:"required~your description is required"`
-	// Image       string `gorm:"not null" valid:"required~your image url is required"`
-	Variants    []Variant
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
+	ID          string `gorm:"not null;primary key" json:"id" form:"id"`
+	Name        string `gorm:"not null" valid:"required~your name is required" json:"name" form:"name"`
+	Description string `gorm:"not null;unique" valid:"required~your description is required" json:"description" form:"description"`
+	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
+	Variants  []Variant
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+func (s *Service) BeforeCreate(tx *gorm.DB) (err error) {
+
+	_, err = govalidator.ValidateStruct(s)
+	if err != nil {
+		return err
+	}
+	newUuid := uuid.New()
+	s.ID = newUuid.String()
+
+	return nil
 }
 
 type Variant struct {

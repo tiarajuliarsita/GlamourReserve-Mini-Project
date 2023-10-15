@@ -15,6 +15,7 @@ func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 	svc:=services.NewSvcService(repo)
 	handler:=handlers.NewServiceHandler(svc)
 	
-	app.GET("/sevices", handler.GetAllServices)
+	app.GET("/services", handler.GetAllServices)
+	app.POST("/services", handler.CreateService)
 
 }
