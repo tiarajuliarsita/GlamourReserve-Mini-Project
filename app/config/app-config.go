@@ -10,7 +10,7 @@ import (
 
 type AppConfig struct {
 	APPPORT int
-	SECRETKEY string
+	SECRET_KEY string
 }
 
 func LoadAPP() *AppConfig {
@@ -31,7 +31,7 @@ func LoadAPP() *AppConfig {
 	
 	if val, found := os.LookupEnv("SECRETKEY"); found {
 		// isRead = true
-		res.SECRETKEY = val
+		res.SECRET_KEY = val
 	}
 	return res
 }
