@@ -25,10 +25,10 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 
 	servicesResponse := []response.ServiceRespon{}
 	for _, v := range services {
-		service:=core.ServiceCoreToResponseService(v)
+		service := core.ServiceCoreToResponseService(v)
 		servicesResponse = append(servicesResponse, service)
 	}
-	
+
 	return response.RespondJSON(e, 200, "succes", servicesResponse)
 }
 
@@ -55,6 +55,20 @@ func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
+
 	svcResp := core.ServiceCoreToResponseService(service)
 	return response.RespondJSON(e, 200, "succes", svcResp)
+}
+
+func (h *serviceHandler) DeletByID(e echo.Context) error {
+	id := e.Param("id")
+	ok, err := h.svcService.Delete(id)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	if !ok {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	return response.RespondJSON(e, 200, "succes", nil)
+
 }

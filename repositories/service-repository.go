@@ -11,6 +11,7 @@ type ServiceRepoInterface interface {
 	FindAll() ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	Create(service core.ServiceCore) (core.ServiceCore, error)
+	Delete(id string) (bool, error)
 }
 type SvcRepository struct {
 	db *gorm.DB
@@ -51,7 +52,6 @@ func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 }
 
 func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
-
 	serviceInput := core.ServiceCoreToModelsSevice(service)
 	err := r.db.Create(&serviceInput).Error
 	if err != nil {
@@ -60,4 +60,17 @@ func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, erro
 
 	result := core.ServiceModelToServiceCore(serviceInput)
 	return result, nil
+}
+
+func (r *SvcRepository) Delete(id string) (bool, error) {
+	service, err := r.FindById(id)
+	dataSvc := core.ServiceCoreToModelsSevice(service)
+	if err != nil {
+		return false, err
+	}
+	err = r.db.Where("id = ?", id).Delete(&dataSvc).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
