@@ -1,13 +1,14 @@
 package services
 
 import (
+	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
 	"glamour_reserve/repositories"
 )
 
 type SvcServiceInterface interface {
 	FindAll() ([]models.Service, error)
-	CreateService(svcReq *models.Service) (models.Service, error)
+	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 }
 
 type svcService struct {
@@ -26,11 +27,10 @@ func (s *svcService) FindAll() ([]models.Service, error) {
 	return services, nil
 }
 
-func (s *svcService) CreateService(svcReq *models.Service) (models.Service, error) {
-	
-	service, err := s.svcRepo.Create(svcReq)
+func (s *svcService) CreateService(service core.ServiceCore) (core.ServiceCore, error) {
+	serviceData, err := s.svcRepo.Create(service)
 	if err != nil {
 		return service, err
 	}
-	return service, nil
+	return serviceData, nil
 }
