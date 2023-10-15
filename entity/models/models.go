@@ -40,7 +40,7 @@ type Service struct {
 	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
 	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
 	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
-	Variants  []Variant
+	Variants  []Variant `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"variants"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -64,6 +64,7 @@ type Variant struct {
 	Description string `gorm:"not null;unique" valid:"required~your description is required"`
 	Price       int    `gorm:"not null" valid:"required~your price is required"`
 	ServiceID   string //`gorm:"not null" valid:"required~your service id is required"`
+	Service     *Service
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
