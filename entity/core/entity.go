@@ -12,7 +12,7 @@ type UserCore struct {
 	Phone     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt time.Time
+	
 }
 type ServiceCore struct {
 	ID          string

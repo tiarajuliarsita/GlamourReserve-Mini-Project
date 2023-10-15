@@ -28,10 +28,10 @@ func (r *userRepository) FindAll() ([]core.UserCore, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	usersCore := []core.UserCore{}
 	for _, v := range users {
-		user:=core.UserModelToUserCore(v)
+		user := core.UserModelToUserCore(v)
 		usersCore = append(usersCore, user)
 	}
 
@@ -41,21 +41,14 @@ func (r *userRepository) FindAll() ([]core.UserCore, error) {
 
 func (r *userRepository) CreateUser(user core.UserCore) (core.UserCore, error) {
 
-	userInsert := models.User{
-		ID:        user.ID,
-		UserName:  user.UserName,
-		Email:     user.Email,
-		Password:  user.Password,
-		Phone:     user.Phone,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
-	}
-
+	userInsert := core.UserCoreToUserModel(user)
 	err := r.db.Create(&userInsert).Error
 	if err != nil {
 		return user, err
 	}
-	return user, nil
+	
+	dataUser := core.UserModelToUserCore(userInsert)
+	return dataUser, nil
 }
 
 func (r *userRepository) Login(email string, password string) (core.UserCore, error) {
@@ -64,7 +57,6 @@ func (r *userRepository) Login(email string, password string) (core.UserCore, er
 
 	err := r.db.Where("email= ?", email).First(&user).Error
 	if err != nil {
-
 		return dataUser, err
 	}
 
