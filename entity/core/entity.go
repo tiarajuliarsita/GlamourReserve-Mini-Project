@@ -12,11 +12,11 @@ type UserCore struct {
 	Phone     string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	
 }
 type ServiceCore struct {
 	ID          string
 	Name        string
+	// Image       string
 	Description string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
