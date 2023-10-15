@@ -8,6 +8,7 @@ import (
 
 type SvcServiceInterface interface {
 	FindAll() ([]models.Service, error)
+	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 }
 
@@ -17,6 +18,15 @@ type svcService struct {
 
 func NewSvcService(svcRepo repositories.ServiceRepoInterface) *svcService {
 	return &svcService{svcRepo}
+}
+
+func (s *svcService) FindById(id string) (core.ServiceCore, error) {
+	dataService, err := s.svcRepo.FindById(id)
+	if err != nil {
+		return dataService, err
+	}
+
+	return dataService, nil
 }
 
 func (s *svcService) FindAll() ([]models.Service, error) {
