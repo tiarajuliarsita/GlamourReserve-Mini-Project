@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
 
 	"gorm.io/gorm"
@@ -8,7 +9,7 @@ import (
 
 type ServiceRepoInterface interface {
 	FindAll() ([]models.Service, error)
-	Create(service *models.Service) (models.Service, error)
+	Create(service core.ServiceCore) (core.ServiceCore, error)
 }
 type SvcRepository struct {
 	db *gorm.DB
@@ -28,11 +29,14 @@ func (r *SvcRepository) FindAll() ([]models.Service, error) {
 	return services, nil
 }
 
-func (r *SvcRepository) Create(service *models.Service) (models.Service, error) {
-
-	err := r.db.Create(&service).Error
+func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
+	
+	serviceInput := core.ServiceCoreToModelsSevice(service)
+	err := r.db.Create(&serviceInput).Error
 	if err != nil {
-		return *service, err
+		return service, err
 	}
-	return *service, nil
+
+	result:= core.ServiceModelToServiceCore(serviceInput)
+	return result, nil
 }

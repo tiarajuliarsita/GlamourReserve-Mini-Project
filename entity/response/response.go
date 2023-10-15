@@ -1,6 +1,7 @@
 package response
 
 import (
+	"glamour_reserve/entity/models"
 	"time"
 )
 
@@ -17,8 +18,7 @@ type ServiceRespon struct {
 	Name        string `json:"name" `
 	Description string `json:"description"`
 	// Image       string    `json:"image"`
-	// Variants  []models.Variant `json:"variants" `
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Variants  []models.Variant `json:"variants" `
+	CreatedAt time.Time        `json:"created_at"`
+	UpdatedAt time.Time        `json:"updated_at"`
 }
-

@@ -37,8 +37,8 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 type Service struct {
 	ID          string `gorm:"not null;primary key" json:"id" form:"id"`
-	Name        string `gorm:"not null" valid:"required~your name is required" json:"name" form:"name"`
-	Description string `gorm:"not null;unique" valid:"required~your description is required" json:"description" form:"description"`
+	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
+	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
 	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
 	Variants  []Variant
 	CreatedAt time.Time
