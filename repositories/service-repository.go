@@ -8,7 +8,7 @@ import (
 )
 
 type ServiceRepoInterface interface {
-	FindAll() ([]models.Service, error)
+	FindAll() ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	Create(service core.ServiceCore) (core.ServiceCore, error)
 }
@@ -29,19 +29,25 @@ func (r *SvcRepository) FindById(id string) (core.ServiceCore, error) {
 	if err != nil {
 		return dataService, err
 	}
-	
+
 	dataService = core.ServiceModelToServiceCore(service)
 	return dataService, nil
 }
 
-func (r *SvcRepository) FindAll() ([]models.Service, error) {
+func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 	var services []models.Service
+	var dataServices []core.ServiceCore
 
 	err := r.db.Find(&services).Error
 	if err != nil {
 		return nil, err
 	}
-	return services, nil
+	for _, v := range services {
+		svcCore := core.ServiceModelToServiceCore(v)
+		dataServices = append(dataServices, svcCore)
+	}
+
+	return dataServices, nil
 }
 
 func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
