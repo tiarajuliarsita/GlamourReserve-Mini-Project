@@ -21,22 +21,8 @@ type User struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
-	_, err = govalidator.ValidateStruct(u)
-	if err != nil {
-		return err
-	}
-	newUuid := uuid.New()
-	u.ID = newUuid.String()
-	if len(u.Password) < 6 {
-		return errors.New("password must have a minimum length of 6 characters")
-	}
-	u.Password, _ = helpers.HassPass(u.Password)
-	return nil
-}
-
 type Service struct {
-	ID          string `gorm:"not null;primary key" json:"id" form:"id"`
+	ID          string `gorm:"not null;type:varchar(255);primary key" json:"id" form:"id"`
 	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
 	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
 	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
@@ -46,24 +32,12 @@ type Service struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (s *Service) BeforeCreate(tx *gorm.DB) (err error) {
-
-	_, err = govalidator.ValidateStruct(s)
-	if err != nil {
-		return err
-	}
-	newUuid := uuid.New()
-	s.ID = newUuid.String()
-
-	return nil
-}
-
 type Variant struct {
 	ID          string `gorm:"not null;primary key"`
-	Name        string `gorm:"not null" valid:"required~your name is required"`
-	Description string `gorm:"not null;unique" valid:"required~your description is required"`
+	Name        string `gorm:"not null;unique" valid:"required~your name is required"`
+	Description string `gorm:"not null" valid:"required~your description is required"`
 	Price       int    `gorm:"not null" valid:"required~your price is required"`
-	ServiceID   string //`gorm:"not null" valid:"required~your service id is required"`
+	ServiceID   string `valid:"required~your service id is required"`
 	Service     *Service
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -88,4 +62,42 @@ type DetailBooking struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	_, err = govalidator.ValidateStruct(u)
+	if err != nil {
+		return err
+	}
+	newUuid := uuid.New()
+	u.ID = newUuid.String()
+	if len(u.Password) < 6 {
+		return errors.New("password must have a minimum length of 6 characters")
+	}
+	u.Password, _ = helpers.HassPass(u.Password)
+	return nil
+}
+
+func (s *Service) BeforeCreate(tx *gorm.DB) (err error) {
+
+	_, err = govalidator.ValidateStruct(s)
+	if err != nil {
+		return err
+	}
+	newUuid := uuid.New()
+	s.ID = newUuid.String()
+
+	return nil
+}
+
+func (v *Variant) BeforeCreate(tx *gorm.DB) (err error) {
+
+	_, err = govalidator.ValidateStruct(v)
+	if err != nil {
+		return err
+	}
+	newUuid := uuid.New()
+	v.ID = newUuid.String()
+
+	return nil
 }
