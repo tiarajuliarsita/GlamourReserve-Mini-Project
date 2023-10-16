@@ -10,6 +10,7 @@ type SvcServiceInterface interface {
 	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
+	Update(id string, NewService core.ServiceCore)(core.ServiceCore, error)
 }
 
 type svcService struct {
@@ -51,4 +52,12 @@ func (s *svcService) Delete(id string) (bool, error) {
 		return false, err
 	}
 	return ok, nil
+}
+
+func(s *svcService)Update(id string, NewService core.ServiceCore)(core.ServiceCore, error){
+	dataservice, err :=s.svcRepo.Update(id, NewService )
+	if err != nil {
+		return dataservice, err
+	}
+	return dataservice, nil
 }
