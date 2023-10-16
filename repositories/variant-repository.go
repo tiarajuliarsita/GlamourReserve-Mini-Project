@@ -12,6 +12,7 @@ import (
 type VariantRepoInterface interface {
 	Create(variant core.VariantCore) (core.VariantCore, error)
 	FindByID(id string) (core.VariantCore, error)
+	FindAll() ([]core.VariantCore, error)
 }
 
 type variantRepository struct {
@@ -58,5 +59,24 @@ func (r *variantRepository) FindByID(id string) (core.VariantCore, error) {
 
 	dataVariant = core.VariantModelToVariantCore(variant)
 	return dataVariant, err
+}
 
+func (r *variantRepository) FindAll() ([]core.VariantCore, error) {
+	variants := []models.Variant{}
+	dataVariant := []core.VariantCore{}
+
+	err := r.db.Find(&variants).Error
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return dataVariant, errors.New("variant not found")
+		}
+		return dataVariant, err
+	}
+
+	for _, v := range variants {
+		variant := core.VariantModelToVariantCore(v)
+		dataVariant = append(dataVariant, variant)
+	}
+
+	return dataVariant, err
 }
