@@ -8,6 +8,7 @@ import (
 type VariantServiceInterface interface {
 	Create(variant core.VariantCore) (core.VariantCore, error)
 	FindByID(id string) (core.VariantCore, error)
+	FindAll() ([]core.VariantCore, error)
 }
 
 type variantService struct {
@@ -33,4 +34,13 @@ func (s *variantService) FindByID(id string) (core.VariantCore, error) {
 	}
 
 	return dataVariant, err
+}
+
+func (s *variantService) FindAll() ([]core.VariantCore, error) {
+	variants, err := s.variantRepo.FindAll()
+	if err!=nil{
+		return variants, err
+	}
+	return variants, err
+
 }
