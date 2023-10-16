@@ -33,8 +33,8 @@ func VariantModelToVariantCore(variant models.Variant) VariantCore {
 
 }
 
-func VariantRequestToVariantCore(variant request.VariantRequest)VariantCore{
-	variantCore:= VariantCore{
+func VariantRequestToVariantCore(variant request.VariantRequest) VariantCore {
+	variantCore := VariantCore{
 		Name:        variant.Name,
 		Description: variant.Description,
 		Price:       variant.Price,
@@ -43,8 +43,8 @@ func VariantRequestToVariantCore(variant request.VariantRequest)VariantCore{
 	return variantCore
 }
 
-func VariantCoreToVariantRespon( variant VariantCore)response.VariantRespon{
-	variantResp:= response.VariantRespon{
+func VariantCoreToVariantRespon(variant VariantCore) response.VariantRespon {
+	variantResp := response.VariantRespon{
 		ID:          variant.ID,
 		Name:        variant.Name,
 		Description: variant.Description,
@@ -55,4 +55,3 @@ func VariantCoreToVariantRespon( variant VariantCore)response.VariantRespon{
 	}
 	return variantResp
 }
-

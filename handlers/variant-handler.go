@@ -29,8 +29,18 @@ func (h *VariantHandler) CreateVariant(e echo.Context) error {
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
+
 	variantResp := core.VariantCoreToVariantRespon(variantData)
 	return response.RespondJSON(e, 201, "succes", variantResp)
+}
 
+func (h *VariantHandler) GetByID(e echo.Context) error {
+	id := e.Param("id")
+	dataVariant, err := h.variantService.FindByID(id)
+	if err!=nil{
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	variantResp:=core.VariantCoreToVariantRespon(dataVariant)
+	return response.RespondJSON(e, 200, "succes", variantResp)
 
 }
