@@ -14,6 +14,7 @@ type VariantRepoInterface interface {
 	FindByID(id string) (core.VariantCore, error)
 	FindAll() ([]core.VariantCore, error)
 	Delete(id string) error
+	Update(id string, newVariant core.VariantCore) (core.VariantCore, error)
 }
 
 type variantRepository struct {
@@ -89,8 +90,30 @@ func (r *variantRepository) Delete(id string) error {
 		if err == sql.ErrNoRows {
 			return errors.New("variant not found")
 		}
-		return  err
+		return err
 	}
 
 	return nil
+}
+
+func (r *variantRepository) Update(id string, newVariant core.VariantCore) (core.VariantCore, error) {
+	variant := core.VariantCoreToVariantModel(newVariant)
+	result := core.VariantCore{}
+
+	_, err := r.FindByID(id)
+	if err != nil {
+		return result, err
+	}
+
+	err = r.db.Where("id = ?", id).Updates(&variant).Error
+	if err != nil {
+		return result, err
+	}
+
+	result = core.VariantModelToVariantCore(variant)
+	if err != nil {
+		return result, err
+	}
+	result.ID = id
+	return result, nil
 }

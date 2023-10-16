@@ -10,6 +10,7 @@ type VariantServiceInterface interface {
 	FindByID(id string) (core.VariantCore, error)
 	FindAll() ([]core.VariantCore, error)
 	Delete(id string) error
+	Update(id string, newVariant core.VariantCore) (core.VariantCore, error)
 }
 
 type variantService struct {
@@ -51,10 +52,18 @@ func (s *variantService) Delete(id string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	err = s.variantRepo.Delete(id)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *variantService) Update(id string, newVariant core.VariantCore) (core.VariantCore, error) {
+	variant, err := s.variantRepo.Update(id, newVariant)
+	if err != nil {
+		return variant, err
+	}
+	return variant, nil
 }
