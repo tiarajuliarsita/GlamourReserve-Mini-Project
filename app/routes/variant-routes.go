@@ -17,4 +17,6 @@ func VariantRoutes(app *echo.Echo, db *gorm.DB) {
 	app.POST("/variants", handler.CreateVariant)
 	app.GET("/variants/:id", handler.GetByID)
 	app.GET("/variants", handler.GetAll)
+	app.DELETE("/variants/:id", handler.Delete)
+	app.PUT("/variants/:id", handler.Update)
 }
