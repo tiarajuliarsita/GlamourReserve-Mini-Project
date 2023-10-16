@@ -72,3 +72,22 @@ func (h *serviceHandler) DeletByID(e echo.Context) error {
 	return response.RespondJSON(e, 200, "succes", nil)
 
 }
+
+func (h *serviceHandler) UpdateByID(e echo.Context) error {
+	id := e.Param("id")
+	newService := request.ServiceRequest{}
+
+	err := e.Bind(&newService)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	NewService := core.ServiceReqToServiceCore(newService)
+
+	dataService, err := h.svcService.Update(id, NewService)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+
+	serviceRespon := core.ServiceCoreToResponseService(dataService)
+	return response.RespondJSON(e, 200, "succes", serviceRespon)
+}

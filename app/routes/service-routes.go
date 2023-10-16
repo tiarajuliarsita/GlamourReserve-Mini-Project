@@ -19,5 +19,6 @@ func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 	app.POST("/services", handler.CreateService)
 	app.GET("/services/:id", handler.GetServiceByID)
 	app.DELETE("/services/:id", handler.DeletByID)
+	app.PUT("/services/:id", handler.UpdateByID)
 
 }

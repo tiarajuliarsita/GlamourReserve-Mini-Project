@@ -12,6 +12,7 @@ type ServiceRepoInterface interface {
 	FindById(id string) (core.ServiceCore, error)
 	Create(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
+	Update(id string, updateSvc core.ServiceCore) (core.ServiceCore, error)
 }
 type SvcRepository struct {
 	db *gorm.DB
@@ -43,6 +44,7 @@ func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 	if err != nil {
 		return nil, err
 	}
+	
 	for _, v := range services {
 		svcCore := core.ServiceModelToServiceCore(v)
 		dataServices = append(dataServices, svcCore)
@@ -64,13 +66,34 @@ func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, erro
 
 func (r *SvcRepository) Delete(id string) (bool, error) {
 	service, err := r.FindById(id)
+
 	dataSvc := core.ServiceCoreToModelsSevice(service)
 	if err != nil {
 		return false, err
 	}
+
 	err = r.db.Where("id = ?", id).Delete(&dataSvc).Error
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
+}
+
+func (r *SvcRepository) Update(id string, updateSvc core.ServiceCore) (core.ServiceCore, error) {
+
+	service := core.ServiceCoreToModelsSevice(updateSvc)
+	
+	data, err := r.FindById(id)
+	if err != nil {
+		return data, err
+	}
+
+	err = r.db.Where("id = ?", id).Updates(&service).Error
+	if err != nil {
+		return data, err
+	}
+
+	data.ID = id
+	return data, nil
 }
