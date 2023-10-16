@@ -40,7 +40,7 @@ func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 	var services []models.Service
 	var dataServices []core.ServiceCore
 
-	err := r.db.Find(&services).Error
+	err := r.db.Preload("Variants").Find(&services).Error
 	if err != nil {
 		return nil, err
 	}
