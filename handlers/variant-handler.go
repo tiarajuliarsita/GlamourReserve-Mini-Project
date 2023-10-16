@@ -69,3 +69,23 @@ func (h *variantHandler) Delete(e echo.Context) error {
 	}
 	return response.RespondJSON(e, 200, "succes", nil)
 }
+
+func (h *variantHandler) Update(e echo.Context) error {
+	id := e.Param("id")
+	NewVariant := request.VariantRequest{}
+
+	err := e.Bind(&NewVariant)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	
+	variant := core.VariantRequestToVariantCore(NewVariant)
+
+	updatedVariant, err := h.variantService.Update(id, variant)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+
+	variantResp := core.VariantCoreToVariantRespon(updatedVariant)
+	return response.RespondJSON(e, 200, "succes", variantResp)
+}
