@@ -7,6 +7,8 @@ import (
 
 type VariantServiceInterface interface {
 	Create(variant core.VariantCore) (core.VariantCore, error)
+	FindByID(id string) (core.VariantCore, error)
+	FindAll() ([]core.VariantCore, error)
 }
 
 type variantService struct {
@@ -19,8 +21,26 @@ func NewVariantService(variantRepo repositories.VariantRepoInterface) *variantSe
 
 func (s *variantService) Create(variant core.VariantCore) (core.VariantCore, error) {
 	variant, err := s.variantRepo.Create(variant)
-	if err!=nil{
+	if err != nil {
 		return variant, err
 	}
 	return variant, nil
+}
+
+func (s *variantService) FindByID(id string) (core.VariantCore, error) {
+	dataVariant, err := s.variantRepo.FindByID(id)
+	if err != nil {
+		return dataVariant, err
+	}
+
+	return dataVariant, err
+}
+
+func (s *variantService) FindAll() ([]core.VariantCore, error) {
+	variants, err := s.variantRepo.FindAll()
+	if err!=nil{
+		return variants, err
+	}
+	return variants, err
+
 }

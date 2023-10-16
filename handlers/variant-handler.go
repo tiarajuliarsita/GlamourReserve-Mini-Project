@@ -9,15 +9,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type VariantHandler struct {
+type variantHandler struct {
 	variantService services.VariantServiceInterface
 }
 
-func NewVariantHandler(variantService services.VariantServiceInterface) *VariantHandler {
-	return &VariantHandler{variantService}
+func NewVariantHandler(variantService services.VariantServiceInterface) *variantHandler {
+	return &variantHandler{variantService}
 }
 
-func (h *VariantHandler) CreateVariant(e echo.Context) error {
+func (h *variantHandler) CreateVariant(e echo.Context) error {
 	variantReq := request.VariantRequest{}
 	err := e.Bind(&variantReq)
 	if err != nil {
@@ -29,8 +29,34 @@ func (h *VariantHandler) CreateVariant(e echo.Context) error {
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
+
 	variantResp := core.VariantCoreToVariantRespon(variantData)
 	return response.RespondJSON(e, 201, "succes", variantResp)
+}
 
+func (h *variantHandler) GetByID(e echo.Context) error {
+	id := e.Param("id")
+	dataVariant, err := h.variantService.FindByID(id)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
 
+	variantResp := core.VariantCoreToVariantRespon(dataVariant)
+	return response.RespondJSON(e, 200, "succes", variantResp)
+
+}
+
+func (h *variantHandler) GetAll(e echo.Context) error {
+	variants, err := h.variantService.FindAll()
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+
+	variantResp := []response.VariantRespon{}
+	for _, v := range variants {
+		variant := core.VariantCoreToVariantRespon(v)
+		variantResp = append(variantResp, variant)
+	}
+
+	return response.RespondJSON(e, 200, "succes", variantResp)
 }
