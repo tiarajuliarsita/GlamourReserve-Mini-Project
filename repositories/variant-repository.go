@@ -11,6 +11,7 @@ import (
 
 type VariantRepoInterface interface {
 	Create(variant core.VariantCore) (core.VariantCore, error)
+	FindByID(id string) (core.VariantCore, error)
 }
 
 type variantRepository struct {
@@ -26,18 +27,14 @@ func (r *variantRepository) Create(variant core.VariantCore) (core.VariantCore, 
 	service := models.Service{}
 
 	err := r.db.Where("id = ?", variant.ServiceID).Table("services").First(&service).Error
-	// err := r.db.Where("id = ?", variant.ServiceID).Table("services").First(&service).Error
-
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return dataVariant,errors.New("service not found")
+			return dataVariant, errors.New("service not found")
 		}
-
-		return dataVariant,err
+		return dataVariant, err
 	}
 
 	variantInsert := core.VariantCoreToVariantModel(variant)
-
 	err = r.db.Create(&variantInsert).Error
 	if err != nil {
 		return dataVariant, err
@@ -45,4 +42,21 @@ func (r *variantRepository) Create(variant core.VariantCore) (core.VariantCore, 
 
 	dataVariant = core.VariantModelToVariantCore(variantInsert)
 	return dataVariant, nil
+}
+
+func (r *variantRepository) FindByID(id string) (core.VariantCore, error) {
+	variant := models.Variant{}
+	dataVariant := core.VariantCore{}
+
+	err := r.db.Where("id = ?", id).First(&variant).Error
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return dataVariant, errors.New("variant not found")
+		}
+		return dataVariant, err
+	}
+
+	dataVariant = core.VariantModelToVariantCore(variant)
+	return dataVariant, err
+
 }
