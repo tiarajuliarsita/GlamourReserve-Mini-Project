@@ -14,11 +14,15 @@ func GenerateToken(id string, userName string, email string) string {
 		"user_name": userName,
 		"exp":       time.Now().Add(time.Hour * 1).Unix(),
 	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
 	cfg := config.AppConfig{}
+
 	signedToken, err := token.SignedString([]byte(cfg.SECRET_KEY))
 	if err != nil {
 		return err.Error()
 	}
+	
 	return signedToken
 }
