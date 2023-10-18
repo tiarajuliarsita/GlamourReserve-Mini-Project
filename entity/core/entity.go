@@ -28,6 +28,7 @@ type BookingCore struct {
 	UserID      string
 	InvoiceNumb string
 	Total       int
+	Status string
 	DetailsBook []DetailsBookCore
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -35,8 +36,8 @@ type BookingCore struct {
 
 type DetailsBookCore struct {
 	ID        string
-	Date      time.Time
-	Time      time.Time
+	Date      string
+	Time      string
 	BookingID string
 	ServiceID string
 	CreatedAt time.Time

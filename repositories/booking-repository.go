@@ -1,9 +1,9 @@
 package repositories
 
 import (
+	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
-	"glamour_reserve/helpers"
 
 	"gorm.io/gorm"
 )
@@ -11,6 +11,8 @@ import (
 type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
+	GetPriceService(id string) (int, error)
+	CheckAvailableService(date, time string)  error
 }
 
 type bookingRepository struct {
@@ -29,20 +31,6 @@ func (r *bookingRepository) Create(bookingNew core.BookingCore) (core.BookingCor
 
 	InsertBook := core.BookingCoreToBookingModels(bookingNew)
 	dataBook := core.BookingCore{}
-	listPrice := []int{}
-	service := models.Service{}
-
-	for _, v := range InsertBook.DetailsBooking {
-		err := r.db.Where("id = ?", v.ServiceID).First(&service).Error
-		if err != nil {
-			tx.Rollback()
-			return dataBook, err
-		}
-		listPrice = append(listPrice, service.Price)
-	}
-
-	total := helpers.SumTotal(listPrice)
-	InsertBook.Total = total
 
 	err := tx.Create(&InsertBook).Error
 	if err != nil {
@@ -52,6 +40,7 @@ func (r *bookingRepository) Create(bookingNew core.BookingCore) (core.BookingCor
 
 	dataBook = core.BookingModelToBookingCore(InsertBook)
 	tx.Commit()
+
 	for _, v := range InsertBook.DetailsBooking {
 		detailBook := core.DetailBookingModelToDetailBookingCore(v)
 		dataBook.DetailsBook = append(dataBook.DetailsBook, detailBook)
@@ -72,4 +61,31 @@ func (r *bookingRepository) FindServiceByID(id string) (core.ServiceCore, error)
 
 	dataService = core.ServiceModelToServiceCore(service)
 	return dataService, nil
+}
+
+func (r *bookingRepository) GetPriceService(id string) (int, error) {
+	service := models.Service{}
+	err := r.db.Where("id = ?", id).Find(&service).Error
+	if err != nil {
+
+		return service.Price, err
+	}
+	return service.Price, nil
+
+}
+
+func (r *bookingRepository) CheckAvailableService(date, time string) error {
+	var detailBooking []models.DetailBooking
+	err := r.db.Where("Date = ? AND Time = ?", date, time).Find(&detailBooking).Error
+
+	if err != nil {
+		// Penanganan kesalahan GORM
+		return err
+	}
+
+	if len(detailBooking) > 0 {
+		// Data ditemukan, kembalikan kesalahan
+		return errors.New("service not available")
+	}
+	return nil
 }

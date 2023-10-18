@@ -1,7 +1,5 @@
 package request
 
-import "time"
-
 type ServiceRequest struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
@@ -18,8 +16,8 @@ type UserRequest struct {
 
 type BookDataRequest struct {
 	Service_id string `json:"service_id"`
-	Date       time.Time `json:"date"`
-	Time       time.Time `json:"time"`
+	Date       string `json:"date"`
+	Time       string `json:"time"`
 }
 
 type BookingRequest struct {

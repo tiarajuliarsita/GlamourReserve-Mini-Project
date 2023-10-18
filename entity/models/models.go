@@ -37,6 +37,7 @@ type Booking struct {
 	UserID          string `valid:"required~your user id is required"`
 	InvoiceNumb     string `gorm:"not null;unique" valid:"required~your invoice is required"`
 	Total           int    `gorm:"not null"`
+	Status          string `gorm:"type:ENUM('pending', 'done');not null;default:'pending'"`
 	DetailsBooking []DetailBooking
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
@@ -45,8 +46,8 @@ type Booking struct {
 
 type DetailBooking struct {
 	ID        string `gorm:"not null;primary key"`
-	Date      time.Time `gorm:"not null" valid:"required~your date  is required"`
-	Time      time.Time `gorm:"not null" valid:"required~your time is required"`
+	Date      string `gorm:"not null" valid:"required~your date  is required"`
+	Time      string `gorm:"not null" valid:"required~your time is required"`
 	BookingID string `gorm:"type:varchar(255)"`
 	ServiceID string `gorm:"type:varchar(255)"`
 	CreatedAt time.Time
@@ -97,8 +98,10 @@ func (d *DetailBooking) BeforeCreate(tx *gorm.DB) (err error) {
 	if err != nil {
 		return err
 	}
+
 	newUuid := uuid.New()
 	d.ID = newUuid.String()
 
 	return nil
 }
+

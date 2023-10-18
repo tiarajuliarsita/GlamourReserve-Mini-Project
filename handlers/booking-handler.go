@@ -22,15 +22,17 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	//extract token
 	userId, userName := helpers.ExtractTokenUserId(e)
 
-	BookingReq := request.BookingRequest{}
-	err := e.Bind(&BookingReq)
+	bookingReq := request.BookingRequest{}
+
+	err := e.Bind(&bookingReq)
+
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
 	detailBookings := []core.DetailsBookCore{}
 
-	for _, v := range BookingReq.Details {
+	for _, v := range bookingReq.Details {
 		data := core.BookingDataRequestToDetailsBookingCore(v)
 		detailBookings = append(detailBookings, data)
 	}
@@ -49,7 +51,7 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 	for _, v := range dataResp.DetailsBook {
 		booking := core.DetailsBookCoreToDetailsBookResp(v)
-		dataService, _ := h.bookingSvc.FindServiceByID(booking.ServiceID)
+		dataService, _ := h.bookingSvc.FindServiceByID(v.ServiceID)
 		booking.Name = dataService.Name
 		booking.Price = dataService.Price
 		bookResp.DetailsBooking = append(bookResp.DetailsBooking, booking)
