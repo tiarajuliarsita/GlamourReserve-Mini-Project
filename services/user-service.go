@@ -34,7 +34,7 @@ func (s *userService) Login(email string, password string) (core.UserCore, strin
 		return userData, "", err
 	}
 
-	token := helpers.GenerateToken(userData.ID, userData.UserName, userData.Email)
+	token, _ := helpers.GenerateToken(userData.ID, userData.UserName)
 	return userData, token, nil
 }
 

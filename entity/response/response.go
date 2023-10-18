@@ -1,7 +1,6 @@
 package response
 
 import (
-	"glamour_reserve/entity/models"
 	"time"
 )
 
@@ -18,18 +17,27 @@ type ServiceRespon struct {
 	ID          string `json:"id"`
 	Name        string `json:"name" `
 	Description string `json:"description"`
+	Price       int    `json:"price"`
 	// Image       string    `json:"image"`
-	Variants  []models.Variant `json:"variants" `
-	CreatedAt time.Time        `json:"created_at"`
-	UpdatedAt time.Time        `json:"updated_at"`
+	// Variants  []models.Variant `json:"variants" `
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type VariantRespon struct {
-	ID          string    `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Price       int       `json:"price"`
-	ServiceID   string    `json:"service_id"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+type BookingRespon struct {
+	ID             string                `json:"id"`
+	Name           string                `json:"name"`
+	InvoiceNumb    string                `json:"invoice_num"`
+	Total          int                   `json:"total"`
+	DetailsBooking []DetailBookingRespon `json:"details"`
+	CreatedAt      time.Time             `json:"created_at"`
+}
+
+type DetailBookingRespon struct {
+	ID        string    `json:"id"`
+	ServiceID string    `json:"service_id"`
+	Name      string    `json:"name"`
+	Price     int       `json:"price"`
+	Date      string `json:"date"`
+	Time      string `json:"time"`
 }
