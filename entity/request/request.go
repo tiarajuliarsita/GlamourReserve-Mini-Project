@@ -1,15 +1,11 @@
 package request
 
-type VariantRequest struct {
-	Name        string `json:"name" form:"name"`
-	Description string `json:"description" form:"description"`
-	Price       int    `json:"price" form:"price"`
-	ServiceID   string `json:"service_id" form:"service_id"`
-}
+import "time"
 
 type ServiceRequest struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
+	Price       int    `json:"price" form:"price"`
 	// Image       *multipart.FileHeader `form:"image"`
 }
 
@@ -20,3 +16,12 @@ type UserRequest struct {
 	Phone    string `json:"phone" form:"phone"`
 }
 
+type BookDataRequest struct {
+	Service_id string `json:"service_id"`
+	Date       time.Time `json:"date"`
+	Time       time.Time `json:"time"`
+}
+
+type BookingRequest struct {
+	Details []BookDataRequest `json:"details"`
+}
