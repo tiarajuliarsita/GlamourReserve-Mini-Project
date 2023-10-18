@@ -11,10 +11,9 @@ func ServiceModelToServiceCore(svcModel models.Service) ServiceCore {
 		ID:          svcModel.ID,
 		Name:        svcModel.Name,
 		Description: svcModel.Description,
-		
+		Price:       svcModel.Price,
 		CreatedAt:   svcModel.CreatedAt,
 		UpdatedAt:   svcModel.UpdatedAt,
-		DeletedAt:   svcModel.DeletedAt.Time,
 	}
 	return svcCore
 }
@@ -24,6 +23,7 @@ func ServiceReqToServiceCore(svcReq request.ServiceRequest) ServiceCore {
 		Name: svcReq.Name,
 		// Image:       imageurl,
 		Description: svcReq.Description,
+		Price:       svcReq.Price,
 	}
 	return svcCore
 }
@@ -33,7 +33,8 @@ func ServiceCoreToModelsSevice(svcCore ServiceCore) models.Service {
 		Name:        svcCore.Name,
 		Description: svcCore.Description,
 		// Image:       svcCore.Image,
-		Variants:  []models.Variant{},
+		// Variants:  []models.Variant{},
+		Price:     svcCore.Price,
 		CreatedAt: svcCore.CreatedAt,
 		UpdatedAt: svcCore.UpdatedAt,
 	}
@@ -45,9 +46,10 @@ func ServiceCoreToResponseService(svcCore ServiceCore) response.ServiceRespon {
 		ID:          svcCore.ID,
 		Name:        svcCore.Name,
 		Description: svcCore.Description,
-		Variants:    []models.Variant{},
-		CreatedAt:   svcCore.CreatedAt,
-		UpdatedAt:   svcCore.UpdatedAt,
+		// Variants:    []models.Variant{},
+		Price:     svcCore.Price,
+		CreatedAt: svcCore.CreatedAt,
+		UpdatedAt: svcCore.UpdatedAt,
 	}
 	return svcResponse
 }

@@ -1,7 +1,6 @@
 package core
 
 import (
-	"glamour_reserve/entity/models"
 	"time"
 )
 
@@ -18,19 +17,29 @@ type ServiceCore struct {
 	ID   string
 	Name string
 	// Image       string
-	Variants    []models.Variant
+	Price       int
 	Description string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   time.Time
 }
 
-type VariantCore struct {
+type BookingCore struct {
 	ID          string
-	Name        string
-	Description string
-	Price       int
-	ServiceID   string
+	UserID      string
+	InvoiceNumb string
+	Total       int
+	Status string
+	DetailsBook []DetailsBookCore
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+}
+
+type DetailsBookCore struct {
+	ID        string
+	Date      string
+	Time      string
+	BookingID string
+	ServiceID string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"glamour_reserve/entity/core"
+	core "glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/services"

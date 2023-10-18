@@ -26,39 +26,30 @@ type Service struct {
 	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
 	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
 	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
-	Variants  []Variant `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"variants"`
+	Price     int `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-type Variant struct {
-	ID          string `gorm:"not null;primary key"`
-	Name        string `gorm:"not null;unique" valid:"required~your name is required"`
-	Description string `gorm:"not null" valid:"required~your description is required"`
-	Price       int    `gorm:"not null" valid:"required~your price is required"`
-	ServiceID   string `valid:"required~your service id is required"`
-	Service     *Service
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm:"index"`
-}
-
 type Booking struct {
-	ID              string `gorm:"not null;primary key"`
-	UserID          string `gorm:"not null" valid:"required~your user id is required"`
+	ID              string `gorm:"not null;primary key; type:varchar(255)"`
+	UserID          string `valid:"required~your user id is required"`
 	InvoiceNumb     string `gorm:"not null;unique" valid:"required~your invoice is required"`
-	details_booking []DetailBooking
+	Total           int    `gorm:"not null"`
+	Status          string `gorm:"type:ENUM('pending', 'done');not null;default:'pending'"`
+	DetailsBooking []DetailBooking
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt `gorm:"index"`
 }
+
 type DetailBooking struct {
 	ID        string `gorm:"not null;primary key"`
 	Date      string `gorm:"not null" valid:"required~your date  is required"`
 	Time      string `gorm:"not null" valid:"required~your time is required"`
-	BookingID string
-	VariantID string
+	BookingID string `gorm:"type:varchar(255)"`
+	ServiceID string `gorm:"type:varchar(255)"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -90,14 +81,27 @@ func (s *Service) BeforeCreate(tx *gorm.DB) (err error) {
 	return nil
 }
 
-func (v *Variant) BeforeCreate(tx *gorm.DB) (err error) {
+func (b *Booking) BeforeCreate(tx *gorm.DB) (err error) {
 
-	_, err = govalidator.ValidateStruct(v)
+	_, err = govalidator.ValidateStruct(b)
 	if err != nil {
 		return err
 	}
 	newUuid := uuid.New()
-	v.ID = newUuid.String()
+	b.ID = newUuid.String()
 
 	return nil
 }
+
+func (d *DetailBooking) BeforeCreate(tx *gorm.DB) (err error) {
+	_, err = govalidator.ValidateStruct(d)
+	if err != nil {
+		return err
+	}
+
+	newUuid := uuid.New()
+	d.ID = newUuid.String()
+
+	return nil
+}
+
