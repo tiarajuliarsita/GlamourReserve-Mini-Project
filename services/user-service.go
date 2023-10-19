@@ -4,6 +4,7 @@ import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/helpers"
 	"glamour_reserve/repositories"
+	"log"
 )
 
 type UserServiceInterface interface {
@@ -33,8 +34,8 @@ func (s *userService) Login(email string, password string) (core.UserCore, strin
 	if err != nil {
 		return userData, "", err
 	}
-
-	token, _ := helpers.GenerateToken(userData.ID, userData.UserName)
+	log.Println("role in login service : ", userData.Role)
+	token, _ := helpers.GenerateToken(userData.ID, userData.UserName, userData.Role)
 	return userData, token, nil
 }
 

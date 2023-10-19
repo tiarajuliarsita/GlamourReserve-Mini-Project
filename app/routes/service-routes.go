@@ -2,6 +2,7 @@ package routes
 
 import (
 	"glamour_reserve/handlers"
+	"glamour_reserve/helpers"
 	"glamour_reserve/repositories"
 	"glamour_reserve/services"
 
@@ -16,9 +17,12 @@ func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 	handler := handlers.NewServiceHandler(servive)
 
 	app.GET("/services", handler.GetAllServices)
-	app.POST("/services", handler.CreateService)
+
+	e := app.Group("")
 	app.GET("/services/:id", handler.GetServiceByID)
-	app.DELETE("/services/:id", handler.DeletByID)
-	app.PUT("/services/:id", handler.UpdateByID)
+	e.Use(helpers.Middleware())
+	e.POST("/services", handler.CreateService)
+	e.DELETE("/services/:id", handler.DeletByID)
+	e.PUT("/services/:id", handler.UpdateByID)
 
 }

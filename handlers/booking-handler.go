@@ -20,7 +20,7 @@ func NewBookingHandler(bookingSvc services.BookingServiceInterface) *bookingHand
 
 func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	//extract token
-	userId, userName := helpers.ExtractTokenUserId(e)
+	userId, userName, _ := helpers.ExtractTokenUserId(e)
 
 	bookingReq := request.BookingRequest{}
 
