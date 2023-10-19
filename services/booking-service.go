@@ -12,6 +12,7 @@ type BookingServiceInterface interface {
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
+	FindBookingByID(bookingId string) (core.BookingCore, error)
 }
 
 type bookingService struct {
@@ -86,5 +87,3 @@ func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, er
 	}
 	return data, nil
 }
-
-

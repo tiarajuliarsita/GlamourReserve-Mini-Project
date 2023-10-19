@@ -117,6 +117,7 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 	bookingData := models.Booking{}
 
 	err := r.db.Where("id = ? AND user_id = ?", bookingID, userID).Preload("DetailsBooking").First(&bookingData).Error
+
 	if err != nil {
 		return core.BookingCore{}, err
 	}
@@ -133,6 +134,7 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore, error) {
 	booking := models.Booking{}
 	err := r.db.Where("id = ?", bookingId).Preload("DetailsBooking").First(&booking).Error
+
 	if err != nil {
 		return core.BookingCore{}, err
 	}
