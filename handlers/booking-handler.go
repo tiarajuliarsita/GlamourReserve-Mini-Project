@@ -62,7 +62,7 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 }
 
-func (h *bookingHandler) GetAllBookingsUser(e echo.Context) error {
+func (h *bookingHandler) GetAllHistoriesBookingsUser(e echo.Context) error {
 	userId, _, _ := helpers.ExtractTokenUserId(e)
 	dataBookings, err := h.bookingSvc.GetAllBookingByUser(userId)
 	if err != nil {
