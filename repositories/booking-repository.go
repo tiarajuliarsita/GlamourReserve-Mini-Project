@@ -12,8 +12,10 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(date, time string)  error
-	// GetBookingsUser(userID string)([]core.BookingCore, error)
+	CheckAvailableService(date, time string) error
+	GetAllHistories(userID string) ([]core.BookingCore, error)
+	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
+	FindBookingById(bookingId string) (core.BookingCore, error)
 }
 
 type bookingRepository struct {
@@ -89,3 +91,52 @@ func (r *bookingRepository) CheckAvailableService(date, time string) error {
 	return nil
 }
 
+func (r *bookingRepository) GetAllHistories(userID string) ([]core.BookingCore, error) {
+	bookingsData := []models.Booking{}
+
+	err := r.db.Where("user_id = ?", userID).Preload("DetailsBooking").Find(&bookingsData).Error
+	if err != nil {
+		return nil, err
+	}
+
+	BookingsCore := []core.BookingCore{}
+	for _, v := range bookingsData {
+		data := core.BookingModelToBookingCore(v)
+
+		for _, details := range v.DetailsBooking {
+			detailsCore := core.DetailBookingModelToDetailBookingCore(details)
+			data.DetailsBook = append(data.DetailsBook, detailsCore)
+		}
+		BookingsCore = append(BookingsCore, data)
+	}
+
+	return BookingsCore, nil
+}
+
+func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.BookingCore, error) {
+	bookingData := models.Booking{}
+
+	err := r.db.Where("id = ? AND user_id = ?", bookingID, userID).Preload("DetailsBooking").First(&bookingData).Error
+	if err != nil {
+		return core.BookingCore{}, err
+	}
+
+	data := core.BookingModelToBookingCore(bookingData)
+	for _, v := range bookingData.DetailsBooking {
+		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
+		data.DetailsBook = append(data.DetailsBook, dataDetails)
+	}
+
+	return data, nil
+}
+
+func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore, error) {
+	booking := models.Booking{}
+	err := r.db.Where("id = ?", bookingId).Preload("DetailsBooking").First(&booking).Error
+	if err != nil {
+		return core.BookingCore{}, err
+	}
+
+	data := core.BookingModelToBookingCore(booking)
+	return data, err
+}

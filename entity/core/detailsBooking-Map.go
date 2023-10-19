@@ -26,12 +26,12 @@ func DetailsBookCoreToModelDetailsBook(book DetailsBookCore) models.DetailBookin
 	return dataDetailBook
 }
 
-func DetailsBookCoreToDetailsBookResp(book DetailsBookCore)response.DetailBookingRespon{
-	dataDetailBook:=response.DetailBookingRespon{
+func DetailsBookCoreToDetailsBookResp(book DetailsBookCore) response.DetailBookingRespon {
+	dataDetailBook := response.DetailBookingRespon{
 		ID:        book.ID,
 		ServiceID: book.ServiceID,
-		Price: 0,
-		Name: "",
+		Price:     0,
+		Name:      "",
 		Date:      book.Date,
 		Time:      book.Time,
 	}
@@ -39,8 +39,8 @@ func DetailsBookCoreToDetailsBookResp(book DetailsBookCore)response.DetailBookin
 
 }
 
-func DetailBookingModelToDetailBookingCore(book models.DetailBooking)DetailsBookCore{
-	dataDetailBook:= DetailsBookCore{
+func DetailBookingModelToDetailBookingCore(book models.DetailBooking) DetailsBookCore {
+	dataDetailBook := DetailsBookCore{
 		ID:        book.ID,
 		Date:      book.Date,
 		Time:      book.Time,
@@ -51,3 +51,5 @@ func DetailBookingModelToDetailBookingCore(book models.DetailBooking)DetailsBook
 	}
 	return dataDetailBook
 }
+
+
