@@ -79,12 +79,10 @@ func (r *bookingRepository) CheckAvailableService(date, time string) error {
 	err := r.db.Where("Date = ? AND Time = ?", date, time).Find(&detailBooking).Error
 
 	if err != nil {
-		// Penanganan kesalahan GORM
 		return err
 	}
 
 	if len(detailBooking) > 0 {
-		// Data ditemukan, kembalikan kesalahan
 		return errors.New("service not available")
 	}
 	return nil
