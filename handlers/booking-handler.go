@@ -61,3 +61,12 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	return response.RespondJSON(e, 201, "succes", bookResp)
 
 }
+
+func (h *bookingHandler) GetAllHistoriesBookingsUser(e echo.Context) error {
+	userId, _, _ := helpers.ExtractTokenUserId(e)
+	dataBookings, err := h.bookingSvc.GetAllBookingByUser(userId)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), dataBookings)
+	}
+	return response.RespondJSON(e, 200, "succes", dataBookings)
+}

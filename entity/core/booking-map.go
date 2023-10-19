@@ -27,6 +27,7 @@ func BookingModelToBookingCore(book models.Booking) BookingCore {
 		ID:          book.ID,
 		UserID:      book.UserID,
 		InvoiceNumb: book.InvoiceNumb,
+		Status: book.Status,
 		Total:       book.Total,
 		CreatedAt:   book.CreatedAt,
 		UpdatedAt:   book.UpdatedAt,
