@@ -20,4 +20,5 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 	e:=app.Group("")
 	e.Use(helpers.Middleware())
 	e.POST("/bookings", handler.CreateBooking)
+	e.GET("/bookings",handler.GetAllBookingsUser)
 }

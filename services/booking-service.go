@@ -10,6 +10,7 @@ import (
 type BookingServiceInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
+	GetAllBookingByUser(userID string) ([]core.BookingCore, error)
 }
 
 type bookingService struct {
@@ -58,4 +59,12 @@ func (s *bookingService) FindServiceByID(id string) (core.ServiceCore, error) {
 		return dataService, err
 	}
 	return dataService, nil
+}
+
+func (s *bookingService) GetAllBookingByUser(userID string) ([]core.BookingCore, error) {
+	dataBookings, err := s.bookRepo.GetAllBookingByUser(userID)
+	if err != nil {
+		return nil, err
+	}
+	return dataBookings, nil
 }

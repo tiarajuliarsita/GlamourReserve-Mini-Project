@@ -12,13 +12,14 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(date, time string)  error
-	// GetBookingsUser(userID string)([]core.BookingCore, error)
+	CheckAvailableService(date, time string) error
+	GetAllBookingByUser(userID string) ([]core.BookingCore, error)
 }
 
 type bookingRepository struct {
 	db *gorm.DB
 }
+
 
 func NewBookingRepository(db *gorm.DB) *bookingRepository {
 	return &bookingRepository{db}
@@ -89,3 +90,19 @@ func (r *bookingRepository) CheckAvailableService(date, time string) error {
 	return nil
 }
 
+func (r *bookingRepository)  GetAllBookingByUser(userID string) ([]core.BookingCore, error) {
+	bookingsData := []models.Booking{}
+
+	err := r.db.Where("user_id = ?",userID ).Find(&bookingsData).Error
+	if err != nil {
+		return nil, err
+	}
+
+	BookingsCore := []core.BookingCore{}
+	for _, v := range bookingsData {
+		data := core.BookingModelToBookingCore(v)
+		BookingsCore = append(BookingsCore, data)
+	}
+
+	return BookingsCore, nil
+}
