@@ -19,6 +19,14 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 	
 	e:=app.Group("")
 	e.Use(helpers.Middleware())
-	e.POST("/bookings", handler.CreateBooking)
-	e.GET("/bookings",handler.GetAllHistoriesBookingsUser)
+
+	//user 
+	e.POST("/users/bookings", handler.CreateBooking)
+	e.GET("/users/bookings", handler.GetAllHistories)
+	e.GET("/users/bookings/:id", handler.GetSpecificHistory)
+
+
+	//admin
+	e.GET("/bookings/admin/:id",handler.FindBookingByID)
+	
 }
