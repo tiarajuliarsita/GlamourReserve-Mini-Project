@@ -16,6 +16,7 @@ type User struct {
 	Email     string `gorm:"not null;unique" valid:"required~your email is required, email~invalid email format"`
 	Password  string `gorm:"not null" valid:"required~your password is required,minstringlength(6)~Password has to have a minimum length of 6 characters"`
 	Phone     string `gorm:"not null" valid:"required~your phone is required"`
+	Role      string `gorm:"type:ENUM('user', 'admin');not null;default:'user'"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -33,15 +34,15 @@ type Service struct {
 }
 
 type Booking struct {
-	ID              string `gorm:"not null;primary key; type:varchar(255)"`
-	UserID          string `valid:"required~your user id is required"`
-	InvoiceNumb     string `gorm:"not null;unique" valid:"required~your invoice is required"`
-	Total           int    `gorm:"not null"`
-	Status          string `gorm:"type:ENUM('pending', 'done');not null;default:'pending'"`
+	ID             string `gorm:"not null;primary key; type:varchar(255)"`
+	UserID         string `valid:"required~your user id is required"`
+	InvoiceNumb    string `gorm:"not null;unique" valid:"required~your invoice is required"`
+	Total          int    `gorm:"not null"`
+	Status         string `gorm:"type:ENUM('pending', 'done');not null;default:'pending'"`
 	DetailsBooking []DetailBooking
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-	DeletedAt       gorm.DeletedAt `gorm:"index"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	DeletedAt      gorm.DeletedAt `gorm:"index"`
 }
 
 type DetailBooking struct {
@@ -104,4 +105,3 @@ func (d *DetailBooking) BeforeCreate(tx *gorm.DB) (err error) {
 
 	return nil
 }
-

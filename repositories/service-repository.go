@@ -40,11 +40,11 @@ func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 	var services []models.Service
 	var dataServices []core.ServiceCore
 
-	err := r.db.Preload("Variants").Find(&services).Error
+	err := r.db.Find(&services).Error
 	if err != nil {
 		return nil, err
 	}
-	
+
 	for _, v := range services {
 		svcCore := core.ServiceModelToServiceCore(v)
 		dataServices = append(dataServices, svcCore)
@@ -54,6 +54,7 @@ func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
 }
 
 func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
+
 	serviceInput := core.ServiceCoreToModelsSevice(service)
 	err := r.db.Create(&serviceInput).Error
 	if err != nil {
@@ -83,7 +84,7 @@ func (r *SvcRepository) Delete(id string) (bool, error) {
 func (r *SvcRepository) Update(id string, updateSvc core.ServiceCore) (core.ServiceCore, error) {
 
 	service := core.ServiceCoreToModelsSevice(updateSvc)
-	
+
 	data, err := r.FindById(id)
 	if err != nil {
 		return data, err
