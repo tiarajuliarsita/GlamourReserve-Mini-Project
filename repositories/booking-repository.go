@@ -13,6 +13,7 @@ type BookingRepoInterface interface {
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
 	CheckAvailableService(date, time string)  error
+	// GetBookingsUser(userID string)([]core.BookingCore, error)
 }
 
 type bookingRepository struct {
@@ -87,3 +88,4 @@ func (r *bookingRepository) CheckAvailableService(date, time string) error {
 	}
 	return nil
 }
+

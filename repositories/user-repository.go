@@ -4,6 +4,8 @@ import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
 	"glamour_reserve/helpers"
+	"log"
+
 	"gorm.io/gorm"
 )
 
@@ -44,7 +46,7 @@ func (r *userRepository) CreateUser(user core.UserCore) (core.UserCore, error) {
 	if err != nil {
 		return user, err
 	}
-	
+
 	dataUser := core.UserModelToUserCore(userInsert)
 	return dataUser, nil
 }
@@ -67,6 +69,7 @@ func (r *userRepository) Login(email string, password string) (core.UserCore, er
 		return dataUser, err
 	}
 
-	dataUser= core.UserModelToUserCore(user)
+	dataUser = core.UserModelToUserCore(user)
+	log.Println(dataUser)
 	return dataUser, nil
 }

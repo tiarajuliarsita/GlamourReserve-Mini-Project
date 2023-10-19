@@ -10,6 +10,7 @@ type UserCore struct {
 	Email     string
 	Password  string
 	Phone     string
+	Role      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -28,7 +29,7 @@ type BookingCore struct {
 	UserID      string
 	InvoiceNumb string
 	Total       int
-	Status string
+	Status      string
 	DetailsBook []DetailsBookCore
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

@@ -4,7 +4,9 @@ import (
 	core "glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
+	"glamour_reserve/helpers"
 	"glamour_reserve/services"
+	"log"
 
 	"github.com/labstack/echo/v4"
 )
@@ -33,6 +35,16 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 }
 
 func (h *serviceHandler) CreateService(e echo.Context) error {
+
+	userid, username, role := helpers.ExtractTokenUserId(e)
+	log.Println("role", role)
+	log.Println("username", username)
+	log.Println("userId", userid)
+
+	//role nothing values
+	// if role != "admin" {
+	// 	return response.RespondJSON(e, 400, "cannot create service", nil)
+	// }
 
 	svcRequest := request.ServiceRequest{}
 	if err := e.Bind(&svcRequest); err != nil {
