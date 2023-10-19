@@ -10,7 +10,8 @@ import (
 type BookingServiceInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
-	GetAllBookingByUser(userID string) ([]core.BookingCore, error)
+	GetAllHistories(userID string) ([]core.BookingCore, error)
+	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
 }
 
 type bookingService struct {
@@ -61,10 +62,29 @@ func (s *bookingService) FindServiceByID(id string) (core.ServiceCore, error) {
 	return dataService, nil
 }
 
-func (s *bookingService) GetAllBookingByUser(userID string) ([]core.BookingCore, error) {
-	dataBookings, err := s.bookRepo.GetAllBookingByUser(userID)
+func (s *bookingService) GetAllHistories(userID string) ([]core.BookingCore, error) {
+	dataBookings, err := s.bookRepo.GetAllHistories(userID)
 	if err != nil {
 		return nil, err
 	}
 	return dataBookings, nil
 }
+
+func (s *bookingService) GetSpecificHistory(bookingId, userId string) (core.BookingCore, error) {
+	data, err := s.bookRepo.GetSpecificHistory(userId, bookingId)
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
+}
+
+func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, error) {
+	data, err := s.bookRepo.FindBookingById(bookingId)
+	if err != nil {
+		return data, err
+	}
+	return data, nil
+}
+
+

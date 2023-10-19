@@ -48,25 +48,62 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 	bookResp := core.BookCoreToBookResp(dataResp)
 	bookResp.Name = userName
-
-	for _, v := range dataResp.DetailsBook {
-		booking := core.DetailsBookCoreToDetailsBookResp(v)
-		dataService, _ := h.bookingSvc.FindServiceByID(v.ServiceID)
-		booking.Name = dataService.Name
-		booking.Price = dataService.Price
-		bookResp.DetailsBooking = append(bookResp.DetailsBooking, booking)
-
-	}
+	bookResp = h.AssignValuePriceAndNameDetailsBook(bookResp, dataResp.DetailsBook)
 
 	return response.RespondJSON(e, 201, "succes", bookResp)
 
 }
 
-func (h *bookingHandler) GetAllHistoriesBookingsUser(e echo.Context) error {
+func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 	userId, _, _ := helpers.ExtractTokenUserId(e)
-	dataBookings, err := h.bookingSvc.GetAllBookingByUser(userId)
+
+	dataBookings, err := h.bookingSvc.GetAllHistories(userId)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), dataBookings)
 	}
-	return response.RespondJSON(e, 200, "succes", dataBookings)
+
+	bookingsData := []response.BookingRespon{}
+	for _, v := range dataBookings {
+		bookingsResp := core.BookCoreToBookResp(v)
+		bookingsResp=h.AssignValuePriceAndNameDetailsBook(bookingsResp,v.DetailsBook)
+		bookingsData = append(bookingsData, bookingsResp)
+	}
+
+	return response.RespondJSON(e, 200, "succes", bookingsData)
+}
+
+
+
+func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
+	userId, _, _ := helpers.ExtractTokenUserId(e)
+	bookingId := e.Param("id")
+
+	data, err := h.bookingSvc.GetSpecificHistory(bookingId, userId)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), data)
+	}
+
+	bookResp := core.BookCoreToBookResp(data)
+	bookResp = h.AssignValuePriceAndNameDetailsBook(bookResp, data.DetailsBook)
+	return response.RespondJSON(e, 200, "succes", bookResp)
+}
+
+func (h *bookingHandler) FindBookingByID(e echo.Context) error {
+	id := e.Param("id")
+	data, err := h.bookingSvc.FindServiceByID(id)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), data)
+	}
+	return response.RespondJSON(e, 200, "succes", data)
+}
+
+func (h *bookingHandler) AssignValuePriceAndNameDetailsBook(response response.BookingRespon, data []core.DetailsBookCore) response.BookingRespon {
+	for _, v := range data {
+		booking := core.DetailsBookCoreToDetailsBookResp(v)
+		dataService, _ := h.bookingSvc.FindServiceByID(v.ServiceID)
+		booking.Name = dataService.Name
+		booking.Price = dataService.Price
+		response.DetailsBooking = append(response.DetailsBooking, booking)
+	}
+	return response
 }
