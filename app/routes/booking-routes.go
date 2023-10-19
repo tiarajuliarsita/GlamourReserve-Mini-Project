@@ -27,6 +27,6 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 
 
 	//admin
-	e.GET("/bookings/admin/:id",handler.FindBookingByID)
+	e.GET("/admin/bookings/:id",handler.FindBookingByID)
 	
 }

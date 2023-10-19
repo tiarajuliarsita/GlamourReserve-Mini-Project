@@ -12,7 +12,7 @@ func CreateInvoice(date time.Time) string {
 
 	dateString := date.Format("2006-01-02")
 	rand.Seed(time.Now().Unix())
-	number := make([]byte, 8)
+	number := make([]byte, 4)
 	for i := range number {
 		number[i] = charset[rand.Intn(len(charset))]
 	}

@@ -90,11 +90,12 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	id := e.Param("id")
-	data, err := h.bookingSvc.FindServiceByID(id)
+	data, err := h.bookingSvc.FindBookingByID(id)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), data)
 	}
-	return response.RespondJSON(e, 200, "succes", data)
+	respon:= core.BookCoreToBookResp(data)
+	return response.RespondJSON(e, 200, "succes", respon)
 }
 
 func (h *bookingHandler) AssignValuePriceAndNameDetailsBook(response response.BookingRespon, data []core.DetailsBookCore) response.BookingRespon {
