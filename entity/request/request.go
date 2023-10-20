@@ -23,3 +23,7 @@ type BookDataRequest struct {
 type BookingRequest struct {
 	Details []BookDataRequest `json:"details"`
 }
+
+type NewStatusReq struct {
+	Status string `json:"new_status"`
+}

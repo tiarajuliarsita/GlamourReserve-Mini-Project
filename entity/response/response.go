@@ -25,8 +25,9 @@ type ServiceRespon struct {
 }
 
 type BookingRespon struct {
-	ID             string                `json:"id"`
-	Name           string                `json:"name,omitempty"`
+	ID             string `json:"id"`
+	Name           string `json:"name,omitempty"`
+	Status         string
 	InvoiceNumb    string                `json:"invoice_num"`
 	Total          int                   `json:"total"`
 	DetailsBooking []DetailBookingRespon `json:"details"`
@@ -41,3 +42,5 @@ type DetailBookingRespon struct {
 	Date      string `json:"date"`
 	Time      string `json:"time"`
 }
+
+

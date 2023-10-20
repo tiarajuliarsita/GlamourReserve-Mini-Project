@@ -2,6 +2,7 @@ package core
 
 import (
 	"glamour_reserve/entity/models"
+	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 )
 
@@ -40,6 +41,7 @@ func BookCoreToBookResp(book BookingCore) response.BookingRespon {
 	dataBooking := response.BookingRespon{
 		ID:          book.ID,
 		Name:        "",
+		Status:      book.Status,
 		InvoiceNumb: book.InvoiceNumb,
 		Total:       book.Total,
 		CreatedAt:   book.CreatedAt,
@@ -47,4 +49,12 @@ func BookCoreToBookResp(book BookingCore) response.BookingRespon {
 
 	return dataBooking
 
+}
+
+func UpdateStatusToBookCore(newStatus request.NewStatusReq, invoice string)BookingCore{
+	dataCore := BookingCore{
+		InvoiceNumb: invoice,
+		Status:      newStatus.Status,
+	}
+	return dataCore
 }
