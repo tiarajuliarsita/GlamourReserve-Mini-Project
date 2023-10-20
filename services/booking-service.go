@@ -4,6 +4,7 @@ import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/helpers"
 	"glamour_reserve/repositories"
+
 	"time"
 )
 
@@ -12,6 +13,8 @@ type BookingServiceInterface interface {
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
+	FindBookingByID(bookingId string) (core.BookingCore, error)
+	UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, error)
 }
 
 type bookingService struct {
@@ -81,10 +84,31 @@ func (s *bookingService) GetSpecificHistory(bookingId, userId string) (core.Book
 
 func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, error) {
 	data, err := s.bookRepo.FindBookingById(bookingId)
+
 	if err != nil {
 		return data, err
 	}
 	return data, nil
 }
 
+func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, error) {
+	_, err := s.bookRepo.FindBookingByInvoice(newDatacore.InvoiceNumb)
+	if err!=nil{
+		if err != nil {
+			return core.BookingCore{}, err
+		}
+	}
+	
+	data, err := s.bookRepo.UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore)
+	if err != nil {
+		return data, err
+	}
+	
 
+	updatedStatus, err := s.bookRepo.FindBookingByInvoice(data.InvoiceNumb)
+	if err != nil {
+		return updatedStatus, err
+	}
+	return updatedStatus, nil
+
+}

@@ -65,14 +65,12 @@ func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 	bookingsData := []response.BookingRespon{}
 	for _, v := range dataBookings {
 		bookingsResp := core.BookCoreToBookResp(v)
-		bookingsResp=h.AssignValuePriceAndNameDetailsBook(bookingsResp,v.DetailsBook)
+		bookingsResp = h.AssignValuePriceAndNameDetailsBook(bookingsResp, v.DetailsBook)
 		bookingsData = append(bookingsData, bookingsResp)
 	}
 
 	return response.RespondJSON(e, 200, "succes", bookingsData)
 }
-
-
 
 func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 	userId, _, _ := helpers.ExtractTokenUserId(e)
@@ -90,11 +88,37 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	id := e.Param("id")
-	data, err := h.bookingSvc.FindServiceByID(id)
+	data, err := h.bookingSvc.FindBookingByID(id)
 	if err != nil {
-		return response.RespondJSON(e, 400, err.Error(), data)
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+	respon := core.BookCoreToBookResp(data)
+	return response.RespondJSON(e, 200, "succes", respon)
+}
+
+func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
+	type NewStatusReq struct {
+		NoInvoice string `json:"no_invoice"`
+		NewStatus string `json:"new_status"`
+	}
+
+	ChangeStatus := NewStatusReq{}
+	err := e.Bind(&ChangeStatus)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+
+	dataCore := core.BookingCore{
+		InvoiceNumb: ChangeStatus.NoInvoice,
+		Status:      ChangeStatus.NewStatus,
+	}
+	
+	data, err := h.bookingSvc.UpdateStatusBooking(dataCore)
+	if err!=nil{
+		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 	return response.RespondJSON(e, 200, "succes", data)
+
 }
 
 func (h *bookingHandler) AssignValuePriceAndNameDetailsBook(response response.BookingRespon, data []core.DetailsBookCore) response.BookingRespon {
