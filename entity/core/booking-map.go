@@ -10,6 +10,7 @@ func BookingCoreToBookingModels(book BookingCore) models.Booking {
 		ID:          book.ID,
 		UserID:      book.UserID,
 		InvoiceNumb: book.InvoiceNumb,
+		Status:      book.Status,
 		Total:       book.Total,
 		CreatedAt:   book.CreatedAt,
 		UpdatedAt:   book.UpdatedAt,
@@ -27,7 +28,7 @@ func BookingModelToBookingCore(book models.Booking) BookingCore {
 		ID:          book.ID,
 		UserID:      book.UserID,
 		InvoiceNumb: book.InvoiceNumb,
-		Status: book.Status,
+		Status:      book.Status,
 		Total:       book.Total,
 		CreatedAt:   book.CreatedAt,
 		UpdatedAt:   book.UpdatedAt,
@@ -44,10 +45,6 @@ func BookCoreToBookResp(book BookingCore) response.BookingRespon {
 		CreatedAt:   book.CreatedAt,
 	}
 
-	// for _, v := range book.DetailsBook {
-	// 	detailsResp := DetailsBookCoreToDetailsBookResp(v)
-	// 	dataBooking.DetailsBooking = append(dataBooking.DetailsBooking, detailsResp)
-	// }
 	return dataBooking
 
 }

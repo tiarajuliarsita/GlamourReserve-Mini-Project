@@ -4,6 +4,7 @@ import (
 	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -16,6 +17,8 @@ type BookingRepoInterface interface {
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
+	UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error)
+	FindBookingByInvoice(invoiceNum string) (core.BookingCore, error)
 }
 
 type bookingRepository struct {
@@ -117,7 +120,7 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 	bookingData := models.Booking{}
 
 	err := r.db.Where("id = ? AND user_id = ?", bookingID, userID).Preload("DetailsBooking").First(&bookingData).Error
-
+	log.Println(bookingData)
 	if err != nil {
 		return core.BookingCore{}, err
 	}
@@ -134,11 +137,34 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore, error) {
 	booking := models.Booking{}
 	err := r.db.Where("id = ?", bookingId).Preload("DetailsBooking").First(&booking).Error
-
+	log.Println(booking)
 	if err != nil {
 		return core.BookingCore{}, err
 	}
 
 	data := core.BookingModelToBookingCore(booking)
 	return data, err
+}
+
+func (r *bookingRepository) UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error) {
+	booking := core.BookingCoreToBookingModels(newBook)
+
+	err := r.db.Where("invoice_numb = ?", invoiceNum).Updates(&booking).Error
+	if err != nil {
+		return core.BookingCore{}, err
+	}
+	data := core.BookingModelToBookingCore(booking)
+	return data, err
+}
+
+func (r *bookingRepository) FindBookingByInvoice(invoiceNum string) (core.BookingCore, error) {
+	data := models.Booking{}
+	err := r.db.Where("invoice_numb = ?", invoiceNum).First(&data).Error
+	if err!=nil{
+		if err != nil {
+			return core.BookingCore{}, err
+		}
+	}
+	dataBooking:= core.BookingModelToBookingCore(data)
+	return dataBooking, nil
 }
