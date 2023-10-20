@@ -21,17 +21,13 @@ func NewBookingHandler(bookingSvc services.BookingServiceInterface) *bookingHand
 func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	//extract token
 	userId, userName, _ := helpers.ExtractTokenUserId(e)
-
 	bookingReq := request.BookingRequest{}
-
 	err := e.Bind(&bookingReq)
-
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
 	detailBookings := []core.DetailsBookCore{}
-
 	for _, v := range bookingReq.Details {
 		data := core.BookingDataRequestToDetailsBookingCore(v)
 		detailBookings = append(detailBookings, data)
@@ -49,7 +45,6 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	bookResp := core.BookCoreToBookResp(dataResp)
 	bookResp.Name = userName
 	bookResp = h.AssignValuePriceAndNameDetailsBook(bookResp, dataResp.DetailsBook)
-
 	return response.RespondJSON(e, 201, "succes", bookResp)
 
 }
@@ -88,36 +83,36 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	id := e.Param("id")
-	data, err := h.bookingSvc.FindBookingByID(id)
+	data, userName, err := h.bookingSvc.FindBookingByID(id)
+
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 	respon := core.BookCoreToBookResp(data)
-	return response.RespondJSON(e, 200, "succes", respon)
+
+	respon = h.AssignValuePriceAndNameDetailsBook(respon, data.DetailsBook)
+	return response.RespJSONWithUserName(e, 200, "succes", respon, userName)
 }
 
 func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
-	type NewStatusReq struct {
-		NoInvoice string `json:"no_invoice"`
-		NewStatus string `json:"new_status"`
-	}
 
-	ChangeStatus := NewStatusReq{}
-	err := e.Bind(&ChangeStatus)
+	newStatus := request.NewStatusReq{}
+	NoInvoice := e.Param("invoice")
+
+	err := e.Bind(&newStatus)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
-	dataCore := core.BookingCore{
-		InvoiceNumb: ChangeStatus.NoInvoice,
-		Status:      ChangeStatus.NewStatus,
-	}
-	
-	data, err := h.bookingSvc.UpdateStatusBooking(dataCore)
-	if err!=nil{
+	dataCore := core.UpdateStatusToBookCore(newStatus, NoInvoice)
+	data, userName, err := h.bookingSvc.UpdateStatusBooking(dataCore)
+	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
-	return response.RespondJSON(e, 200, "succes", data)
+
+	dataResp := core.BookCoreToBookResp(data)
+	dataResp = h.AssignValuePriceAndNameDetailsBook(dataResp, data.DetailsBook)
+	return response.RespJSONWithUserName(e, 200, "succes", dataResp, userName)
 
 }
 
