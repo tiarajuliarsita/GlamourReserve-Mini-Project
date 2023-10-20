@@ -28,6 +28,6 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 
 	//admin
 	e.GET("/admin/bookings/:id",handler.FindBookingByID)
-	e.PUT("/admin/bookings",handler.UpdateStatusBooking)
+	e.PUT("/admin/bookings/:invoice",handler.UpdateStatusBooking)
 	
 }

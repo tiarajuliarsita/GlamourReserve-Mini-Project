@@ -13,8 +13,8 @@ type BookingServiceInterface interface {
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
-	FindBookingByID(bookingId string) (core.BookingCore, error)
-	UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, error)
+	FindBookingByID(bookingId string) (core.BookingCore, string, error)
+	UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, string, error)
 }
 
 type bookingService struct {
@@ -82,33 +82,34 @@ func (s *bookingService) GetSpecificHistory(bookingId, userId string) (core.Book
 	return data, nil
 }
 
-func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, error) {
+func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, string, error) {
 	data, err := s.bookRepo.FindBookingById(bookingId)
 
 	if err != nil {
-		return data, err
+		return data, "", err
 	}
-	return data, nil
+	userName := s.bookRepo.FindUserName(data.UserID)
+	return data, userName, nil
 }
 
-func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, error) {
+func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, string, error) {
 	_, err := s.bookRepo.FindBookingByInvoice(newDatacore.InvoiceNumb)
-	if err!=nil{
+	if err != nil {
 		if err != nil {
-			return core.BookingCore{}, err
+			return core.BookingCore{}, "", err
 		}
 	}
-	
+
 	data, err := s.bookRepo.UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore)
 	if err != nil {
-		return data, err
+		return data, "", err
 	}
-	
 
 	updatedStatus, err := s.bookRepo.FindBookingByInvoice(data.InvoiceNumb)
 	if err != nil {
-		return updatedStatus, err
+		return updatedStatus, "", err
 	}
-	return updatedStatus, nil
+	userName := s.bookRepo.FindUserName(updatedStatus.UserID)
+	return updatedStatus, userName, nil
 
 }

@@ -19,6 +19,7 @@ type BookingRepoInterface interface {
 	FindBookingById(bookingId string) (core.BookingCore, error)
 	UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error)
 	FindBookingByInvoice(invoiceNum string) (core.BookingCore, error)
+	FindUserName(userId string) string
 }
 
 type bookingRepository struct {
@@ -143,7 +144,11 @@ func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore,
 	}
 
 	data := core.BookingModelToBookingCore(booking)
-	return data, err
+	for _, v := range booking.DetailsBooking {
+		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
+		data.DetailsBook = append(data.DetailsBook, dataDetails)
+	}
+	return data, nil
 }
 
 func (r *bookingRepository) UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error) {
@@ -154,17 +159,28 @@ func (r *bookingRepository) UpdateStatusInovice(invoiceNum string, newBook core.
 		return core.BookingCore{}, err
 	}
 	data := core.BookingModelToBookingCore(booking)
-	return data, err
+	return data, nil
 }
 
 func (r *bookingRepository) FindBookingByInvoice(invoiceNum string) (core.BookingCore, error) {
 	data := models.Booking{}
-	err := r.db.Where("invoice_numb = ?", invoiceNum).First(&data).Error
-	if err!=nil{
+	err := r.db.Where("invoice_numb = ?", invoiceNum).Preload("DetailsBooking").First(&data).Error
+	if err != nil {
 		if err != nil {
 			return core.BookingCore{}, err
 		}
 	}
-	dataBooking:= core.BookingModelToBookingCore(data)
+
+	dataBooking := core.BookingModelToBookingCore(data)
+	for _, v := range data.DetailsBooking {
+		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
+		dataBooking.DetailsBook = append(dataBooking.DetailsBook, dataDetails)
+	}
 	return dataBooking, nil
+}
+
+func (r *bookingRepository) FindUserName(userId string) string {
+	user := models.User{}
+	r.db.Where("id = ?", userId).First(&user)
+	return user.UserName
 }
