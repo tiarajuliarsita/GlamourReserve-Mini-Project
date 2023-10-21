@@ -30,7 +30,7 @@ type BookingRespon struct {
 	Status         string
 	InvoiceNumb    string                `json:"invoice_num"`
 	Total          int                   `json:"total"`
-	DetailsBooking []DetailBookingRespon `json:"details"`
+	DetailsBooking []DetailBookingRespon `json:"details, omitempy"`
 	CreatedAt      time.Time             `json:"created_at"`
 }
 
@@ -42,5 +42,3 @@ type DetailBookingRespon struct {
 	Date      string `json:"date"`
 	Time      string `json:"time"`
 }
-
-

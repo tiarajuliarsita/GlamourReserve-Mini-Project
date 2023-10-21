@@ -49,6 +49,8 @@ func DetailBookingModelToDetailBookingCore(book models.DetailBooking) DetailsBoo
 		CreatedAt: book.CreatedAt,
 		UpdatedAt: book.CreatedAt,
 	}
+	
+
 	return dataDetailBook
 }
 

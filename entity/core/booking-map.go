@@ -34,6 +34,11 @@ func BookingModelToBookingCore(book models.Booking) BookingCore {
 		CreatedAt:   book.CreatedAt,
 		UpdatedAt:   book.UpdatedAt,
 	}
+
+	for _, v := range book.DetailsBooking {
+		detailBook := DetailBookingModelToDetailBookingCore(v)
+		dataBooking.DetailsBook = append(dataBooking.DetailsBook, detailBook)
+	}
 	return dataBooking
 }
 
@@ -51,10 +56,24 @@ func BookCoreToBookResp(book BookingCore) response.BookingRespon {
 
 }
 
-func UpdateStatusToBookCore(newStatus request.NewStatusReq, invoice string)BookingCore{
+func UpdateStatusToBookCore(newStatus request.NewStatusReq, invoice string) BookingCore {
 	dataCore := BookingCore{
 		InvoiceNumb: invoice,
 		Status:      newStatus.Status,
 	}
 	return dataCore
+}
+
+func BookingReqMap(req request.BookingRequest, detailBookings []DetailsBookCore, userId string) BookingCore {
+	for _, detail := range req.Details {
+		detailCore := BookingDataRequestToDetailsBookingCore(detail)
+		detailBookings = append(detailBookings, detailCore)
+	}
+
+	bookingInsert := BookingCore{}
+	bookingInsert.DetailsBook = detailBookings
+	bookingInsert.UserID = userId
+
+	return bookingInsert
+
 }

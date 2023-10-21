@@ -4,7 +4,7 @@ import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
-	"glamour_reserve/services"
+	"glamour_reserve/features/services"
 
 	"github.com/labstack/echo/v4"
 )
@@ -51,7 +51,7 @@ func (h *userHandler) LoginUser(e echo.Context) error {
 		return response.RespondJSON(e, 404, err.Error(), nil)
 	}
 
-	userResp:=core.UserCoreToUserResponse(userData)
+	userResp := core.UserCoreToUserResponse(userData)
 	return e.JSON(200, echo.Map{
 		"message": "succes",
 		"data":    userResp,

@@ -2,7 +2,7 @@ package services
 
 import (
 	"glamour_reserve/entity/core"
-	"glamour_reserve/repositories"
+	"glamour_reserve/features/repositories"
 )
 
 type SvcServiceInterface interface {

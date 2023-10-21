@@ -3,7 +3,7 @@ package repositories
 import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
-	"glamour_reserve/helpers"
+	"glamour_reserve/utils/helpers"
 	"log"
 
 	"gorm.io/gorm"
