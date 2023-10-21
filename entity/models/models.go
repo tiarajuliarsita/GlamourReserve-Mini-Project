@@ -26,7 +26,6 @@ type Service struct {
 	ID          string `gorm:"not null;type:varchar(255);primary key" json:"id" form:"id"`
 	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
 	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
-	// Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
 	Price     int `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -47,8 +46,7 @@ type Booking struct {
 
 type DetailBooking struct {
 	ID        string `gorm:"not null;primary key"`
-	Date      string `gorm:"not null" valid:"required~your date  is required"`
-	Time      string `gorm:"not null" valid:"required~your time is required"`
+	DateTime      time.Time `gorm:"not null;type:time" validate:"required" valid:"required~your time is required"`
 	BookingID string `gorm:"type:varchar(255)"`
 	ServiceID string `gorm:"type:varchar(255)"`
 	CreatedAt time.Time
@@ -102,6 +100,6 @@ func (d *DetailBooking) BeforeCreate(tx *gorm.DB) (err error) {
 
 	newUuid := uuid.New()
 	d.ID = newUuid.String()
-
+    d.DateTime = d.DateTime.Local()
 	return nil
 }
