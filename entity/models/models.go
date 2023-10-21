@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"glamour_reserve/helpers"
+	"glamour_reserve/utils/helpers"
 	"time"
 
 	"github.com/asaskevich/govalidator"

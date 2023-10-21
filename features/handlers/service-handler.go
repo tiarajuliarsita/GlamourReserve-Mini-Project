@@ -4,8 +4,9 @@ import (
 	core "glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
-	"glamour_reserve/helpers"
-	"glamour_reserve/services"
+	"glamour_reserve/features/services"
+	"glamour_reserve/utils/helpers"
+
 	"log"
 
 	"github.com/labstack/echo/v4"

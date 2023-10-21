@@ -2,8 +2,8 @@ package services
 
 import (
 	"glamour_reserve/entity/core"
-	"glamour_reserve/helpers"
-	"glamour_reserve/repositories"
+	"glamour_reserve/features/repositories"
+	"glamour_reserve/utils/helpers"
 
 	"time"
 )
@@ -14,6 +14,7 @@ type BookingServiceInterface interface {
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
 	FindBookingByID(bookingId string) (core.BookingCore, string, error)
+	FindAllBookings() ([]core.BookingCore, error)
 	UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, string, error)
 }
 
@@ -49,12 +50,12 @@ func (s *bookingService) Create(booking core.BookingCore) (core.BookingCore, err
 	booking.InvoiceNumb = invoice
 	booking.Total = total
 
-	dataBook, err := s.bookRepo.Create(booking)
+	createdBook, err := s.bookRepo.Create(booking)
 	if err != nil {
-		return dataBook, err
+		return createdBook, err
 	}
 
-	return dataBook, nil
+	return createdBook, nil
 }
 
 func (s *bookingService) FindServiceByID(id string) (core.ServiceCore, error) {
@@ -66,30 +67,30 @@ func (s *bookingService) FindServiceByID(id string) (core.ServiceCore, error) {
 }
 
 func (s *bookingService) GetAllHistories(userID string) ([]core.BookingCore, error) {
-	dataBookings, err := s.bookRepo.GetAllHistories(userID)
+	bookHistories, err := s.bookRepo.GetAllHistories(userID)
 	if err != nil {
 		return nil, err
 	}
-	return dataBookings, nil
+	return bookHistories, nil
 }
 
 func (s *bookingService) GetSpecificHistory(bookingId, userId string) (core.BookingCore, error) {
-	data, err := s.bookRepo.GetSpecificHistory(userId, bookingId)
+	bookHistory, err := s.bookRepo.GetSpecificHistory(userId, bookingId)
 	if err != nil {
-		return data, err
+		return bookHistory, err
 	}
 
-	return data, nil
+	return bookHistory, nil
 }
 
 func (s *bookingService) FindBookingByID(bookingId string) (core.BookingCore, string, error) {
-	data, err := s.bookRepo.FindBookingById(bookingId)
+	booking, err := s.bookRepo.FindBookingById(bookingId)
 
 	if err != nil {
-		return data, "", err
+		return booking, "", err
 	}
-	userName := s.bookRepo.FindUserName(data.UserID)
-	return data, userName, nil
+	userName := s.bookRepo.FindUserName(booking.UserID)
+	return booking, userName, nil
 }
 
 func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, string, error) {
@@ -100,16 +101,26 @@ func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core
 		}
 	}
 
-	data, err := s.bookRepo.UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore)
-	if err != nil {
-		return data, "", err
-	}
-
-	updatedStatus, err := s.bookRepo.FindBookingByInvoice(data.InvoiceNumb)
+	updatedStatus, err := s.bookRepo.UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore)
 	if err != nil {
 		return updatedStatus, "", err
 	}
-	userName := s.bookRepo.FindUserName(updatedStatus.UserID)
-	return updatedStatus, userName, nil
+
+	booking, err := s.bookRepo.FindBookingByInvoice(updatedStatus.InvoiceNumb)
+	if err != nil {
+		return booking, "", err
+	}
+	userName := s.bookRepo.FindUserName(booking.UserID)
+	return booking, userName, nil
+
+}
+
+func (s *bookingService) FindAllBookings() ([]core.BookingCore, error) {
+	bookings, err := s.bookRepo.FindAllBookings()
+	if err != nil {
+		return nil, err
+	}
+
+	return bookings, nil
 
 }

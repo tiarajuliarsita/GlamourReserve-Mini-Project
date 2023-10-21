@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"glamour_reserve/handlers"
-	"glamour_reserve/helpers"
-	"glamour_reserve/repositories"
-	"glamour_reserve/services"
+	"glamour_reserve/features/handlers"
+	"glamour_reserve/features/repositories"
+	"glamour_reserve/features/services"
+	"glamour_reserve/utils/helpers"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -12,22 +12,22 @@ import (
 
 func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 
-	
 	repo := repositories.NewBookingRepository(db)
 	service := services.NewBookingService(repo)
 	handler := handlers.NewBookingHandler(service)
-	
-	e:=app.Group("")
-	e.Use(helpers.Middleware())
 
-	//user 
-	e.POST("/users/bookings", handler.CreateBooking)
-	e.GET("/users/bookings", handler.GetAllHistories)
-	e.GET("/users/bookings/:id", handler.GetSpecificHistory)
+	user := app.Group("/users/bookings")
+	user.Use(helpers.Middleware())
 
+	//user
+	user.POST("", handler.CreateBooking)
+	user.GET("", handler.GetAllHistories)
+	user.GET("/:id", handler.GetSpecificHistory)
 
 	//admin
-	e.GET("/admin/bookings/:id",handler.FindBookingByID)
-	e.PUT("/admin/bookings/:invoice",handler.UpdateStatusBooking)
-	
+	admin:= app.Group("/admin/bookings")
+	admin.GET("/:id", handler.FindBookingByID)
+	admin.PUT("/:invoice", handler.UpdateStatusBooking)
+	admin.GET("", handler.GetAllBookings)
+
 }

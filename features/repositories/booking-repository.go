@@ -4,7 +4,6 @@ import (
 	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
-	"log"
 
 	"gorm.io/gorm"
 )
@@ -19,6 +18,7 @@ type BookingRepoInterface interface {
 	FindBookingById(bookingId string) (core.BookingCore, error)
 	UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error)
 	FindBookingByInvoice(invoiceNum string) (core.BookingCore, error)
+	FindAllBookings() ([]core.BookingCore, error)
 	FindUserName(userId string) string
 }
 
@@ -47,12 +47,6 @@ func (r *bookingRepository) Create(bookingNew core.BookingCore) (core.BookingCor
 
 	dataBook = core.BookingModelToBookingCore(InsertBook)
 	tx.Commit()
-
-	for _, v := range InsertBook.DetailsBooking {
-		detailBook := core.DetailBookingModelToDetailBookingCore(v)
-		dataBook.DetailsBook = append(dataBook.DetailsBook, detailBook)
-	}
-
 	return dataBook, nil
 }
 
@@ -106,11 +100,6 @@ func (r *bookingRepository) GetAllHistories(userID string) ([]core.BookingCore, 
 	BookingsCore := []core.BookingCore{}
 	for _, v := range bookingsData {
 		data := core.BookingModelToBookingCore(v)
-
-		for _, details := range v.DetailsBooking {
-			detailsCore := core.DetailBookingModelToDetailBookingCore(details)
-			data.DetailsBook = append(data.DetailsBook, detailsCore)
-		}
 		BookingsCore = append(BookingsCore, data)
 	}
 
@@ -121,33 +110,24 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 	bookingData := models.Booking{}
 
 	err := r.db.Where("id = ? AND user_id = ?", bookingID, userID).Preload("DetailsBooking").First(&bookingData).Error
-	log.Println(bookingData)
+	
 	if err != nil {
 		return core.BookingCore{}, err
 	}
 
 	data := core.BookingModelToBookingCore(bookingData)
-	for _, v := range bookingData.DetailsBooking {
-		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
-		data.DetailsBook = append(data.DetailsBook, dataDetails)
-	}
-
 	return data, nil
 }
 
 func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore, error) {
 	booking := models.Booking{}
 	err := r.db.Where("id = ?", bookingId).Preload("DetailsBooking").First(&booking).Error
-	log.Println(booking)
+	
 	if err != nil {
 		return core.BookingCore{}, err
 	}
 
 	data := core.BookingModelToBookingCore(booking)
-	for _, v := range booking.DetailsBooking {
-		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
-		data.DetailsBook = append(data.DetailsBook, dataDetails)
-	}
 	return data, nil
 }
 
@@ -172,10 +152,6 @@ func (r *bookingRepository) FindBookingByInvoice(invoiceNum string) (core.Bookin
 	}
 
 	dataBooking := core.BookingModelToBookingCore(data)
-	for _, v := range data.DetailsBooking {
-		dataDetails := core.DetailBookingModelToDetailBookingCore(v)
-		dataBooking.DetailsBook = append(dataBooking.DetailsBook, dataDetails)
-	}
 	return dataBooking, nil
 }
 
@@ -183,4 +159,19 @@ func (r *bookingRepository) FindUserName(userId string) string {
 	user := models.User{}
 	r.db.Where("id = ?", userId).First(&user)
 	return user.UserName
+}
+
+func (r *bookingRepository) FindAllBookings() ([]core.BookingCore, error) {
+	data := []models.Booking{}
+	err := r.db.Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	dataResp := []core.BookingCore{}
+	for _, v := range data {
+		dataCore := core.BookingModelToBookingCore(v)
+		dataResp = append(dataResp, dataCore)
+	}
+	return dataResp, nil
 }
