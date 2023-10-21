@@ -7,8 +7,6 @@ import (
 	"glamour_reserve/features/services"
 	"glamour_reserve/utils/helpers"
 
-	"log"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -37,15 +35,11 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 
 func (h *serviceHandler) CreateService(e echo.Context) error {
 
-	userid, username, role := helpers.ExtractTokenUserId(e)
-	log.Println("role", role)
-	log.Println("username", username)
-	log.Println("userId", userid)
+	_, _, role := helpers.ExtractTokenUserId(e)
 
-	//role nothing values
-	// if role != "admin" {
-	// 	return response.RespondJSON(e, 400, "cannot create service", nil)
-	// }
+	if role != "admin" {
+		return response.RespondJSON(e, 401, "can`t create service", nil)
+	}
 
 	svcRequest := request.ServiceRequest{}
 	if err := e.Bind(&svcRequest); err != nil {
@@ -74,6 +68,11 @@ func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 }
 
 func (h *serviceHandler) DeletByID(e echo.Context) error {
+	_, _, role := helpers.ExtractTokenUserId(e)
+	if role != "admin" {
+		return response.RespondJSON(e, 401, "can`t delete service", nil)
+	}
+
 	id := e.Param("id")
 	ok, err := h.svcService.Delete(id)
 	if err != nil {
@@ -87,6 +86,11 @@ func (h *serviceHandler) DeletByID(e echo.Context) error {
 }
 
 func (h *serviceHandler) UpdateByID(e echo.Context) error {
+	_, _, role := helpers.ExtractTokenUserId(e)
+	if role != "admin" {
+		return response.RespondJSON(e, 401, "can`t update service", nil)
+	}
+
 	id := e.Param("id")
 	newService := request.ServiceRequest{}
 
