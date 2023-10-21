@@ -30,15 +30,14 @@ type BookingRespon struct {
 	Status         string
 	InvoiceNumb    string                `json:"invoice_num"`
 	Total          int                   `json:"total"`
-	DetailsBooking []DetailBookingRespon `json:"details, omitempy"`
+	DetailsBooking []DetailBookingRespon `json:"details,omitempy"`
 	CreatedAt      time.Time             `json:"created_at"`
 }
 
 type DetailBookingRespon struct {
-	ID        string `json:"id"`
-	ServiceID string `json:"service_id"`
-	Name      string `json:"name"`
-	Price     int    `json:"price"`
-	Date      string `json:"date"`
-	Time      string `json:"time"`
+	ID        string    `json:"id"`
+	ServiceID string    `json:"service_id"`
+	Name      string    `json:"name"`
+	Price     int       `json:"price"`
+	DateTime  time.Time `json:"date_time"`
 }

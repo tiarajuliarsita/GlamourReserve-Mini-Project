@@ -8,8 +8,7 @@ import (
 
 func BookingDataRequestToDetailsBookingCore(book request.BookDataRequest) DetailsBookCore {
 	dataDetailBook := DetailsBookCore{
-		Date:      book.Date,
-		Time:      book.Time,
+		DateTime: book.DateTime,
 		ServiceID: book.Service_id,
 	}
 	return dataDetailBook
@@ -17,9 +16,8 @@ func BookingDataRequestToDetailsBookingCore(book request.BookDataRequest) Detail
 
 func DetailsBookCoreToModelDetailsBook(book DetailsBookCore) models.DetailBooking {
 	dataDetailBook := models.DetailBooking{
-		ID:        book.ID,
-		Date:      book.Date,
-		Time:      book.Time,
+		ID:       book.ID,
+		DateTime: book.DateTime,	// Time:      book.Time,
 		BookingID: book.BookingID,
 		ServiceID: book.ServiceID,
 	}
@@ -32,8 +30,7 @@ func DetailsBookCoreToDetailsBookResp(book DetailsBookCore) response.DetailBooki
 		ServiceID: book.ServiceID,
 		Price:     0,
 		Name:      "",
-		Date:      book.Date,
-		Time:      book.Time,
+		DateTime: book.DateTime,
 	}
 	return dataDetailBook
 
@@ -41,18 +38,13 @@ func DetailsBookCoreToDetailsBookResp(book DetailsBookCore) response.DetailBooki
 
 func DetailBookingModelToDetailBookingCore(book models.DetailBooking) DetailsBookCore {
 	dataDetailBook := DetailsBookCore{
-		ID:        book.ID,
-		Date:      book.Date,
-		Time:      book.Time,
+		ID: book.ID,
+		DateTime:  book.DateTime,
 		BookingID: book.BookingID,
 		ServiceID: book.ServiceID,
 		CreatedAt: book.CreatedAt,
 		UpdatedAt: book.CreatedAt,
 	}
-	
 
 	return dataDetailBook
 }
-
-
-

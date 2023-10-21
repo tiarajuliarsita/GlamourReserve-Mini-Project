@@ -4,6 +4,7 @@ import (
 	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -12,7 +13,7 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(date, time string) error
+	CheckAvailableService(dateTime time.Time) error
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
@@ -75,9 +76,9 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 }
 
-func (r *bookingRepository) CheckAvailableService(date, time string) error {
+func (r *bookingRepository) CheckAvailableService(dateTime time.Time) error {
 	var detailBooking []models.DetailBooking
-	err := r.db.Where("Date = ? AND Time = ?", date, time).Find(&detailBooking).Error
+	err := r.db.Where("date_time = ? ", dateTime).Find(&detailBooking).Error
 
 	if err != nil {
 		return err
@@ -110,7 +111,7 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 	bookingData := models.Booking{}
 
 	err := r.db.Where("id = ? AND user_id = ?", bookingID, userID).Preload("DetailsBooking").First(&bookingData).Error
-	
+
 	if err != nil {
 		return core.BookingCore{}, err
 	}
@@ -122,7 +123,7 @@ func (r *bookingRepository) GetSpecificHistory(userID, bookingID string) (core.B
 func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore, error) {
 	booking := models.Booking{}
 	err := r.db.Where("id = ?", bookingId).Preload("DetailsBooking").First(&booking).Error
-	
+
 	if err != nil {
 		return core.BookingCore{}, err
 	}

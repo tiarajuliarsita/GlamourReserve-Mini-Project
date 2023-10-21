@@ -9,6 +9,7 @@ func RespondJSON(e echo.Context, status int, message string, data interface{}) e
 	}
 	return e.JSON(status, response)
 }
+
 func RespJSONWithUserName(e echo.Context, status int, message string, data interface{}, username string) error {
 	response := echo.Map{
 		"status":    message,

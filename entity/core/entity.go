@@ -36,9 +36,9 @@ type BookingCore struct {
 }
 
 type DetailsBookCore struct {
-	ID        string
-	Date      string
-	Time      string
+	ID string
+	// Date      time.Time
+	DateTime  time.Time
 	BookingID string
 	ServiceID string
 	CreatedAt time.Time

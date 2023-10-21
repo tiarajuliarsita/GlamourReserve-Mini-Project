@@ -16,7 +16,7 @@ func UserRoutes(app *echo.Echo, db *gorm.DB) {
 	handlers := handlers.NewUserHandler(service)
 
 	user :=app.Group("users")
-	user.POST("register", handlers.RegisterHandler)
+	user.POST("/register", handlers.RegisterHandler)
 	user.POST("/login", handlers.LoginUser)
 	user.GET("", handlers.GetAllUsers)
 }
