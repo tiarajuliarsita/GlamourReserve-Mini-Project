@@ -4,12 +4,13 @@ import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/utils/helpers/invoice"
+	"strconv"
 
 	"time"
 )
 
 type BookingServiceInterface interface {
-	Create(booking core.BookingCore) (core.BookingCore, error)
+	Create(booking core.BookingCore, userName string) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
@@ -26,7 +27,7 @@ func NewBookingService(bookRepo repositories.BookingRepoInterface) *bookingServi
 	return &bookingService{bookRepo}
 }
 
-func (s *bookingService) Create(booking core.BookingCore) (core.BookingCore, error) {
+func (s *bookingService) Create(booking core.BookingCore, userName string) (core.BookingCore, error) {
 	listPrice := []int{}
 
 	for _, v := range booking.DetailsBook {
@@ -45,15 +46,19 @@ func (s *bookingService) Create(booking core.BookingCore) (core.BookingCore, err
 	}
 
 	total := invoice.SumTotal(listPrice)
-	invoice := invoice.CreateInvoice(time.Now())
+	invoiceNumb := invoice.CreateInvoice(time.Now())
 
-	booking.InvoiceNumb = invoice
+	booking.InvoiceNumb = invoiceNumb
 	booking.Total = total
 
 	createdBook, err := s.bookRepo.Create(booking)
 	if err != nil {
 		return createdBook, err
 	}
+
+	totalStr := strconv.Itoa(total)
+	userEmail, _ := s.bookRepo.FindUserEmails(createdBook.UserID)
+	invoice.SendEmail(userEmail,"user`s invoce", userName, invoiceNumb,totalStr)
 
 	return createdBook, nil
 }

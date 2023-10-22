@@ -5,8 +5,6 @@ import (
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/utils/helpers/authentication"
-	"glamour_reserve/utils/helpers/invoice"
-	"strconv"
 
 	"glamour_reserve/features/services"
 
@@ -24,7 +22,6 @@ func NewBookingHandler(bookingSvc services.BookingServiceInterface) *bookingHand
 func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 	userId, userName, role := authentication.ExtractTokenUserId(e)
-
 	if role != "user" {
 		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
@@ -38,20 +35,19 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	NewBookingsCore := []core.DetailsBookCore{}
 	bookingInsert := core.BookingReqMap(NewBooking, NewBookingsCore, userId)
 
-	createdBook, err := h.bookingSvc.Create(bookingInsert)
+	createdBook, err := h.bookingSvc.Create(bookingInsert, userName)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
 	bookResp := core.BookCoreToBookResp(createdBook)
 	bookResp.Name = userName
-	bookResp = h.PriceAndNameValues(bookResp, createdBook.DetailsBook)
-	total := strconv.Itoa(bookResp.Total)
 
-	go invoice.SendEmailToUser("tiarajuliarsita@gmail.com", "invoice verifycation", "TIARA JULI ARSITA", bookResp.InvoiceNumb, total)
+	bookResp = h.PriceAndNameValues(bookResp, createdBook.DetailsBook)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
+
 	return response.RespondJSON(e, 201, "succes", bookResp)
 }
 
@@ -97,7 +93,6 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-
 	if role != "admin" {
 		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}

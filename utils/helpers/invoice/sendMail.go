@@ -7,7 +7,7 @@ import (
 	"github.com/go-gomail/gomail"
 )
 
-func SendEmailToUser(email string, subject string, name string, invoice string, total string) error {
+func SendEmail(email string, subject string, name string, invoice string, total string) error {
 
 	smtpServer := os.Getenv("SMTP_SERVER")
 	smtpPortStr := os.Getenv("SMTP_PORT")
