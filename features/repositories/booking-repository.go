@@ -13,7 +13,7 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(dateTime, expectedTime time.Time)error
+	CheckAvailableService(dateTime, expectedTime time.Time) error
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
@@ -21,6 +21,7 @@ type BookingRepoInterface interface {
 	FindBookingByInvoice(invoiceNum string) (core.BookingCore, error)
 	FindAllBookings() ([]core.BookingCore, error)
 	FindUserName(userId string) string
+	FindUserEmails(userId string) (string, error)
 }
 
 type bookingRepository struct {
@@ -78,7 +79,7 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
 	var detailBooking []models.DetailBooking
-	err := r.db.Where("date_time >= ? AND time_expected <= ? ", dateTime, expectedTime).Find(&detailBooking).Error
+	err := r.db.Where("date_time = ? AND time_expected = ? ", dateTime, expectedTime).Find(&detailBooking).Error
 
 	if err != nil {
 		return err
@@ -175,4 +176,13 @@ func (r *bookingRepository) FindAllBookings() ([]core.BookingCore, error) {
 		dataResp = append(dataResp, dataCore)
 	}
 	return dataResp, nil
+}
+
+func (r *bookingRepository) FindUserEmails(userId string) (string, error) {
+	user := models.User{}
+	err := r.db.Where("id = ?", userId).First(&user).Error
+	if err != nil {
+		return "", err
+	}
+	return user.Email, nil
 }

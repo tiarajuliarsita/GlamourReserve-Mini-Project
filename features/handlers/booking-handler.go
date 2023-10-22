@@ -4,7 +4,7 @@ import (
 	core "glamour_reserve/entity/core"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"glamour_reserve/features/services"
 
@@ -21,12 +21,10 @@ func NewBookingHandler(bookingSvc services.BookingServiceInterface) *bookingHand
 
 func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
-	userId, userName, role := helpers.ExtractTokenUserId(e)
-
+	userId, userName, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
 
 	NewBooking := request.BookingRequest{}
 	err := e.Bind(&NewBooking)
@@ -37,24 +35,29 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 	NewBookingsCore := []core.DetailsBookCore{}
 	bookingInsert := core.BookingReqMap(NewBooking, NewBookingsCore, userId)
 
-	createdBook, err := h.bookingSvc.Create(bookingInsert)
+	createdBook, err := h.bookingSvc.Create(bookingInsert, userName)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
 	bookResp := core.BookCoreToBookResp(createdBook)
 	bookResp.Name = userName
+
 	bookResp = h.PriceAndNameValues(bookResp, createdBook.DetailsBook)
+	if err != nil {
+		return response.RespondJSON(e, 400, err.Error(), nil)
+	}
+
 	return response.RespondJSON(e, 201, "succes", bookResp)
 }
 
 func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 
-	userId, _, role := helpers.ExtractTokenUserId(e)
+	userId, _, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
+
 	bookHistories, err := h.bookingSvc.GetAllHistories(userId)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
@@ -71,11 +74,11 @@ func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 }
 
 func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
-	userId, _, role := helpers.ExtractTokenUserId(e)
+	userId, _, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
+
 	bookingId := e.Param("id")
 
 	history, err := h.bookingSvc.GetSpecificHistory(bookingId, userId)
@@ -89,12 +92,11 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 }
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
-	_, _, role := helpers.ExtractTokenUserId(e)
-
+	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
+
 	id := e.Param("id")
 	booking, userName, err := h.bookingSvc.FindBookingByID(id)
 
@@ -108,11 +110,11 @@ func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 }
 
 func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
-	_, _, role := helpers.ExtractTokenUserId(e)
+	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
+
 	newStatus := request.NewStatusReq{}
 	NoInvoice := e.Param("invoice")
 
@@ -134,11 +136,10 @@ func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 }
 
 func (h *bookingHandler) GetAllBookings(e echo.Context) error {
-	_, _, role := helpers.ExtractTokenUserId(e)
+	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking",nil)
+		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
-	
 
 	bookingsData, err := h.bookingSvc.FindAllBookings()
 	if err != nil {

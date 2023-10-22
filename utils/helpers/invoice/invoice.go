@@ -1,4 +1,4 @@
-package helpers
+package invoice
 
 import (
 	"encoding/hex"
@@ -21,7 +21,7 @@ func CreateInvoice(date time.Time) string {
 	return dateString + hexString
 }
 
-func SumTotal(listPrice []int)int{
+func SumTotal(listPrice []int) int {
 	var total int
 	for _, price := range listPrice {
 		total += price

@@ -3,7 +3,7 @@ package repositories
 import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 	"log"
 
 	"gorm.io/gorm"
@@ -60,7 +60,7 @@ func (r *userRepository) Login(email string, password string) (core.UserCore, er
 		return dataUser, err
 	}
 
-	comparePass, err := helpers.ComparePass([]byte(user.Password), []byte(password))
+	comparePass, err := authentication.ComparePass([]byte(user.Password), []byte(password))
 	if err != nil {
 		return dataUser, err
 	}

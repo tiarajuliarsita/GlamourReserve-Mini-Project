@@ -4,7 +4,7 @@ import (
 	"glamour_reserve/features/handlers"
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/features/services"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -17,7 +17,7 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 	handler := handlers.NewBookingHandler(service)
 
 	user := app.Group("/users/bookings")
-	user.Use(helpers.Middleware())
+	user.Use(authentication.Middleware())
 
 	//user
 	user.POST("", handler.CreateBooking)
@@ -25,7 +25,7 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 	user.GET("/:id", handler.GetSpecificHistory)
 
 	//admin
-	admin:= app.Group("/admin/bookings")
+	admin := app.Group("/admin/bookings")
 	admin.GET("/:id", handler.FindBookingByID)
 	admin.PUT("/:invoice", handler.UpdateStatusBooking)
 	admin.GET("", handler.GetAllBookings)

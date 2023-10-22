@@ -4,7 +4,7 @@ import (
 	"glamour_reserve/features/handlers"
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/features/services"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -21,8 +21,8 @@ func ServicesRoutes(app *echo.Echo, db *gorm.DB) {
 	app.GET("services/id", handler.GetServiceByID)
 
 	//admine
-	e:= app.Group("/services")
-	e.Use(helpers.Middleware())
+	e := app.Group("/services")
+	e.Use(authentication.Middleware())
 	e.POST("", handler.CreateService)
 	e.DELETE("/:id", handler.DeletByID)
 	e.PUT("/:id", handler.UpdateByID)

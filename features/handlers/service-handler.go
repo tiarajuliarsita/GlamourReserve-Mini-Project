@@ -5,7 +5,7 @@ import (
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/features/services"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"github.com/labstack/echo/v4"
 )
@@ -35,7 +35,7 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 
 func (h *serviceHandler) CreateService(e echo.Context) error {
 
-	_, _, role := helpers.ExtractTokenUserId(e)
+	_, _, role := authentication.ExtractTokenUserId(e)
 
 	if role != "admin" {
 		return response.RespondJSON(e, 401, "can`t create service", nil)
@@ -68,7 +68,7 @@ func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 }
 
 func (h *serviceHandler) DeletByID(e echo.Context) error {
-	_, _, role := helpers.ExtractTokenUserId(e)
+	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
 		return response.RespondJSON(e, 401, "can`t delete service", nil)
 	}
@@ -86,7 +86,7 @@ func (h *serviceHandler) DeletByID(e echo.Context) error {
 }
 
 func (h *serviceHandler) UpdateByID(e echo.Context) error {
-	_, _, role := helpers.ExtractTokenUserId(e)
+	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
 		return response.RespondJSON(e, 401, "can`t update service", nil)
 	}
