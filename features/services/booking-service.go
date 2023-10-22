@@ -3,7 +3,7 @@ package services
 import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/features/repositories"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/invoice"
 
 	"time"
 )
@@ -44,8 +44,8 @@ func (s *bookingService) Create(booking core.BookingCore) (core.BookingCore, err
 		}
 	}
 
-	total := helpers.SumTotal(listPrice)
-	invoice := helpers.CreateInvoice(time.Now())
+	total := invoice.SumTotal(listPrice)
+	invoice := invoice.CreateInvoice(time.Now())
 
 	booking.InvoiceNumb = invoice
 	booking.Total = total

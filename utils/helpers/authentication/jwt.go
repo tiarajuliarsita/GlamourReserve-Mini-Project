@@ -1,4 +1,4 @@
-package helpers
+package authentication
 
 import (
 	"glamour_reserve/app/config"

@@ -78,7 +78,7 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
 	var detailBooking []models.DetailBooking
-	err := r.db.Where("date_time >= ? AND time_expected <= ? ", dateTime, expectedTime).Find(&detailBooking).Error
+	err := r.db.Where("date_time = ? AND time_expected = ? ", dateTime, expectedTime).Find(&detailBooking).Error
 
 	if err != nil {
 		return err

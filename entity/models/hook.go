@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	"glamour_reserve/utils/helpers"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/google/uuid"
@@ -19,7 +19,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	if len(u.Password) < 6 {
 		return errors.New("password must have a minimum length of 6 characters")
 	}
-	u.Password, _ = helpers.HassPass(u.Password)
+	u.Password, _ = authentication.HassPass(u.Password)
 	return nil
 }
 
