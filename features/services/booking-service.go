@@ -38,7 +38,7 @@ func (s *bookingService) Create(booking core.BookingCore) (core.BookingCore, err
 	}
 
 	for _, v := range booking.DetailsBook {
-		err := s.bookRepo.CheckAvailableService(v.DateTime)
+		err := s.bookRepo.CheckAvailableService(v.DateTime, v.TimeExpected)
 		if err != nil {
 			return core.BookingCore{}, err
 		}

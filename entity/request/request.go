@@ -17,8 +17,9 @@ type UserRequest struct {
 }
 
 type BookDataRequest struct {
-	Service_id string `json:"service_id"`
-	DateTime time.Time `json:"date_time"`
+	Service_id   string    `json:"service_id"`
+	DateTime     time.Time `json:"date_time"`
+	TimeExpected time.Time `json:"time_expected"`
 }
 
 type BookingRequest struct {

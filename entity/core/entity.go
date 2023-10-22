@@ -39,6 +39,7 @@ type DetailsBookCore struct {
 	ID string
 	// Date      time.Time
 	DateTime  time.Time
+	TimeExpected time.Time
 	BookingID string
 	ServiceID string
 	CreatedAt time.Time
