@@ -13,7 +13,7 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(dateTime time.Time) error
+	CheckAvailableService(dateTime, expectedTime time.Time)error
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
@@ -76,9 +76,9 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 }
 
-func (r *bookingRepository) CheckAvailableService(dateTime time.Time) error {
+func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
 	var detailBooking []models.DetailBooking
-	err := r.db.Where("date_time = ? ", dateTime).Find(&detailBooking).Error
+	err := r.db.Where("date_time >= ? AND time_expected <= ? ", dateTime, expectedTime).Find(&detailBooking).Error
 
 	if err != nil {
 		return err

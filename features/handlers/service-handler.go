@@ -99,7 +99,6 @@ func (h *serviceHandler) UpdateByID(e echo.Context) error {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 	NewService := core.ServiceReqToServiceCore(newService)
-
 	dataService, err := h.svcService.Update(id, NewService)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)

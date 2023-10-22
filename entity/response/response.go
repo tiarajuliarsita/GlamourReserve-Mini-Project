@@ -35,9 +35,10 @@ type BookingRespon struct {
 }
 
 type DetailBookingRespon struct {
-	ID        string    `json:"id"`
-	ServiceID string    `json:"service_id"`
-	Name      string    `json:"name"`
-	Price     int       `json:"price"`
-	DateTime  time.Time `json:"date_time"`
+	ID           string    `json:"id"`
+	ServiceID    string    `json:"service_id"`
+	Name         string    `json:"name"`
+	TimeExpected time.Time `json:"time_expected"`
+	Price        int       `json:"price"`
+	DateTime     time.Time `json:"date_time"`
 }
