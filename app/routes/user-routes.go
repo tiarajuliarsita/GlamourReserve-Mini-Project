@@ -11,12 +11,20 @@ import (
 
 func UserRoutes(app *echo.Echo, db *gorm.DB) {
 
-	repo := repositories.NewUserRepository(db)
-	service := services.NewUserService(repo)
-	handlers := handlers.NewUserHandler(service)
+	userRepo := repositories.NewUserRepository(db)
+	userService := services.NewUserService(userRepo)
+	userHandlers := handlers.NewUserHandler(userService)
 
-	user :=app.Group("users")
-	user.POST("/register", handlers.RegisterHandler)
-	user.POST("/login", handlers.LoginUser)
-	user.GET("", handlers.GetAllUsers)
+	user := app.Group("users")
+	{
+		user.POST("/register", userHandlers.RegisterHandler)
+		user.POST("/login", userHandlers.LoginUser)
+		user.GET("", userHandlers.GetAllUsers)
+	}
+	
+
+	beautyService:= services.NewBeautyCare()
+	beautyHandlers:= handlers.NewBeautyCare(beautyService)
+	app.POST("/ask-about-beauty-care", beautyHandlers.AskAboutBeauty)
+
 }

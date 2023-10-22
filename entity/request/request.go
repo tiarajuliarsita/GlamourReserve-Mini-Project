@@ -29,3 +29,10 @@ type BookingRequest struct {
 type NewStatusReq struct {
 	Status string `json:"new_status"`
 }
+
+type AskBeautyReq struct {
+	Brand    string  `json:"brand"`
+	SkinType string  `json:"skin_type"`
+	Concern  string  `json:"concern"`
+	Budget   float64 `json:"budget"`
+}
