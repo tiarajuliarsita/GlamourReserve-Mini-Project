@@ -32,6 +32,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo-jwt/v4 v4.2.0
 	github.com/labstack/echo/v4 v4.11.2
+	github.com/sashabaranov/go-openai v1.16.0
 	github.com/sirupsen/logrus v1.9.3
 	gorm.io/driver/mysql v1.5.2
 )
