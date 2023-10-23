@@ -151,6 +151,7 @@ func (h *bookingHandler) GetAllBookings(e echo.Context) error {
 		bookResp := core.BookCoreToBookResp(v)
 		bookingsrespons = append(bookingsrespons, bookResp)
 	}
+
 	return response.RespondJSON(e, 200, "succes", bookingsrespons)
 }
 

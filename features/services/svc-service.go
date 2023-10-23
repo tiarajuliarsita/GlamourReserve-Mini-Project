@@ -6,7 +6,7 @@ import (
 )
 
 type SvcServiceInterface interface {
-	FindAll() ([]core.ServiceCore, error)
+	FindAll(name string) ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
@@ -30,8 +30,8 @@ func (s *svcService) FindById(id string) (core.ServiceCore, error) {
 	return dataService, nil
 }
 
-func (s *svcService) FindAll() ([]core.ServiceCore, error) {
-	services, err := s.svcRepo.FindAll()
+func (s *svcService) FindAll(name string) ([]core.ServiceCore, error) {
+	services, err := s.svcRepo.FindAll(name)
 	if err != nil {
 		return nil, err
 	}

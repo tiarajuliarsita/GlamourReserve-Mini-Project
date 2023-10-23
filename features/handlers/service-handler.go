@@ -19,7 +19,8 @@ func NewServiceHandler(svcService services.SvcServiceInterface) *serviceHandler 
 }
 
 func (h *serviceHandler) GetAllServices(e echo.Context) error {
-	services, err := h.svcService.FindAll()
+	name := e.QueryParam("name")
+	services, err := h.svcService.FindAll(name)
 	if err != nil {
 		return response.RespondJSON(e, 500, err.Error(), nil)
 	}

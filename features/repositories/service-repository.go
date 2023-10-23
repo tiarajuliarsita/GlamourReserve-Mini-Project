@@ -8,7 +8,7 @@ import (
 )
 
 type ServiceRepoInterface interface {
-	FindAll() ([]core.ServiceCore, error)
+	FindAll(searchQuery string) ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	Create(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
@@ -36,13 +36,20 @@ func (r *SvcRepository) FindById(id string) (core.ServiceCore, error) {
 	return dataService, nil
 }
 
-func (r *SvcRepository) FindAll() ([]core.ServiceCore, error) {
+func (r *SvcRepository) FindAll(searchQuery string) ([]core.ServiceCore, error) {
 	var services []models.Service
 	var dataServices []core.ServiceCore
 
-	err := r.db.Find(&services).Error
-	if err != nil {
-		return nil, err
+	if searchQuery != "" {
+		err := r.db.Where("name LIKE ?", "%"+searchQuery+"%").Find(&services).Error
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err := r.db.Find(&services).Error
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	for _, v := range services {
