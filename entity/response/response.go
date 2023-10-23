@@ -38,7 +38,7 @@ type DetailBookingRespon struct {
 	ID           string    `json:"id"`
 	ServiceID    string    `json:"service_id"`
 	Name         string    `json:"name"`
-	TimeExpected time.Time `json:"time_expected"`
 	Price        int       `json:"price"`
-	DateTime     time.Time `json:"date_time"`
+	ServiceStart string `json:"service_start_time"`
+	ServiceEnd   string `json:"service_end_time"`
 }

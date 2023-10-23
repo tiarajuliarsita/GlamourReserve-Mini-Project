@@ -41,11 +41,11 @@ type Booking struct {
 }
 
 type DetailBooking struct {
-	ID           string    `gorm:"not null;primary key"`
-	DateTime     time.Time `gorm:"not null;type:time" validate:"required" valid:"required~your date_time is required"`
-	TimeExpected time.Time `gorm:"not null;type:time" validate:"required" valid:"required~your time_expected is required"`
-	BookingID    string    `gorm:"type:varchar(255)"`
-	ServiceID    string    `gorm:"type:varchar(255)"`
+	ID           string `gorm:"not null;primary key"`
+	ServiceStart string `gorm:"not null;type:datetime" validate:"required" valid:"required~your date_time is required"`
+	ServiceEnd   string `gorm:"not null;type:datetime" validate:"required" valid:"required~your time_expected is required"`
+	BookingID    string `gorm:"type:varchar(255)"`
+	ServiceID    string `gorm:"type:varchar(255)"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt `gorm:"index"`

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/entity/models"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -13,7 +12,8 @@ type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
 	FindServiceByID(id string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	CheckAvailableService(dateTime, expectedTime time.Time) error
+	// CheckAvailableService(dateTime, expectedTime time.Time) error
+	CheckAvailableService(serviceId string, starSerivce, endService string) error
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
@@ -77,10 +77,27 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 }
 
-func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
-	var detailBooking []models.DetailBooking
-	err := r.db.Where("date_time = ? AND time_expected = ? ", dateTime, expectedTime).Find(&detailBooking).Error
+// func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
+// 	var detailBooking []models.DetailBooking
 
+// 	err := r.db.Where("date_time BETWEEN ? AND ? ", dateTime, expectedTime).Find(&detailBooking).Error
+//     if err != nil {
+//         return err
+//     }
+
+// 	if len(detailBooking) > 0 {
+// 		return errors.New("service not available")
+// 	}
+// 	return nil
+// }
+
+func (r *bookingRepository) CheckAvailableService(serviceId string, starSerivce, endService string) error {
+	var detailBooking []models.DetailBooking
+//benar
+	// err := r.db.Where("service_start BETWEEN ? AND ? OR service_end BETWEEN ? AND ?", starSerivce, endService, starSerivce, endService).Find(&detailBooking).Error
+	
+	err := r.db.Where("service_start BETWEEN ? AND ? OR service_end BETWEEN ? AND ?", starSerivce, endService, starSerivce, endService).Where("service_id = ?", serviceId).Find(&detailBooking).Error
+	
 	if err != nil {
 		return err
 	}

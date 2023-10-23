@@ -4,6 +4,7 @@ import (
 	"glamour_reserve/features/handlers"
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/features/services"
+	"glamour_reserve/utils/helpers/authentication"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -19,12 +20,17 @@ func UserRoutes(app *echo.Echo, db *gorm.DB) {
 	{
 		user.POST("/register", userHandlers.RegisterHandler)
 		user.POST("/login", userHandlers.LoginUser)
-		user.GET("", userHandlers.GetAllUsers)
+
 	}
 	
-
-	beautyService:= services.NewBeautyCare()
-	beautyHandlers:= handlers.NewBeautyCare(beautyService)
+	beautyService := services.NewBeautyCare()
+	beautyHandlers := handlers.NewBeautyCare(beautyService)
 	app.POST("/ask-about-beauty-care", beautyHandlers.AskAboutBeauty)
+
+	admin := app.Group("/users")
+	admin.Use(authentication.Middleware())
+	admin.GET("", userHandlers.GetAllUsers)
+
+	
 
 }
