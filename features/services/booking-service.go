@@ -28,40 +28,81 @@ func NewBookingService(bookRepo repositories.BookingRepoInterface) *bookingServi
 	return &bookingService{bookRepo}
 }
 
+// func (s *bookingService) Create(booking core.BookingCore, userName string) (core.BookingCore, error) {
+// 	listPrice := []int{}
+
+// 	for _, v := range booking.DetailsBook {
+// 		price, err := s.bookRepo.GetPriceService(v.ServiceID)
+// 		if err != nil {
+// 			return core.BookingCore{}, err
+// 		}
+// 		listPrice = append(listPrice, price)
+// 	}
+
+// 	for _, v := range booking.DetailsBook {
+		
+// 		err := s.bookRepo.CheckAvailableService(v.DateTime, v.TimeExpected)
+// 		if err != nil {
+// 			return core.BookingCore{}, err
+// 		}
+
+// 	}
+
+// 	total := invoice.SumTotal(listPrice)
+// 	invoiceNumb := invoice.CreateInvoice(time.Now())
+
+// 	booking.InvoiceNumb = invoiceNumb
+// 	booking.Total = total
+
+// 	createdBook, err := s.bookRepo.Create(booking)
+// 	if err != nil {
+// 		return createdBook, err
+// 	}
+
+// 	totalStr := strconv.Itoa(total)
+// 	userEmail, _ := s.bookRepo.FindUserEmails(createdBook.UserID)
+// 	invoice.SendEmail(userEmail, "user`s invoce", userName, invoiceNumb, totalStr)
+
+// 	return createdBook, nil
+// }
+
+
 func (s *bookingService) Create(booking core.BookingCore, userName string) (core.BookingCore, error) {
-	listPrice := []int{}
+    listPrice := []int{}
 
-	for _, v := range booking.DetailsBook {
-		price, err := s.bookRepo.GetPriceService(v.ServiceID)
-		if err != nil {
-			return core.BookingCore{}, err
-		}
-		listPrice = append(listPrice, price)
-	}
+    for _, v := range booking.DetailsBook {
+        price, err := s.bookRepo.GetPriceService(v.ServiceID)
+        if err != nil {
+            return core.BookingCore{}, err
+        }
+        listPrice = append(listPrice, price)
+    }
 
-	for _, v := range booking.DetailsBook {
-		err := s.bookRepo.CheckAvailableService(v.DateTime, v.TimeExpected)
-		if err != nil {
-			return core.BookingCore{}, err
-		}
-	}
+    for _, v := range booking.DetailsBook {
 
-	total := invoice.SumTotal(listPrice)
-	invoiceNumb := invoice.CreateInvoice(time.Now())
+        err := s.bookRepo.CheckAvailableService(v.ServiceID, v.ServiceStart, v.ServiceEnd)
+        if err != nil {
+            return core.BookingCore{}, err
+        }
 
-	booking.InvoiceNumb = invoiceNumb
-	booking.Total = total
+    }
 
-	createdBook, err := s.bookRepo.Create(booking)
-	if err != nil {
-		return createdBook, err
-	}
+    total := invoice.SumTotal(listPrice)
+    invoiceNumb := invoice.CreateInvoice(time.Now())
 
-	totalStr := strconv.Itoa(total)
-	userEmail, _ := s.bookRepo.FindUserEmails(createdBook.UserID)
-	invoice.SendEmail(userEmail, "user`s invoce", userName, invoiceNumb, totalStr)
+    booking.InvoiceNumb = invoiceNumb
+    booking.Total = total
 
-	return createdBook, nil
+    createdBook, err := s.bookRepo.Create(booking)
+    if err != nil {
+        return createdBook, err
+    }
+
+    totalStr := strconv.Itoa(total)
+    userEmail, _ := s.bookRepo.FindUserEmails(createdBook.UserID)
+    invoice.SendEmail(userEmail, "user`s invoce", userName, invoiceNumb, totalStr)
+
+    return createdBook, nil
 }
 
 func (s *bookingService) FindServiceByID(id string) (core.ServiceCore, error) {

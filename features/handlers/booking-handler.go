@@ -23,7 +23,7 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 	userId, userName, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don't have permission", nil)
 	}
 
 	NewBooking := request.BookingRequest{}
@@ -55,7 +55,7 @@ func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 
 	userId, _, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don't have permission", nil)
 	}
 
 	bookHistories, err := h.bookingSvc.GetAllHistories(userId)
@@ -76,14 +76,14 @@ func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 	userId, _, role := authentication.ExtractTokenUserId(e)
 	if role != "user" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don't have permission", nil)
 	}
 
 	bookingId := e.Param("id")
 
 	history, err := h.bookingSvc.GetSpecificHistory(bookingId, userId)
 	if err != nil {
-		return response.RespondJSON(e, 400, err.Error(), history)
+		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
 	historyResp := core.BookCoreToBookResp(history)
@@ -94,7 +94,7 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don't have permission", nil)
 	}
 
 	id := e.Param("id")
@@ -112,7 +112,7 @@ func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don't have permission", nil)
 	}
 
 	newStatus := request.NewStatusReq{}
@@ -138,7 +138,7 @@ func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 func (h *bookingHandler) GetAllBookings(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can't create booking", nil)
+		return response.RespondJSON(e, 401, "you don`t have permission", nil)
 	}
 
 	user:= e.QueryParam("users")

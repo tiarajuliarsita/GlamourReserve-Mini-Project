@@ -42,7 +42,7 @@ func (h *serviceHandler) CreateService(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
 
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can`t create service", nil)
+		return response.RespondJSON(e, 401, "you don`t have permission", nil)
 	}
 
 	svcRequest := request.ServiceRequest{}
@@ -74,7 +74,7 @@ func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 func (h *serviceHandler) DeletByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
 	if role != "admin" {
-		return response.RespondJSON(e, 401, "can`t delete service", nil)
+		return response.RespondJSON(e, 401, "you don`t have permission", nil)
 	}
 
 	id := e.Param("id")
