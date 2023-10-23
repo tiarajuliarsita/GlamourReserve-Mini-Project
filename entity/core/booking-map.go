@@ -77,3 +77,14 @@ func BookingReqMap(req request.BookingRequest, detailBookings []DetailsBookCore,
 	return bookingInsert
 
 }
+
+func BookingCoreToBookingAll(book BookingCore) BookingAll {
+	allBooking := BookingAll{
+		Name:        "",
+		BookingId:   book.ID,
+		InvoiceNumb: book.InvoiceNumb,
+		Total:       book.Total,
+		Created_at:  book.CreatedAt,
+	}
+	return allBooking
+}
