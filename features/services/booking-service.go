@@ -5,7 +5,6 @@ import (
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/utils/helpers/invoice"
 	"strconv"
-	"strings"
 
 	"time"
 )
@@ -135,25 +134,12 @@ func (s *bookingService) FindAllBookings(user string) ([]core.BookingAll, error)
 
 	allbookings := []core.BookingAll{}
 
-	result := []core.BookingAll{}
 	for _, v := range bookings {
 		name := s.bookRepo.FindUserName(v.UserID)
 		booking := core.BookingCoreToBookingAll(v)
 		booking.Name = name
+		allbookings = append(allbookings, booking)
 
-		if strings.Contains(name, user) {
-			result = append(result, booking)
-
-		} else {
-			allbookings = append(allbookings, booking)
-
-		}
 	}
-
-	if len(result) > 0 {
-		return result, nil
-	} else {
-		return allbookings, nil
-	}
-
+	return allbookings, nil
 }
