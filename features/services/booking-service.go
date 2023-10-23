@@ -5,6 +5,7 @@ import (
 	"glamour_reserve/features/repositories"
 	"glamour_reserve/utils/helpers/invoice"
 	"strconv"
+	"strings"
 
 	"time"
 )
@@ -15,7 +16,7 @@ type BookingServiceInterface interface {
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(bookingId, userId string) (core.BookingCore, error)
 	FindBookingByID(bookingId string) (core.BookingCore, string, error)
-	FindAllBookings() ([]core.BookingCore, error)
+	FindAllBookings(user string) ([]core.BookingAll, error)
 	UpdateStatusBooking(newDatacore core.BookingCore) (core.BookingCore, string, error)
 }
 
@@ -58,7 +59,7 @@ func (s *bookingService) Create(booking core.BookingCore, userName string) (core
 
 	totalStr := strconv.Itoa(total)
 	userEmail, _ := s.bookRepo.FindUserEmails(createdBook.UserID)
-	invoice.SendEmail(userEmail,"user`s invoce", userName, invoiceNumb,totalStr)
+	invoice.SendEmail(userEmail, "user`s invoce", userName, invoiceNumb, totalStr)
 
 	return createdBook, nil
 }
@@ -120,12 +121,33 @@ func (s *bookingService) UpdateStatusBooking(newDatacore core.BookingCore) (core
 
 }
 
-func (s *bookingService) FindAllBookings() ([]core.BookingCore, error) {
+func (s *bookingService) FindAllBookings(user string) ([]core.BookingAll, error) {
 	bookings, err := s.bookRepo.FindAllBookings()
 	if err != nil {
 		return nil, err
 	}
 
-	return bookings, nil
+	allbookings := []core.BookingAll{}
+
+	result := []core.BookingAll{}
+	for _, v := range bookings {
+		name := s.bookRepo.FindUserName(v.UserID)
+		booking := core.BookingCoreToBookingAll(v)
+		booking.Name = name
+
+		if strings.Contains(name, user) {
+			result = append(result, booking)
+
+		} else {
+			allbookings = append(allbookings, booking)
+
+		}
+	}
+
+	if len(result) > 0 {
+		return result, nil
+	} else {
+		return allbookings, nil
+	}
 
 }

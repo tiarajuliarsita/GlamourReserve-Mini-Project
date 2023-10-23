@@ -141,17 +141,15 @@ func (h *bookingHandler) GetAllBookings(e echo.Context) error {
 		return response.RespondJSON(e, 401, "can't create booking", nil)
 	}
 
-	bookingsData, err := h.bookingSvc.FindAllBookings()
+	user:= e.QueryParam("users")
+
+
+	bookingsData, err := h.bookingSvc.FindAllBookings(user)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
-	bookingsrespons := []response.BookingRespon{}
-	for _, v := range bookingsData {
-		bookResp := core.BookCoreToBookResp(v)
-		bookingsrespons = append(bookingsrespons, bookResp)
-	}
-	return response.RespondJSON(e, 200, "succes", bookingsrespons)
+	return response.RespondJSON(e, 200, "succes", bookingsData)
 }
 
 func (h *bookingHandler) PriceAndNameValues(response response.BookingRespon, data []core.DetailsBookCore) response.BookingRespon {

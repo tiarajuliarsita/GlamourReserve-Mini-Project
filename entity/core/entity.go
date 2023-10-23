@@ -38,10 +38,19 @@ type BookingCore struct {
 type DetailsBookCore struct {
 	ID string
 	// Date      time.Time
-	DateTime  time.Time
+	DateTime     time.Time
 	TimeExpected time.Time
-	BookingID string
-	ServiceID string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	BookingID    string
+	ServiceID    string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
+type BookingAll struct {
+	Name        string    `json:"name"`
+	BookingId   string    `json:"booking_id"`
+	InvoiceNumb string    `json:"invoice_numb"`
+	Total       int       `json:"total"`
+	Status      string    `json:"status"`
+	Created_at  time.Time `json:"created_at"`
 }
