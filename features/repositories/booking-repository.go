@@ -10,9 +10,8 @@ import (
 
 type BookingRepoInterface interface {
 	Create(booking core.BookingCore) (core.BookingCore, error)
-	FindServiceByID(id string) (core.ServiceCore, error)
+	FindServiceByID(idService string) (core.ServiceCore, error)
 	GetPriceService(id string) (int, error)
-	// CheckAvailableService(dateTime, expectedTime time.Time) error
 	CheckAvailableService(serviceId string, starSerivce, endService string) error
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
@@ -52,12 +51,11 @@ func (r *bookingRepository) Create(bookingNew core.BookingCore) (core.BookingCor
 	return dataBook, nil
 }
 
-func (r *bookingRepository) FindServiceByID(id string) (core.ServiceCore, error) {
+func (r *bookingRepository) FindServiceByID(idService string) (core.ServiceCore, error) {
 
 	service := models.Service{}
 	dataService := core.ServiceCore{}
-
-	err := r.db.Where("id = ?", id).Find(&service).Error
+	err := r.db.Where("id = ?", idService).First(&service).Error
 	if err != nil {
 		return dataService, err
 	}
@@ -77,27 +75,11 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 
 }
 
-// func (r *bookingRepository) CheckAvailableService(dateTime, expectedTime time.Time) error {
-// 	var detailBooking []models.DetailBooking
-
-// 	err := r.db.Where("date_time BETWEEN ? AND ? ", dateTime, expectedTime).Find(&detailBooking).Error
-//     if err != nil {
-//         return err
-//     }
-
-// 	if len(detailBooking) > 0 {
-// 		return errors.New("service not available")
-// 	}
-// 	return nil
-// }
-
 func (r *bookingRepository) CheckAvailableService(serviceId string, starSerivce, endService string) error {
 	var detailBooking []models.DetailBooking
-//benar
-	// err := r.db.Where("service_start BETWEEN ? AND ? OR service_end BETWEEN ? AND ?", starSerivce, endService, starSerivce, endService).Find(&detailBooking).Error
-	
+
 	err := r.db.Where("service_start BETWEEN ? AND ? OR service_end BETWEEN ? AND ?", starSerivce, endService, starSerivce, endService).Where("service_id = ?", serviceId).Find(&detailBooking).Error
-	
+
 	if err != nil {
 		return err
 	}
