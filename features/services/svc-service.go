@@ -3,10 +3,11 @@ package services
 import (
 	"glamour_reserve/entity/core"
 	"glamour_reserve/features/repositories"
+	"strconv"
 )
 
 type SvcServiceInterface interface {
-	FindAll(name string) ([]core.ServiceCore, error)
+	FindAll(name string, offset, limit string) ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	CreateService(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
@@ -30,8 +31,10 @@ func (s *svcService) FindById(id string) (core.ServiceCore, error) {
 	return dataService, nil
 }
 
-func (s *svcService) FindAll(name string) ([]core.ServiceCore, error) {
-	services, err := s.svcRepo.FindAll(name)
+func (s *svcService) FindAll(name string, offset, limit string) ([]core.ServiceCore, error) {
+	offsetInt,_:=strconv.Atoi(offset)
+	limitInt,_:=strconv.Atoi(limit)
+	services, err := s.svcRepo.FindAll(name, offsetInt, limitInt)
 	if err != nil {
 		return nil, err
 	}

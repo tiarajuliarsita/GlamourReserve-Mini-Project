@@ -84,6 +84,7 @@ func BookingCoreToBookingAll(book BookingCore) BookingAll {
 		BookingId:   book.ID,
 		InvoiceNumb: book.InvoiceNumb,
 		Total:       book.Total,
+		Status:      book.Status,
 		Created_at:  book.CreatedAt,
 	}
 	return allBooking

@@ -8,7 +8,7 @@ import (
 )
 
 type ServiceRepoInterface interface {
-	FindAll(searchQuery string) ([]core.ServiceCore, error)
+	FindAll(searchQuery string, offset, limit int) ([]core.ServiceCore, error)
 	FindById(id string) (core.ServiceCore, error)
 	Create(service core.ServiceCore) (core.ServiceCore, error)
 	Delete(id string) (bool, error)
@@ -35,33 +35,38 @@ func (r *SvcRepository) FindById(id string) (core.ServiceCore, error) {
 	dataService = core.ServiceModelToServiceCore(service)
 	return dataService, nil
 }
+func (r *SvcRepository) FindAll(searchQuery string, offset, limit int) ([]core.ServiceCore, error) {
+    var services []models.Service
+    var dataServices []core.ServiceCore
 
-func (r *SvcRepository) FindAll(searchQuery string) ([]core.ServiceCore, error) {
-	var services []models.Service
-	var dataServices []core.ServiceCore
+    query := r.db
+    if searchQuery != "" {
+        query = query.Where("name LIKE ?", "%"+searchQuery+"%")
+    }
 
-	if searchQuery != "" {
-		err := r.db.Where("name LIKE ?", "%"+searchQuery+"%").Find(&services).Error
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		err := r.db.Find(&services).Error
-		if err != nil {
-			return nil, err
-		}
-	}
+    if offset > 0 {
+        query = query.Offset(offset)
+    }
 
-	for _, v := range services {
-		svcCore := core.ServiceModelToServiceCore(v)
-		dataServices = append(dataServices, svcCore)
-	}
+    if limit > 0 {
+        query = query.Limit(limit)
+    }
 
-	return dataServices, nil
+    err := query.Find(&services).Error
+    if err != nil {
+        return nil, err
+    }
+
+    for _, v := range services {
+        svcCore := core.ServiceModelToServiceCore(v)
+        dataServices = append(dataServices, svcCore)
+    }
+
+    return dataServices, nil
 }
 
-func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
 
+func (r *SvcRepository) Create(service core.ServiceCore) (core.ServiceCore, error) {
 	serviceInput := core.ServiceCoreToModelsSevice(service)
 	err := r.db.Create(&serviceInput).Error
 	if err != nil {
@@ -89,7 +94,6 @@ func (r *SvcRepository) Delete(id string) (bool, error) {
 }
 
 func (r *SvcRepository) Update(id string, updateSvc core.ServiceCore) (core.ServiceCore, error) {
-
 	service := core.ServiceCoreToModelsSevice(updateSvc)
 
 	data, err := r.FindById(id)

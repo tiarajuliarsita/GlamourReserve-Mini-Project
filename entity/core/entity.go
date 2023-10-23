@@ -51,5 +51,6 @@ type BookingAll struct {
 	BookingId   string    `json:"booking_id"`
 	InvoiceNumb string    `json:"invoice_numb"`
 	Total       int       `json:"total"`
+	Status      string    `json:"status"`
 	Created_at  time.Time `json:"created_at"`
 }

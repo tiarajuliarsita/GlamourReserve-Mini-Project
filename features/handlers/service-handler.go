@@ -20,7 +20,10 @@ func NewServiceHandler(svcService services.SvcServiceInterface) *serviceHandler 
 
 func (h *serviceHandler) GetAllServices(e echo.Context) error {
 	name := e.QueryParam("name")
-	services, err := h.svcService.FindAll(name)
+	offset := e.QueryParam("offset")
+	limit := e.QueryParam("limit")
+
+	services, err := h.svcService.FindAll(name, offset, limit)
 	if err != nil {
 		return response.RespondJSON(e, 500, err.Error(), nil)
 	}
