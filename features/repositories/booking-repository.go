@@ -78,7 +78,7 @@ func (r *bookingRepository) GetPriceService(id string) (int, error) {
 func (r *bookingRepository) CheckAvailableService(serviceId string, starSerivce, endService string) error {
 	var detailBooking []models.DetailBooking
 
-	err := r.db.Where("service_start BETWEEN ? AND ? OR service_end BETWEEN ? AND ?", starSerivce, endService, starSerivce, endService).Where("service_id = ?", serviceId).Find(&detailBooking).Error
+	err := r.db.Where("service_start >=  ? AND  service_start < ? OR service_end >  ? AND service_end < ?", starSerivce, endService, starSerivce, endService).Where("service_id = ?", serviceId).Find(&detailBooking).Error
 
 	if err != nil {
 		return err

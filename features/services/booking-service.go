@@ -31,19 +31,17 @@ func (s *bookingService) Create(booking core.BookingCore, userName string) (core
 	listPrice := []int{}
 
 	for _, v := range booking.DetailsBook {
+		_, err := s.bookRepo.FindServiceByID(v.ServiceID)
+		if err != nil {
+			return core.BookingCore{}, err
+		}
+
 		price, err := s.bookRepo.GetPriceService(v.ServiceID)
 		if err != nil {
 			return core.BookingCore{}, err
 		}
 		listPrice = append(listPrice, price)
-	}
 
-	for _, v := range booking.DetailsBook {
-		_, err := s.bookRepo.FindServiceByID(v.ServiceID)
-
-		if err != nil {
-			return core.BookingCore{}, err
-		}
 		err = s.bookRepo.CheckAvailableService(v.ServiceID, v.ServiceStart, v.ServiceEnd)
 		if err != nil {
 			return core.BookingCore{}, err
