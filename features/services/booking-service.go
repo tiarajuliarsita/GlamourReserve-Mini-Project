@@ -30,13 +30,8 @@ func NewBookingService(bookRepo repositories.BookingRepoInterface) *bookingServi
 func (s *bookingService) Create(booking core.BookingCore, userName string) (core.BookingCore, error) {
 	listPrice := []int{}
 
-	// for _, v := range booking.DetailsBook {
-		
-	// }
-
 	for _, v := range booking.DetailsBook {
 		_, err := s.bookRepo.FindServiceByID(v.ServiceID)
-
 		if err != nil {
 			return core.BookingCore{}, err
 		}
