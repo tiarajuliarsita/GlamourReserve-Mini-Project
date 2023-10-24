@@ -85,7 +85,7 @@ func SendEmail(email string, subject string, name string, invoice string, total 
 				<p>No. Invoice: ` + invoice + `</p>
 			</div>
 			<div class="invoice-total">
-				<p><b>Total Amount: Rp` + total + `</b></p>
+				<p><b>Total : Rp.` + total + `</b></p>
 			</div>
 			<div class="invoice-thanks">
 				<p>We hope you enjoy your booking experience at Glamour Reserve. We will do our best to ensure you have an unforgettable beauty experience.</p>
