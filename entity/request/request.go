@@ -4,7 +4,7 @@ type ServiceRequest struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Price       int    `json:"price" form:"price"`
-	// Image       *multipart.FileHeader `form:"image"`
+	// Image       string `form:"image"`
 }
 
 type UserRequest struct {
@@ -14,11 +14,6 @@ type UserRequest struct {
 	Phone    string `json:"phone" form:"phone"`
 }
 
-// type BookDataRequest struct {
-// 	Service_id   string    `json:"service_id"`
-// 	DateTime     time.Time `json:"date_time"`
-// 	TimeExpected time.Time `json:"time_expected"`
-// }
 type BookDataRequest struct {
 	Service_id   string `json:"service_id"`
 	ServiceStart string `json:"service_start_time"`

@@ -55,6 +55,5 @@ func (d *DetailBooking) BeforeCreate(tx *gorm.DB) (err error) {
 
 	newUuid := uuid.New()
 	d.ID = newUuid.String()
-	// d.DateTime = d.DateTime.Local()
 	return nil
 }

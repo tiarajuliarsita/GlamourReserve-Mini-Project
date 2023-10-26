@@ -18,7 +18,7 @@ type ServiceRespon struct {
 	Name        string `json:"name" `
 	Description string `json:"description"`
 	Price       int    `json:"price"`
-	// Image       string    `json:"image"`
+	Image       string    `json:"image"`
 	// Variants  []models.Variant `json:"variants" `
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

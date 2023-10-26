@@ -6,6 +6,7 @@ import (
 	"glamour_reserve/entity/response"
 	"glamour_reserve/features/services"
 	"glamour_reserve/utils/helpers/authentication"
+	"glamour_reserve/utils/helpers/cloud"
 
 	"github.com/labstack/echo/v4"
 )
@@ -50,7 +51,14 @@ func (h *serviceHandler) CreateService(e echo.Context) error {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
-	dataService := core.ServiceReqToServiceCore(svcRequest)
+	file, err := e.FormFile("image")
+	if err != nil {
+		return e.JSON(400, "Failed to receive file")
+	}
+
+	client := cloud.ConfigCloud()
+	imageurl := cloud.UploadFile(file, client)
+	dataService := core.ServiceReqToServiceCore(svcRequest, imageurl)
 	data, err := h.svcService.CreateService(dataService)
 	if err != nil {
 		return response.RespondJSON(e, 500, err.Error(), nil)
@@ -102,12 +110,21 @@ func (h *serviceHandler) UpdateByID(e echo.Context) error {
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
-	NewService := core.ServiceReqToServiceCore(newService)
+
+	file, err := e.FormFile("image")
+	if err != nil {
+		return e.JSON(400, "Failed to receive file")
+	}
+
+	client := cloud.ConfigCloud()
+	imageurl := cloud.UploadFile(file, client)
+	
+	NewService := core.ServiceReqToServiceCore(newService, imageurl)
 	dataService, err := h.svcService.Update(id, NewService)
 	if err != nil {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
-
+	dataService.Image = imageurl
 	serviceRespon := core.ServiceCoreToResponseService(dataService)
 	return response.RespondJSON(e, 200, "succes", serviceRespon)
 }

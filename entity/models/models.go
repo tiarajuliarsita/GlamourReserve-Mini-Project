@@ -23,6 +23,7 @@ type Service struct {
 	Name        string `gorm:"not null;unique" valid:"required~your name is required" json:"name" form:"name"`
 	Description string `gorm:"not null" valid:"required~your description is required" json:"description" form:"description"`
 	Price       int    `gorm:"not null"`
+	Image    string `gorm:"not null" `
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt `gorm:"index"`

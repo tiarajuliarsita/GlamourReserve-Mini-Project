@@ -17,7 +17,7 @@ type UserCore struct {
 type ServiceCore struct {
 	ID   string
 	Name string
-	// Image       string
+	Image       string
 	Price       int
 	Description string
 	CreatedAt   time.Time
