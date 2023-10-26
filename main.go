@@ -15,11 +15,15 @@ func main() {
 	appCfg, dbCfg := config.InitConfig()
 	database.InitDBMysql(dbCfg)
 
+	
+
 	app := echo.New()
 	app.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "time=${time_rfc3339_nano}, method=${method}, uri=${uri}, status=${status}\n",
 	}))
+
 	
+
 	routes.UserRoutes(app, database.DB)
 	routes.ServicesRoutes(app, database.DB)
 	routes.BookingRoutes(app, database.DB)
