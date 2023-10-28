@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"glamour_reserve/entity/core"
 	"glamour_reserve/mocks"
 	"testing"
@@ -9,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//create
 func TestBookingService_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -41,6 +43,126 @@ func TestBookingService_Create(t *testing.T) {
 	assert.NotNil(t, createdBook)
 }
 
+func TestBookingService_Create_ErrorCases_FindServiceByID(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	booking := core.BookingCore{
+		UserID: "1",
+		DetailsBook: []core.DetailsBookCore{
+			{
+				ServiceID:    "2",
+				ServiceStart: "2023-10-27 10:00:00",
+				ServiceEnd:   "2023-10-27 11:00:00",
+			},
+		},
+	}
+
+	const userName = "tiara"
+
+	// Simulasi pengembalian kesalahan dari FindServiceByID
+	expectedServiceError := errors.New("Error finding service by ID")
+	mockRepo.EXPECT().FindServiceByID(gomock.Any()).Return(core.ServiceCore{}, expectedServiceError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, err := bookingService.Create(booking, userName)
+	assert.Error(t, err)
+	assert.Equal(t, expectedServiceError, err)
+}
+
+func TestBookingService_Create_ErrorCases_GetPriceService(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+
+	booking := core.BookingCore{
+		UserID: "1",
+		DetailsBook: []core.DetailsBookCore{
+			{
+				ServiceID:    "2",
+				ServiceStart: "2023-10-27 10:00:00",
+				ServiceEnd:   "2023-10-27 11:00:00",
+			},
+		},
+	}
+
+	const userName = "tiara"
+
+	// Simulasi pengembalian kesalahan dari GetPriceService
+	expectedPriceError := errors.New("Error getting service price")
+	mockRepo.EXPECT().FindServiceByID(gomock.Any()).Return(core.ServiceCore{}, nil)
+	mockRepo.EXPECT().GetPriceService(gomock.Any()).Return(0, expectedPriceError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, err := bookingService.Create(booking, userName)
+	assert.Error(t, err)
+	assert.Equal(t, expectedPriceError, err)
+}
+
+func TestBookingService_Create_ErrorCases_CheckAvailableService(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	booking := core.BookingCore{
+		UserID: "1",
+		DetailsBook: []core.DetailsBookCore{
+			{
+				ServiceID:    "2",
+				ServiceStart: "2023-10-27 10:00:00",
+				ServiceEnd:   "2023-10-27 11:00:00",
+			},
+		},
+	}
+
+	const userName = "tiara"
+
+	// Simulasi pengembalian kesalahan dari CheckAvailableService
+	expectedAvailabilityError := errors.New("Error checking service availability")
+	mockRepo.EXPECT().FindServiceByID(gomock.Any()).Return(core.ServiceCore{}, nil)
+	mockRepo.EXPECT().GetPriceService(gomock.Any()).Return(0, nil)
+	mockRepo.EXPECT().CheckAvailableService(gomock.Any(), gomock.Any(), gomock.Any()).Return(expectedAvailabilityError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, err := bookingService.Create(booking, userName)
+	assert.Error(t, err)
+	assert.Equal(t, expectedAvailabilityError, err)
+}
+
+func TestBookingService_Create_ErrorCases_Create(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+
+	booking := core.BookingCore{
+		UserID: "1",
+		DetailsBook: []core.DetailsBookCore{
+			{
+				ServiceID:    "2",
+				ServiceStart: "2023-10-27 10:00:00",
+				ServiceEnd:   "2023-10-27 11:00:00",
+			},
+		},
+	}
+
+	const userName = "tiara"
+
+	expectedCreateError := errors.New("Error creating booking")
+	mockRepo.EXPECT().FindServiceByID(gomock.Any()).Return(core.ServiceCore{}, nil)
+	mockRepo.EXPECT().GetPriceService(gomock.Any()).Return(0, nil)
+	mockRepo.EXPECT().CheckAvailableService(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+	mockRepo.EXPECT().Create(gomock.Any()).Return(core.BookingCore{}, expectedCreateError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, err := bookingService.Create(booking, userName)
+	assert.Error(t, err)
+	assert.Equal(t, expectedCreateError, err)
+}
+
+//find service by id
 func TestBookingService_FindServiceByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -62,6 +184,23 @@ func TestBookingService_FindServiceByID(t *testing.T) {
 	assert.Equal(t, expectedServiceData, serviceData)
 }
 
+func TestBookingService_FindServiceByID_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	service := NewBookingService(mockRepo)
+
+	serviceID := "123"
+	expectedGetError := errors.New("Error finding service by ID")
+	mockRepo.EXPECT().FindServiceByID(serviceID).Return(core.ServiceCore{}, expectedGetError)
+
+	_, err := service.FindServiceByID(serviceID)
+	assert.Error(t, err)
+	assert.Equal(t, expectedGetError, err)
+}
+
+//get all histories
 func TestBookingService_GetAllHistories(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -94,6 +233,24 @@ func TestBookingService_GetAllHistories(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expectedHistories, histories)
 }
+
+func TestBookingService_GetAllHistories_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	service := NewBookingService(mockRepo)
+
+	userID := "user123"
+	expectedGetError := errors.New("Error getting all booking histories")
+	mockRepo.EXPECT().GetAllHistories(userID).Return(nil, expectedGetError)
+
+	_, err := service.GetAllHistories(userID)
+	assert.Error(t, err)
+	assert.Equal(t, expectedGetError, err)
+}
+
+//get spesific history
 func TestBookingService_GetSpecificHistory(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -103,7 +260,6 @@ func TestBookingService_GetSpecificHistory(t *testing.T) {
 
 	userID := "user123"
 	bookingID := "1"
-
 	detailsExpected := []core.DetailsBookCore{
 		{
 			ID:           "1",
@@ -121,13 +277,30 @@ func TestBookingService_GetSpecificHistory(t *testing.T) {
 		Status:      "pending",
 		DetailsBook: detailsExpected,
 	}
-
 	mockRepo.EXPECT().GetSpecificHistory(userID, bookingID).Return(expectedHistories, nil)
 	histories, err := service.GetSpecificHistory(bookingID, userID)
 	assert.NoError(t, err)
 	assert.Equal(t, expectedHistories, histories)
 }
 
+func TestBookingService_GetSpecificHistory_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	service := NewBookingService(mockRepo)
+	userID := "user123"
+	bookingID := "1"
+
+	expectedGetError := errors.New("Error getting specific booking history")
+	mockRepo.EXPECT().GetSpecificHistory(userID, bookingID).Return(core.BookingCore{}, expectedGetError)
+
+	_, err := service.GetSpecificHistory(bookingID, userID)
+	assert.Error(t, err)
+	assert.Equal(t, expectedGetError, err)
+}
+
+//find booking by id
 func TestBookingService_FindBookingByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -135,7 +308,7 @@ func TestBookingService_FindBookingByID(t *testing.T) {
 	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
 	service := NewBookingService(mockRepo)
 
-	bookingID := "1" 
+	bookingID := "1"
 	expectedBooking := core.BookingCore{
 		ID:          bookingID,
 		UserID:      "user123",
@@ -162,6 +335,23 @@ func TestBookingService_FindBookingByID(t *testing.T) {
 	assert.Equal(t, expectedUserName, userName)
 }
 
+func TestBookingService_FindBookingByID_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	service := NewBookingService(mockRepo)
+
+	bookingID := "1"
+	expectedFindError := errors.New("Error finding booking by ID")
+	mockRepo.EXPECT().FindBookingById(bookingID).Return(core.BookingCore{}, expectedFindError)
+
+	_, _, err := service.FindBookingByID(bookingID)
+	assert.Error(t, err)
+	assert.Equal(t, expectedFindError, err)
+}
+
+//update status booking
 func TestBookingService_UpdateStatusBooking(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -186,17 +376,73 @@ func TestBookingService_UpdateStatusBooking(t *testing.T) {
 	updatedStatus, userName, err := bookingService.UpdateStatusBooking(newDatacore)
 
 	assert.NoError(t, err)
-	assert.Equal(t, expectedUpdatedStatus, updatedStatus, "Updated status is not as expected")
-	assert.Equal(t, expectedUserName, userName, "User name is not as expected")
+	assert.Equal(t, expectedUpdatedStatus, updatedStatus)
+	assert.Equal(t, expectedUserName, userName)
 }
 
+func Test_FindBook_UpdateStatusBooking_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	newDatacore := core.BookingCore{
+		InvoiceNumb: "INV123",
+	}
+
+	expectedError := errors.New("Error finding booking by invoice")
+	mockRepo.EXPECT().FindBookingByInvoice(newDatacore.InvoiceNumb).Return(core.BookingCore{}, expectedError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	assert.Error(t, err)
+	assert.Equal(t, expectedError, err)
+}
+func TestBookingService_UpdateStatusBooking_ErrorCases_FindByInvoiceError(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+
+	newDatacore := core.BookingCore{
+		InvoiceNumb: "INV123",
+	}
+
+	expectedError := errors.New("Error finding booking by invoice")
+	mockRepo.EXPECT().FindBookingByInvoice(newDatacore.InvoiceNumb).Return(core.BookingCore{}, expectedError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	assert.Error(t, err)
+	assert.Equal(t, expectedError, err)
+}
+
+func TestBookingService_UpdateStatusBooking_ErrorCases_UpdateStatusError(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+
+	newDatacore := core.BookingCore{
+		InvoiceNumb: "INV123",
+	}
+
+	expectedError := errors.New("Error updating status")
+	mockRepo.EXPECT().FindBookingByInvoice(newDatacore.InvoiceNumb).Return(core.BookingCore{}, nil)
+	mockRepo.EXPECT().UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore).Return(core.BookingCore{}, expectedError)
+
+	bookingService := NewBookingService(mockRepo)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	assert.Error(t, err)
+	assert.Equal(t, expectedError, err)
+}
+
+//find all booking
 func TestBookingService_FindAllBookings(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
 	service := NewBookingService(mockRepo)
-
 	userID := "user123"
 	bookingData := []core.BookingCore{
 		{
@@ -224,5 +470,20 @@ func TestBookingService_FindAllBookings(t *testing.T) {
 
 	_, err := service.FindAllBookings(userID)
 	assert.NoError(t, err)
+}
 
+func TestBookingService_FindAllBookings_ErrorCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockBookingRepoInterface(ctrl)
+	service := NewBookingService(mockRepo)
+
+	userID := "user123"
+	expectedError := errors.New("Error retrieving bookings")
+	mockRepo.EXPECT().FindAllBookings().Return(nil, expectedError)
+
+	_, err := service.FindAllBookings(userID)
+	assert.Error(t, err)
+	assert.Equal(t, expectedError, err)
 }
