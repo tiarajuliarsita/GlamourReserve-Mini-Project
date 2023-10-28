@@ -23,7 +23,7 @@ func NewUserService(repo repositories.UserRepoInterface) *userService {
 func (s *userService) CreateUser(user core.UserCore) (core.UserCore, error) {
 	user, err := s.repo.CreateUser(user)
 	if err != nil {
-		return user, err
+		return user, err	
 	}
 	return user, nil
 }

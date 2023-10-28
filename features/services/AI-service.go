@@ -7,6 +7,7 @@ import (
 )
 
 type beautyCareService struct {
+	
 }
 
 type BeautyCareInterface interface {
