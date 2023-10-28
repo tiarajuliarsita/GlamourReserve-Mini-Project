@@ -15,14 +15,13 @@ func main() {
 	appCfg, dbCfg := config.InitConfig()
 	database.InitDBMysql(dbCfg)
 
-	
-
 	app := echo.New()
 	app.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "time=${time_rfc3339_nano}, method=${method}, uri=${uri}, status=${status}\n",
 	}))
 
-	
+	app.Use(middleware.CORS())
+	app.Pre(middleware.RemoveTrailingSlash())
 
 	routes.UserRoutes(app, database.DB)
 	routes.ServicesRoutes(app, database.DB)
