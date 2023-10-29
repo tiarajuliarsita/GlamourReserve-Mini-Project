@@ -26,6 +26,5 @@ func main() {
 	routes.UserRoutes(app, database.DB)
 	routes.ServicesRoutes(app, database.DB)
 	routes.BookingRoutes(app, database.DB)
-
 	app.Logger.Fatal(app.Start(fmt.Sprintf(":%d", appCfg.APPPORT)))
 }
