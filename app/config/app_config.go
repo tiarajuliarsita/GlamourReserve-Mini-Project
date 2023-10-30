@@ -18,7 +18,6 @@ func LoadAPP() *AppConfig {
 
 	godotenv.Load(".env")
 
-	// var isRead = false
 	if val, found := os.LookupEnv("APPPORT"); found {
 		port, err := strconv.Atoi(val)
 		if err != nil {
