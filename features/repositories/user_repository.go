@@ -25,7 +25,7 @@ func NewUserRepository(DB *gorm.DB) *userRepository {
 
 func (r *userRepository) FindAll() ([]core.UserCore, error) {
 	var users []models.User
-	err := r.db.Find(&users).Error
+	err := r.db.Where("role = ?", "user").Find(&users).Error
 	if err != nil {
 		return nil, err
 	}

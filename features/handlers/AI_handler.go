@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/features/services"
@@ -25,9 +24,7 @@ func (h *beautyCareHandler) AskAboutBeauty(e echo.Context) error {
 		return response.RespondJSON(e, 400, err.Error(), nil)
 	}
 
-	userInput := fmt.Sprintf("Produk kecantikan %s yang sesuai untuk kulit %s dengan concern %s dengan biaya sebesar Rp %.0f.", request.Brand, request.SkinType, request.Concern, request.Budget)
-
-	answer, err := h.beautySvc.AskAboutBeauty(userInput, request.Brand, request.SkinType, os.Getenv("OPEN_AI_KEY"))
+	answer, err := h.beautySvc.AskAboutBeauty(request, os.Getenv("OPEN_AI_KEY"))
 	if err != nil {
 		return response.RespondJSON(e, 500, err.Error(), nil)
 	}
