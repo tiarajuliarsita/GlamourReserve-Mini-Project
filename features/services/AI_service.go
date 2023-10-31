@@ -2,37 +2,42 @@ package services
 
 import (
 	"context"
+	"glamour_reserve/entity/request"
+	"os"
 
 	"github.com/sashabaranov/go-openai"
 )
 
 type beautyCareService struct {
-	
 }
 
 type BeautyCareInterface interface {
-	AskAboutBeauty(userInput, brand, skinType, openAIKey string) (string, error)
+	AskAboutBeauty(question request.AskBeautyReq, openAIKey string) (string, error)
 }
 
 func NewBeautyCare() BeautyCareInterface {
 	return &beautyCareService{}
 }
 
-func (s *beautyCareService)AskAboutBeauty(userInput, brand, skinType, openAIKey string) (string, error){
+func (s *beautyCareService) AskAboutBeauty(question request.AskBeautyReq, openAIKey string) (string, error) {
 	ctx := context.Background()
 	client := openai.NewClient(openAIKey)
 	model := openai.GPT3Dot5Turbo
+	filePath := "utils/helpers/prompt/prompt.txt"
+	content, err := os.ReadFile(filePath)
+	if err != nil {
+		return "", err
+	}
 	messages := []openai.ChatCompletionMessage{
 		{
 			Role:    openai.ChatMessageRoleSystem,
-			Content: "Halo, saya Glam akan membantu mu menemukan perawatan kecantikan yang cocok untukmu ",
+			Content: string(content),
 		},
 		{
 			Role:    openai.ChatMessageRoleUser,
-			Content: userInput,
+			Content: question.Question,
 		},
 	}
-	
 
 	resp, err := s.getCompletionFromMessages(ctx, client, messages, model)
 	if err != nil {

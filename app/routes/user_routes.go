@@ -25,7 +25,7 @@ func UserRoutes(app *echo.Echo, db *gorm.DB) {
 	
 	beautyService := services.NewBeautyCare()
 	beautyHandlers := handlers.NewBeautyCare(beautyService)
-	app.POST("/ask-about-beauty-care", beautyHandlers.AskAboutBeauty)
+	app.POST("/glam", beautyHandlers.AskAboutBeauty)
 
 	admin := app.Group("/users")
 	admin.Use(authentication.Middleware())

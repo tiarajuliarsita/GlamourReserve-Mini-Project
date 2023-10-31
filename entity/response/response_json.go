@@ -19,4 +19,14 @@ func RespJSONWithUserName(e echo.Context, status int, message string, data inter
 	return e.JSON(status, response)
 }
 
+type Response struct {
+	Status string      `json:"status"`
+	Data   interface{} `json:"data"`
+}
 
+func ResponseJSON(status string, data interface{}) Response {
+	return Response{
+		Status: status,
+		Data:   data,
+	}
+}

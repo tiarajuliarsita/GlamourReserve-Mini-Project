@@ -29,8 +29,5 @@ type NewStatusReq struct {
 }
 
 type AskBeautyReq struct {
-	Brand    string  `json:"brand"`
-	SkinType string  `json:"skin_type"`
-	Concern  string  `json:"concern"`
-	Budget   float64 `json:"budget"`
+	Question    string  `json:"Question"`
 }
