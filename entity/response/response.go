@@ -18,7 +18,7 @@ type ServiceRespon struct {
 	Name        string `json:"name" `
 	Description string `json:"description"`
 	Price       int    `json:"price"`
-	// Image       string    `json:"image"`
+	Image       string    `json:"image"`
 	// Variants  []models.Variant `json:"variants" `
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -30,17 +30,15 @@ type BookingRespon struct {
 	Status         string
 	InvoiceNumb    string                `json:"invoice_num"`
 	Total          int                   `json:"total"`
-	DetailsBooking []DetailBookingRespon `json:"details"`
+	DetailsBooking []DetailBookingRespon `json:"details,omitempy"`
 	CreatedAt      time.Time             `json:"created_at"`
 }
 
 type DetailBookingRespon struct {
-	ID        string `json:"id"`
-	ServiceID string `json:"service_id"`
-	Name      string `json:"name"`
-	Price     int    `json:"price"`
-	Date      string `json:"date"`
-	Time      string `json:"time"`
+	ID           string    `json:"id"`
+	ServiceID    string    `json:"service_id"`
+	Name         string    `json:"name"`
+	Price        int       `json:"price"`
+	ServiceStart string `json:"service_start_time"`
+	ServiceEnd   string `json:"service_end_time"`
 }
-
-

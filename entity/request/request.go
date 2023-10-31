@@ -4,7 +4,7 @@ type ServiceRequest struct {
 	Name        string `json:"name" form:"name"`
 	Description string `json:"description" form:"description"`
 	Price       int    `json:"price" form:"price"`
-	// Image       *multipart.FileHeader `form:"image"`
+	// Image       string `form:"image"`
 }
 
 type UserRequest struct {
@@ -15,9 +15,9 @@ type UserRequest struct {
 }
 
 type BookDataRequest struct {
-	Service_id string `json:"service_id"`
-	Date       string `json:"date"`
-	Time       string `json:"time"`
+	Service_id   string `json:"service_id"`
+	ServiceStart string `json:"service_start_time"`
+	ServiceEnd   string `json:"service_end_time"`
 }
 
 type BookingRequest struct {
@@ -26,4 +26,8 @@ type BookingRequest struct {
 
 type NewStatusReq struct {
 	Status string `json:"new_status"`
+}
+
+type AskBeautyReq struct {
+	Question    string  `json:"Question"`
 }
