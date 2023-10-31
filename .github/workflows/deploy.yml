@@ -45,8 +45,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            sudo docker stop glamourreserve-container
-            sudo docker rm glamourreserve-container
-            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve
-            sudo docker run -d -p 8080:8080 -e SECRETKEY=${{ secrets.SECRETKEY }} -e APPPORT=${{ secrets.APPPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASSWORD=${{ secrets.DBPASSWORD }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} -e SMTP_SERVER=${{ secrets.SMTP_SERVER }} -e SMTP_PORT=${{ secrets.SMTP_PORT }} -e SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} -e ACCOUNT_ID=${{ secrets.ACCOUNT_ID }} -e ACCESS_KEY_ID=${{ secrets.ACCESS_KEY_ID }} -e ACCESS_KEY_SECRET=${{ secrets.ACCESS_KEY_SECRET }} --name glamourreserve-container ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve:latest
+            sudo docker stop glamourreserve
+            sudo docker rm glamourreserve
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve:latest
+            sudo docker run -d -p 8080:8080 -e SECRETKEY=${{ secrets.SECRETKEY }} -e APPPORT=${{ secrets.APPPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASSWORD=${{ secrets.DBPASSWORD }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} -e SMTP_SERVER=${{ secrets.SMTP_SERVER }} -e SMTP_PORT=${{ secrets.SMTP_PORT }} -e SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} -e ACCOUNT_ID=${{ secrets.ACCOUNT_ID }} -e ACCESS_KEY_ID=${{ secrets.ACCESS_KEY_ID }} -e ACCESS_KEY_SECRET=${{ secrets.ACCESS_KEY_SECRET }} --name glamourreserve ${{ secrets.DOCKERHUB_USERNAME }}/glamourreserve:latest
