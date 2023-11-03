@@ -7,6 +7,7 @@ import (
 	"glamour_reserve/features/services"
 	"glamour_reserve/utils/helpers/authentication"
 	"glamour_reserve/utils/helpers/cloud"
+	"glamour_reserve/utils/helpers/constanta"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -43,7 +44,7 @@ func (h *serviceHandler) CreateService(e echo.Context) error {
 
 	_, _, role := authentication.ExtractTokenUserId(e)
 
-	if role != "admin" {
+	if role != constanta.ADMIN{
 		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 
@@ -82,7 +83,7 @@ func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 
 func (h *serviceHandler) DeletByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN{
 		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 
@@ -100,7 +101,7 @@ func (h *serviceHandler) DeletByID(e echo.Context) error {
 
 func (h *serviceHandler) UpdateByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, 401, "can`t update service", nil)
 	}
 

@@ -6,6 +6,7 @@ import (
 	"glamour_reserve/entity/response"
 	"glamour_reserve/features/services"
 	"glamour_reserve/utils/helpers/authentication"
+	"glamour_reserve/utils/helpers/constanta"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -63,7 +64,7 @@ func (h *userHandler) LoginUser(e echo.Context) error {
 
 func (h *userHandler) GetAllUsers(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 

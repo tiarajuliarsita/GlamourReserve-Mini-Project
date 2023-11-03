@@ -5,6 +5,7 @@ import (
 	"glamour_reserve/entity/request"
 	"glamour_reserve/entity/response"
 	"glamour_reserve/utils/helpers/authentication"
+	"glamour_reserve/utils/helpers/constanta"
 	"net/http"
 
 	"glamour_reserve/features/services"
@@ -23,7 +24,7 @@ func NewBookingHandler(bookingSvc services.BookingServiceInterface) *bookingHand
 func (h *bookingHandler) CreateBooking(e echo.Context) error {
 
 	userId, userName, role := authentication.ExtractTokenUserId(e)
-	if role != "user" {
+	if role != constanta.USER {
 		return response.RespondJSON(e, http.StatusUnauthorized, "you don't have permission", nil)
 	}
 
@@ -55,7 +56,7 @@ func (h *bookingHandler) CreateBooking(e echo.Context) error {
 func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 
 	userId, _, role := authentication.ExtractTokenUserId(e)
-	if role != "user" {
+	if role != constanta.USER {
 		return response.RespondJSON(e, http.StatusUnauthorized, "you don't have permission", nil)
 	}
 
@@ -76,7 +77,7 @@ func (h *bookingHandler) GetAllHistories(e echo.Context) error {
 
 func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 	userId, _, role := authentication.ExtractTokenUserId(e)
-	if role != "user" {
+	if role != constanta.USER {
 		return response.RespondJSON(e, http.StatusUnauthorized, "you don't have permission", nil)
 	}
 
@@ -94,7 +95,7 @@ func (h *bookingHandler) GetSpecificHistory(e echo.Context) error {
 
 func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, http.StatusForbidden, "you don't have permission", nil)
 	}
 
@@ -111,7 +112,7 @@ func (h *bookingHandler) FindBookingByID(e echo.Context) error {
 
 func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, http.StatusForbidden, "you don't have permission", nil)
 	}
 
@@ -137,7 +138,7 @@ func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 
 func (h *bookingHandler) GetAllBookings(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 
