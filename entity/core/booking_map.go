@@ -56,9 +56,9 @@ func BookCoreToBookResp(book BookingCore) response.BookingRespon {
 
 }
 
-func UpdateStatusToBookCore(newStatus request.NewStatusReq, invoice string) BookingCore {
+func UpdateStatusToBookCore(newStatus request.NewStatusReq) BookingCore {
 	dataCore := BookingCore{
-		InvoiceNumb: invoice,
+		InvoiceNumb: newStatus.NoInvoice,
 		Status:      newStatus.Status,
 	}
 	return dataCore

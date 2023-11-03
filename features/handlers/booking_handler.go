@@ -117,15 +117,15 @@ func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 	}
 
 	newStatus := request.NewStatusReq{}
-	NoInvoice := e.Param("invoice")
+	booking_id := e.Param("booking_id")
 
 	err := e.Bind(&newStatus)
 	if err != nil {
 		return response.RespondJSON(e, http.StatusBadRequest, err.Error(), nil)
 	}
 
-	dataCore := core.UpdateStatusToBookCore(newStatus, NoInvoice)
-	updatedStatus, userName, err := h.bookingSvc.UpdateStatusBooking(dataCore)
+	dataCore := core.UpdateStatusToBookCore(newStatus)
+	updatedStatus, userName, err := h.bookingSvc.UpdateStatusBooking(dataCore,booking_id)
 	if err != nil {
 		return response.RespondJSON(e, http.StatusInternalServerError, err.Error(), nil)
 	}
