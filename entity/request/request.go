@@ -26,6 +26,7 @@ type BookingRequest struct {
 
 type NewStatusReq struct {
 	Status string `json:"new_status"`
+	NoInvoice string `json:"no_invoice"`
 }
 
 type AskBeautyReq struct {

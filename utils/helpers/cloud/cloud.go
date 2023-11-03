@@ -55,7 +55,7 @@ func UploadFile(file *multipart.FileHeader, client *s3.Client) string {
 		log.Fatal(err)
 	}
 
-	publiccostume := fmt.Sprintf("https://glamourreserve.my.id/%s", randomKey)
+	publiccostume := fmt.Sprintf("https://storage.glamourreserve.my.id/%s", randomKey)
 	return publiccostume
 
 }

@@ -373,7 +373,7 @@ func TestBookingService_UpdateStatusBooking(t *testing.T) {
 	mockRepo.EXPECT().FindUserName(newDatacore.UserID).Return(expectedUserName)
 
 	bookingService := NewBookingService(mockRepo)
-	updatedStatus, userName, err := bookingService.UpdateStatusBooking(newDatacore)
+	updatedStatus, userName, err := bookingService.UpdateStatusBooking(newDatacore,"1")
 
 	assert.NoError(t, err)
 	assert.Equal(t, expectedUpdatedStatus, updatedStatus)
@@ -393,7 +393,7 @@ func Test_FindBook_UpdateStatusBooking_ErrorCase(t *testing.T) {
 	mockRepo.EXPECT().FindBookingByInvoice(newDatacore.InvoiceNumb).Return(core.BookingCore{}, expectedError)
 
 	bookingService := NewBookingService(mockRepo)
-	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore,"1")
 	assert.Error(t, err)
 	assert.Equal(t, expectedError, err)
 }
@@ -411,7 +411,7 @@ func TestBookingService_UpdateStatusBooking_ErrorCases_FindByInvoiceError(t *tes
 	mockRepo.EXPECT().FindBookingByInvoice(newDatacore.InvoiceNumb).Return(core.BookingCore{}, expectedError)
 
 	bookingService := NewBookingService(mockRepo)
-	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore,"1")
 	assert.Error(t, err)
 	assert.Equal(t, expectedError, err)
 }
@@ -431,7 +431,7 @@ func TestBookingService_UpdateStatusBooking_ErrorCases_UpdateStatusError(t *test
 	mockRepo.EXPECT().UpdateStatusInovice(newDatacore.InvoiceNumb, newDatacore).Return(core.BookingCore{}, expectedError)
 
 	bookingService := NewBookingService(mockRepo)
-	_, _, err := bookingService.UpdateStatusBooking(newDatacore)
+	_, _, err := bookingService.UpdateStatusBooking(newDatacore,"1")
 	assert.Error(t, err)
 	assert.Equal(t, expectedError, err)
 }

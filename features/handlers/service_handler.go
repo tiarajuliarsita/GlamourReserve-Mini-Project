@@ -7,6 +7,8 @@ import (
 	"glamour_reserve/features/services"
 	"glamour_reserve/utils/helpers/authentication"
 	"glamour_reserve/utils/helpers/cloud"
+	"glamour_reserve/utils/helpers/constanta"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
@@ -26,7 +28,7 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 
 	services, err := h.svcService.FindAll(name, offset, limit)
 	if err != nil {
-		return response.RespondJSON(e, 500, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusInternalServerError, err.Error(), nil)
 	}
 
 	servicesResponse := []response.ServiceRespon{}
@@ -35,25 +37,25 @@ func (h *serviceHandler) GetAllServices(e echo.Context) error {
 		servicesResponse = append(servicesResponse, service)
 	}
 
-	return response.RespondJSON(e, 200, "succes", servicesResponse)
+	return response.RespondJSON(e, http.StatusOK, "succes", servicesResponse)
 }
 
 func (h *serviceHandler) CreateService(e echo.Context) error {
 
 	_, _, role := authentication.ExtractTokenUserId(e)
 
-	if role != "admin" {
-		return response.RespondJSON(e, 401, "you don`t have permission", nil)
+	if role != constanta.ADMIN{
+		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 
 	svcRequest := request.ServiceRequest{}
 	if err := e.Bind(&svcRequest); err != nil {
-		return response.RespondJSON(e, 400, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusBadRequest, err.Error(), nil)
 	}
 
 	file, err := e.FormFile("image")
 	if err != nil {
-		return e.JSON(400, "Failed to receive file")
+		return e.JSON(http.StatusBadRequest, "Failed to receive file")
 	}
 
 	client := cloud.ConfigCloud()
@@ -61,45 +63,45 @@ func (h *serviceHandler) CreateService(e echo.Context) error {
 	dataService := core.ServiceReqToServiceCore(svcRequest, imageurl)
 	data, err := h.svcService.CreateService(dataService)
 	if err != nil {
-		return response.RespondJSON(e, 500, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusInternalServerError, err.Error(), nil)
 	}
 
 	servisResp := core.ServiceCoreToResponseService(data)
-	return response.RespondJSON(e, 201, "succes", servisResp)
+	return response.RespondJSON(e, http.StatusCreated, "succes", servisResp)
 }
 
 func (h *serviceHandler) GetServiceByID(e echo.Context) error {
 	id := e.Param("id")
 	service, err := h.svcService.FindById(id)
 	if err != nil {
-		return response.RespondJSON(e, 400, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusNotFound, err.Error(), nil)
 	}
 
 	svcResp := core.ServiceCoreToResponseService(service)
-	return response.RespondJSON(e, 200, "succes", svcResp)
+	return response.RespondJSON(e, http.StatusOK, "succes", svcResp)
 }
 
 func (h *serviceHandler) DeletByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
-		return response.RespondJSON(e, 401, "you don`t have permission", nil)
+	if role != constanta.ADMIN{
+		return response.RespondJSON(e, http.StatusForbidden, "you don`t have permission", nil)
 	}
 
 	id := e.Param("id")
 	ok, err := h.svcService.Delete(id)
 	if err != nil {
-		return response.RespondJSON(e, 400, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusInternalServerError, err.Error(), nil)
 	}
 	if !ok {
-		return response.RespondJSON(e, 400, err.Error(), nil)
+		return response.RespondJSON(e, http.StatusNotFound, err.Error(), nil)
 	}
-	return response.RespondJSON(e, 200, "succes", nil)
+	return response.RespondJSON(e, http.StatusOK, "succes", nil)
 
 }
 
 func (h *serviceHandler) UpdateByID(e echo.Context) error {
 	_, _, role := authentication.ExtractTokenUserId(e)
-	if role != "admin" {
+	if role != constanta.ADMIN {
 		return response.RespondJSON(e, 401, "can`t update service", nil)
 	}
 
@@ -118,7 +120,7 @@ func (h *serviceHandler) UpdateByID(e echo.Context) error {
 
 	client := cloud.ConfigCloud()
 	imageurl := cloud.UploadFile(file, client)
-	
+
 	NewService := core.ServiceReqToServiceCore(newService, imageurl)
 	dataService, err := h.svcService.Update(id, NewService)
 	if err != nil {

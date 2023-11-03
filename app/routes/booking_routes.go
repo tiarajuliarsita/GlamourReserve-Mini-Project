@@ -28,7 +28,7 @@ func BookingRoutes(app *echo.Echo, db *gorm.DB) {
 	admin := app.Group("/admin/bookings")
 	admin.Use(authentication.Middleware())
 	admin.GET("/:id", handler.FindBookingByID)
-	admin.PUT("/:invoice", handler.UpdateStatusBooking)
+	admin.PUT("/:id", handler.UpdateStatusBooking)
 	admin.GET("", handler.GetAllBookings)
 
 }
