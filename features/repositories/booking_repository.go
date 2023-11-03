@@ -16,7 +16,7 @@ type BookingRepoInterface interface {
 	GetAllHistories(userID string) ([]core.BookingCore, error)
 	GetSpecificHistory(userID, bookingID string) (core.BookingCore, error)
 	FindBookingById(bookingId string) (core.BookingCore, error)
-	UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error)
+	UpdateStatusInovice(bookingID string, newBook core.BookingCore) (core.BookingCore, error)
 	FindBookingByInvoice(invoiceNum string) (core.BookingCore, error)
 	FindAllBookings() ([]core.BookingCore, error)
 	FindUserName(userId string) string
@@ -132,10 +132,10 @@ func (r *bookingRepository) FindBookingById(bookingId string) (core.BookingCore,
 	return data, nil
 }
 
-func (r *bookingRepository) UpdateStatusInovice(invoiceNum string, newBook core.BookingCore) (core.BookingCore, error) {
+func (r *bookingRepository) UpdateStatusInovice(bookingID string, newBook core.BookingCore) (core.BookingCore, error) {
 	booking := core.BookingCoreToBookingModels(newBook)
 
-	err := r.db.Where("invoice_numb = ?", invoiceNum).Updates(&booking).Error
+	err := r.db.Where("invoice_numb = ?", newBook.InvoiceNumb).Updates(&booking).Error
 	if err != nil {
 		return core.BookingCore{}, err
 	}
