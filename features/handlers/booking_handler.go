@@ -117,7 +117,7 @@ func (h *bookingHandler) UpdateStatusBooking(e echo.Context) error {
 	}
 
 	newStatus := request.NewStatusReq{}
-	booking_id := e.Param("booking_id")
+	booking_id := e.Param("id")
 
 	err := e.Bind(&newStatus)
 	if err != nil {

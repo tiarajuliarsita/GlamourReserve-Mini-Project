@@ -1,0 +1,1710 @@
+{
+	"info": {
+		"_postman_id": "0178dad7-4e25-45b6-a720-7f6724671749",
+		"name": "glamour-reserve",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23286631",
+		"_collection_link": "https://universal-astronaut-475767.postman.co/workspace/BELAJAR~5871a6de-0914-4261-89ec-4fb9927e6678/collection/23286631-0178dad7-4e25-45b6-a720-7f6724671749?action=share&source=collection_link&creator=23286631"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Get all History",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenuser1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/bookings",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"bookings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "succes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/bookings",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 14:11:51 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1078"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": \"29604e84-094f-479c-9507-016a2092e895\",\n            \"Status\": \"pending\",\n            \"invoice_num\": \"2023-10-3059554b38\",\n            \"total\": 100000,\n            \"details\": [\n                {\n                    \"id\": \"7ba9d9fb-e89a-41c9-8892-917d1ae7301e\",\n                    \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                    \"name\": \"Facial Treatment\",\n                    \"price\": 100000,\n                    \"service_start_time\": \"2023-02-07T14:00:00+08:00\",\n                    \"service_end_time\": \"2023-02-07T15:00:00+08:00\"\n                }\n            ],\n            \"created_at\": \"2023-10-30T21:29:39.459+08:00\"\n        },\n        {\n            \"id\": \"bc61dc42-100e-46be-b714-2c02335c4252\",\n            \"Status\": \"pending\",\n            \"invoice_num\": \"2023-10-3036453347\",\n            \"total\": 200000,\n            \"details\": [\n                {\n                    \"id\": \"63bd7ea5-47a7-4afb-830e-ebea35210d66\",\n                    \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                    \"name\": \"Facial Treatment\",\n                    \"price\": 100000,\n                    \"service_start_time\": \"2023-02-07T11:00:00+08:00\",\n                    \"service_end_time\": \"2023-02-07T12:00:00+08:00\"\n                },\n                {\n                    \"id\": \"72a470bb-45ce-4795-94fb-d79cfeb94e84\",\n                    \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                    \"name\": \"Facial Treatment\",\n                    \"price\": 100000,\n                    \"service_start_time\": \"2023-02-07T12:00:00+08:00\",\n                    \"service_end_time\": \"2023-02-07T13:00:00+08:00\"\n                }\n            ],\n            \"created_at\": \"2023-10-30T21:27:59.132+08:00\"\n        }\n    ],\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get spesific history",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenuser1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/users/bookings/:id",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "38a72c09-85b8-47c2-b230-80de1648caa"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "succes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/users/bookings/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "29604e84-094f-479c-9507-016a2092e895"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 14:12:24 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "434"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"29604e84-094f-479c-9507-016a2092e895\",\n        \"Status\": \"pending\",\n        \"invoice_num\": \"2023-10-3059554b38\",\n        \"total\": 100000,\n        \"details\": [\n            {\n                \"id\": \"7ba9d9fb-e89a-41c9-8892-917d1ae7301e\",\n                \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                \"name\": \"Facial Treatment\",\n                \"price\": 100000,\n                \"service_start_time\": \"2023-02-07T14:00:00+08:00\",\n                \"service_end_time\": \"2023-02-07T15:00:00+08:00\"\n            }\n        ],\n        \"created_at\": \"2023-10-30T21:29:39.459+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/users/bookings/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "38a72c09-85b8-47c2-b230-80de1648caa"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:52:59 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"invalid or expired jwt\"\n}"
+						},
+						{
+							"name": "not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/users/bookings/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "38a72c09-85b8-47c2-b230-80de1648caa"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:53:39 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"record not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\":\"tiara\",\r\n    \"email\":\"tiarajuliarsita@gmail.com\",\r\n    \"phone\":\"085214097254\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://glamourreserve.my.id:8080/users/register",
+							"protocol": "http",
+							"host": [
+								"glamourreserve",
+								"my",
+								"id"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_name\":\"admin\",\r\n    \"email\":\"admin@gmail.com\",\r\n    \"phone\":\"085214097254\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 12:27:28 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "232"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"b9563098-315a-4b79-9f79-541050674f45\",\n        \"user_name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"phone\": \"085214097254\",\n        \"created_at\": \"2023-10-30T20:27:28.425+08:00\",\n        \"updated_at\": \"2023-10-30T20:27:28.425+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						},
+						{
+							"name": "required name",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_name\":\"\",\r\n    \"email\":\"tiarajuliarsita02@gmail.com\",\r\n    \"phone\":\"085214097254\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/register",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:55:20 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "52"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"your user name is required\"\n}"
+						},
+						{
+							"name": "user already exist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_name\":\"tiara\",\r\n    \"email\":\"tiarajuliarsita02@gmail.com\",\r\n    \"phone\":\"085214097254\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/register",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:55:58 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "113"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"Error 1062 (23000): Duplicate entry 'tiarajuliarsita02@gmail.com' for key 'users.email'\"\n}"
+						},
+						{
+							"name": "invalid email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_name\":\"tiara\",\r\n    \"email\":\"tiarajuliarsit.com\",\r\n    \"phone\":\"085214097254\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/register",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:56:28 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"invalid email format\"\n}"
+						}
+					]
+				},
+				{
+					"name": "createBooking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenuser2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "//request\r\n{\r\n  \"details\": [\r\n    {\r\n       \"service_id\":\"22821ed4-785d-4c8a-9a6d-45151734d7ce\",\r\n       \"service_start_time\":\"2023-02-07 16:00\",\r\n      \"service_end_time\": \"2023-02-07 16:30\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/bookings",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"bookings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "//request\r\n{\r\n  \"details\": [\r\n    {\r\n       \"service_id\":\"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\r\n       \"service_start_time\":\"2023-02-07 11:00\",\r\n      \"service_end_time\": \"2023-02-07 12:00\"\r\n    },\r\n    {\r\n       \"service_id\":\"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\r\n       \"service_start_time\":\"2023-02-07 12:00\",\r\n      \"service_end_time\": \"2023-02-07 13:00\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/bookings",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 13:28:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "648"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"bc61dc42-100e-46be-b714-2c02335c4252\",\n        \"name\": \"tiara\",\n        \"Status\": \"pending\",\n        \"invoice_num\": \"2023-10-3036453347\",\n        \"total\": 200000,\n        \"details\": [\n            {\n                \"id\": \"63bd7ea5-47a7-4afb-830e-ebea35210d66\",\n                \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                \"name\": \"Facial Treatment\",\n                \"price\": 100000,\n                \"service_start_time\": \"2023-02-07 11:00\",\n                \"service_end_time\": \"2023-02-07 12:00\"\n            },\n            {\n                \"id\": \"72a470bb-45ce-4795-94fb-d79cfeb94e84\",\n                \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                \"name\": \"Facial Treatment\",\n                \"price\": 100000,\n                \"service_start_time\": \"2023-02-07 12:00\",\n                \"service_end_time\": \"2023-02-07 13:00\"\n            }\n        ],\n        \"created_at\": \"2023-10-30T21:27:59.132+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						},
+						{
+							"name": "unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "//request\r\n{\r\n  \"details\": [\r\n    {\r\n       \"service_id\":\"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\r\n       \"service_start_time\":\"2023-02-07 14:00\",\r\n      \"service_end_time\": \"2023-02-07 15:00\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/bookings",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:27:13 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"invalid or expired jwt\"\n}"
+						},
+						{
+							"name": "service not available",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "//request\r\n{\r\n  \"details\": [\r\n    {\r\n       \"service_id\":\"22821ed4-785d-4c8a-9a6d-45151734d7ce\",\r\n       \"service_start_time\":\"2023-02-07 14:00\",\r\n      \"service_end_time\": \"2023-02-07 15:00\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/users/bookings",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users",
+										"bookings"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 02 Nov 2023 05:51:26 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"service not available\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "update-serives",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "beauty treatment update",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "description update",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/service.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}/services/:id",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0f91e0-406c-434d-8388-ed960eaf677a"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update services",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "beauty treatment update",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "description update",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/Lenovo/Downloads/service.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseurl}}/services/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"services",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4a0f91e0-406c-434d-8388-ed960eaf677a"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 13:05:47 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "463"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"4a0f91e0-406c-434d-8388-ed960eaf677a\",\n        \"name\": \"Beauty Treatment\",\n        \"description\": \"Beauty treatment available from Monday to Sunday, lasting for 2 hours. Our expert professionals provide a wide range of services to enhance your beauty and relaxation.\",\n        \"price\": 50000,\n        \"image\": \"https://glamourreserve.my.id/7bdde399-ad0a-4d85-b734-0edbbbb5f999\",\n        \"created_at\": \"2023-10-30T20:53:59.845+08:00\",\n        \"updated_at\": \"2023-10-30T20:53:59.845+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "find booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/admin/bookings/:id",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"admin",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "29604e84-094f-479c-9507-016a2092e895"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "find booking",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/admin/bookings/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"admin",
+										"bookings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "29604e84-094f-479c-9507-016a2092e895"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 14:19:13 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "454"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"29604e84-094f-479c-9507-016a2092e895\",\n        \"Status\": \"pending\",\n        \"invoice_num\": \"2023-10-3059554b38\",\n        \"total\": 100000,\n        \"details\": [\n            {\n                \"id\": \"7ba9d9fb-e89a-41c9-8892-917d1ae7301e\",\n                \"service_id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n                \"name\": \"Facial Treatment\",\n                \"price\": 100000,\n                \"service_start_time\": \"2023-02-07T14:00:00+08:00\",\n                \"service_end_time\": \"2023-02-07T15:00:00+08:00\"\n            }\n        ],\n        \"created_at\": \"2023-10-30T21:29:39.459+08:00\"\n    },\n    \"status\": \"succes\",\n    \"user_name\": \"tiara\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update status booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MDA2Mjk1NzQsInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6ImI5NTYzMDk4LTMxNWEtNGI3OS05Zjc5LTU0MTA1MDY3NGY0NSIsInVzZXJfbmFtZSI6ImFkbWluIn0.gJqACABwsCHEo8bJYI2q6Qa13y1mVlVV2M8YELa39k8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_status\":\"done\",\r\n    \"no_invoice\":\"2023-11-0347463854\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/admin/bookings/:id",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"admin",
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"id": 0,
+									"key": "id",
+									"value": "54900d6a-2004-4bbe-b96a-a976b60b366a",
+									"type": "string"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update status booking",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"new_status\":\"done\",\r\n    \"no_invoice\":\"2023-11-0347463854\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/admin/bookings/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"admin",
+										"bookings",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "54900d6a-2004-4bbe-b96a-a976b60b366a",
+											"type": "text",
+											"id": 0
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8",
+									"type": "text"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 22 Nov 2023 04:13:02 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "449",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"54900d6a-2004-4bbe-b96a-a976b60b366a\",\n        \"Status\": \"done\",\n        \"invoice_num\": \"2023-11-0347463854\",\n        \"total\": 50000,\n        \"details\": [\n            {\n                \"id\": \"b17ec74f-91b3-4482-94b3-c58dd2dce5a7\",\n                \"service_id\": \"897a05d7-3006-4988-9324-d9fe70bc530b\",\n                \"name\": \"Beauty Treatment\",\n                \"price\": 50000,\n                \"service_start_time\": \"2023-02-07T13:00:00+08:00\",\n                \"service_end_time\": \"2023-02-07T14:00:00+08:00\"\n            }\n        ],\n        \"created_at\": \"2023-11-03T19:37:41.234+08:00\"\n    },\n    \"status\": \"succes\",\n    \"user_name\": \"tiara\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get allbookings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MDA2Mjk1NzQsInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6ImI5NTYzMDk4LTMxNWEtNGI3OS05Zjc5LTU0MTA1MDY3NGY0NSIsInVzZXJfbmFtZSI6ImFkbWluIn0.gJqACABwsCHEo8bJYI2q6Qa13y1mVlVV2M8YELa39k8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/admin/bookings",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"admin",
+								"bookings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get allbookings",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/admin/bookings",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"admin",
+										"bookings"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 14:17:04 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "581"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"name\": \"tiara\",\n            \"booking_id\": \"29604e84-094f-479c-9507-016a2092e895\",\n            \"invoice_numb\": \"2023-10-3059554b38\",\n            \"total\": 100000,\n            \"status\": \"pending\",\n            \"created_at\": \"2023-10-30T21:29:39.459+08:00\"\n        },\n        {\n            \"name\": \"tiara\",\n            \"booking_id\": \"58ae4919-c084-44a0-bc46-608c6332cfde\",\n            \"invoice_numb\": \"2023-10-304f424459\",\n            \"total\": 100000,\n            \"status\": \"pending\",\n            \"created_at\": \"2023-10-30T22:13:05.954+08:00\"\n        },\n        {\n            \"name\": \"tiara\",\n            \"booking_id\": \"bc61dc42-100e-46be-b714-2c02335c4252\",\n            \"invoice_numb\": \"2023-10-3036453347\",\n            \"total\": 200000,\n            \"status\": \"pending\",\n            \"created_at\": \"2023-10-30T21:27:59.132+08:00\"\n        }\n    ],\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create-services",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenadmin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Beauty Treatment2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Beauty treatment available from Monday to Sunday, lasting for 2 hours. Our expert professionals provide a wide range of services to enhance your beauty and relaxation.",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "50000",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "Fdl_v64-z/WhatsApp Image 2023-11-01 at 14.43.09_d33ef90d.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseurl}}/services",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "create-services",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Facial Treatment",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "\"Complete facial treatment available from Monday to Sunday, with a duration of 2 hours. Get radiant and healthy skin.\"",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100000",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/Lenovo/Downloads/service.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseurl}}/services",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"services"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 12:51:26 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "417"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"e14eb685-ce3c-4aff-89df-5caef7bd92f5\",\n        \"name\": \"Facial Treatment\",\n        \"description\": \"\\\"Complete facial treatment available from Monday to Sunday, with a duration of 2 hours. Get radiant and healthy skin.\\\"\",\n        \"price\": 100000,\n        \"image\": \"https://glamourreserve.my.id/c46011dd-9e6d-4fd6-9071-a168caa20c7f\",\n        \"created_at\": \"2023-10-30T20:51:26.262+08:00\",\n        \"updated_at\": \"2023-10-30T20:51:26.262+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete-Service-By-ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/services/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0f91e0-406c-434d-8388-ed960eaf677a"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete-Service-By-ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/services/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"services",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4a0f91e0-406c-434d-8388-ed960eaf677a",
+											"type": "text"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 13:09:34 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "32"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get-all-users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/users",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get-all-users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/users",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 14:55:43 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "461"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": \"22b010dd-2b82-4234-aff4-58ce806c39ea\",\n            \"user_name\": \"tiara\",\n            \"email\": \"tiarajuliarsita02@gmail.com\",\n            \"phone\": \"085214097254\",\n            \"created_at\": \"2023-10-30T22:12:48.968+08:00\",\n            \"updated_at\": \"2023-10-30T22:12:48.968+08:00\"\n        },\n        {\n            \"id\": \"d81e6983-69a5-4135-92e1-15957c4aea9b\",\n            \"user_name\": \"tiara\",\n            \"email\": \"tiarajuliarsita@gmail.com\",\n            \"phone\": \"085214097254\",\n            \"created_at\": \"2023-10-30T20:35:56.621+08:00\",\n            \"updated_at\": \"2023-10-30T20:35:56.621+08:00\"\n        }\n    ],\n    \"status\": \"succes\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "admin dan users",
+			"item": [
+				{
+					"name": "ask about beauty",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question\":\"skincare untuk kulit sensitif\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/glam",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"glam"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\":\"resep nasi goreng\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/glam",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"glam"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 03 Nov 2023 02:46:48 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "271"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": \"Maaf, ini chatbot untuk memberi saran tentang perawatan atau produk kecantikan. Jadi saya tidak bisa memberikan resep untuk nasi goreng. Apakah ada pertanyaan lain yang ingin Anda tanyakan seputar perawatan kecantikan atau produk kecantikan?\",\n    \"status\": \"succes\"\n}"
+						},
+						{
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\":\"skincare untuk kulit sensitif\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseurl}}/glam",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"glam"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 03 Nov 2023 02:48:29 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1098"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": \"Halo! Untuk kulit sensitif, sangat penting untuk memilih skincare yang lembut dan tidak mengandung bahan kimia keras. Beberapa tips skincare yang cocok untuk kulit sensitif adalah:\\n1. Pilih produk yang bebas pewangi dan pewarna buatan, karena bahan-bahan ini dapat mengiritasi kulit sensitif.\\n2. Hindari skincare yang mengandung alkohol, asam salisilat, atau retinoid, karena dapat menyebabkan iritasi pada kulit sensitif.\\n3. Cari produk dengan kandungan bahan alami seperti aloe vera, oatmeal, atau chamomile, karena memiliki sifat menenangkan dan dapat membantu mengurangi kemerahan atau iritasi pada kulit sensitif.\\n\\nBeberapa merek skincare yang direkomendasikan untuk kulit sensitif adalah Avene, La Roche-Posay, Cetaphil, dan Bioderma. Selain itu, selalu lakukan uji patch sebelum menggunakan produk baru untuk memastikan tidak ada reaksi alergi.\\n\\nJika Anda mengalami masalah kulit yang serius atau terus-menerus, disarankan untuk berkonsultasi dengan dokter kulit atau ahli kecantikan untuk mendapatkan perawatan yang tepat sesuai dengan jenis kulit Anda.\",\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get-Service-By-ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/services/:id",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4a0f91e0-406c-434d-8388-ed960eaf677a"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get-Service-By-ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/services/:id",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"services",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4a0f91e0-406c-434d-8388-ed960eaf677a"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 12:58:45 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "463"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"4a0f91e0-406c-434d-8388-ed960eaf677a\",\n        \"name\": \"Beauty Treatment\",\n        \"description\": \"Beauty treatment available from Monday to Sunday, lasting for 2 hours. Our expert professionals provide a wide range of services to enhance your beauty and relaxation.\",\n        \"price\": 50000,\n        \"image\": \"https://glamourreserve.my.id/f1bc8aff-ad0e-4951-aed4-64ce7c6a64be\",\n        \"created_at\": \"2023-10-30T20:53:59.845+08:00\",\n        \"updated_at\": \"2023-10-30T20:53:59.845+08:00\"\n    },\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get-all-services",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/services?name=beauty",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"services"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "beauty"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get-all-services",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseurl}}/services?name=beauty",
+									"host": [
+										"{{baseurl}}"
+									],
+									"path": [
+										"services"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "beauty"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 12:57:15 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "465"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": \"4a0f91e0-406c-434d-8388-ed960eaf677a\",\n            \"name\": \"Beauty Treatment\",\n            \"description\": \"Beauty treatment available from Monday to Sunday, lasting for 2 hours. Our expert professionals provide a wide range of services to enhance your beauty and relaxation.\",\n            \"price\": 50000,\n            \"image\": \"https://glamourreserve.my.id/f1bc8aff-ad0e-4951-aed4-64ce7c6a64be\",\n            \"created_at\": \"2023-10-30T20:53:59.845+08:00\",\n            \"updated_at\": \"2023-10-30T20:53:59.845+08:00\"\n        }\n    ],\n    \"status\": \"succes\"\n}"
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/login",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=UTF-8"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 Oct 2023 12:38:40 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "484"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": \"b9563098-315a-4b79-9f79-541050674f45\",\n        \"user_name\": \"admin\",\n        \"email\": \"admin@gmail.com\",\n        \"phone\": \"085214097254\",\n        \"created_at\": \"2023-10-30T20:27:28.425+08:00\",\n        \"updated_at\": \"2023-10-30T20:27:28.425+08:00\"\n    },\n    \"message\": \"succes\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2OTg2NzMxMjAsInJvbGUiOiJhZG1pbiIsInVzZXJJZCI6ImI5NTYzMDk4LTMxNWEtNGI3OS05Zjc5LTU0MTA1MDY3NGY0NSIsInVzZXJfbmFtZSI6ImFkbWluIn0.YNdgWurCLoIQGGNqQu0hCvsH4aBEJ2_Q5EvYeqFza50\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
